@@ -18,4 +18,5 @@ DISTFILES += \
     packages/com.example.advancedSample/data/SampleProgram.exe \
     packages/com.example.advancedSample/data/Contents/MacOS/SampleProgram \
 	build_win.bat \
-    build_mac.command
+    build_mac.command \
+    build_x11.sh
