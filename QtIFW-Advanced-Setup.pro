@@ -1,6 +1,7 @@
 DISTFILES += \
 	README.md \
 	LICENSE \
+	translations/template.ts \
 	translations/de.ts \
 	config/config.xml \
 	config/controllerScript.js \
@@ -16,6 +17,4 @@ DISTFILES += \
     packages/com.example.advancedSample/data/SampleProgram \
     packages/com.example.advancedSample/data/SampleProgram.exe \
     packages/com.example.advancedSample/data/Contents/MacOS/SampleProgram \
-    build_win.bat
-
-include(./translations/translations.pri)
+	build_win.bat
