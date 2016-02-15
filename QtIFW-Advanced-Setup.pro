@@ -12,6 +12,9 @@ DISTFILES += \
 	packages/com.example.advancedSample/meta/LICENSE_de.txt \
 	packages/com.example.advancedSample/data/regSetUninst.bat \
 	packages/com.example.advancedSample/data/main.png \
-    packages/com.example.advancedSample/data/SampleProgramm.exe
+    packages/com.example.advancedSample/data/SampleProgram \
+    packages/com.example.advancedSample/data/SampleProgram.exe \
+    packages/com.example.advancedSample/data/Contents/MacOS/SampleProgram \
+    build_win.bat
 
 include(./translations/translations.pri)

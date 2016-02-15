@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
-	<Name>%{ProgramName}</Name>
-	<Version>%{ProgramVersion}</Version>
-	<Title>%{SetupDisplayName}</Title>
-	<Publisher>%{Publisher}</Publisher>
-	<ProductUrl>%{ProductUrl}</ProductUrl>
-	<StartMenuDir>%{StartMenuDirName}</StartMenuDir>
-	<TargetDir>%{TargetDirName}</TargetDir>
-	<RunProgram>%{TargetExeName}</RunProgram>
+	<Name>QtIFW-Advanced Sample</Name>
+	<Version>1.0.0</Version>
+	<Title>QtIFW-Advanced Sample Installer</Title>
+	<Publisher>Sykcoder42</Publisher>
+	<ProductUrl>https://github.com/Skycoder42/QtIFW-Advanced-Setup</ProductUrl>
+	<StartMenuDir>QtIFW-Advanced Sample</StartMenuDir>
+	<TargetDir>QtIFW-Advanced Sample</TargetDir>
+	<RunProgram>SampleProgram</RunProgram>
 	<AllowSpaceInPath>true</AllowSpaceInPath>
 	<AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
 	<!--RemoteRepositories>
 		<Repository>
-			<Url>%{RepoUrl}</Url>
+			<Url>example.com/download/QtIFW-Advanced Sample</Url>
 			<Enabled>1</Enabled>
-			<DisplayName>%{ProgramName} Online Repository</DisplayName>
+			<DisplayName>QtIFW-Advanced Sample Online Repository</DisplayName>
 		</Repository>
 	</RemoteRepositories-->
 	<ControlScript>controllerScript.js</ControlScript>
