@@ -4,7 +4,7 @@
 <context>
     <name>ShortcutPage</name>
     <message>
-        <location filename="ShortcutPage.ui" line="+14"/>
+        <location filename="../packages/com.example.advancedSample/meta/ShortcutPage.ui" line="+14"/>
         <source>Create Desktop Shortcut</source>
         <translation>Desktop-Verknüpfung erstellen</translation>
     </message>
@@ -17,7 +17,7 @@
 <context>
     <name>UserPage</name>
     <message>
-        <location filename="UserPage.ui" line="+14"/>
+        <location filename="../packages/com.example.advancedSample/meta/UserPage.ui" line="+14"/>
         <source>Installation Scope</source>
         <translation>Installations-Bereich</translation>
     </message>
@@ -44,9 +44,9 @@
     </message>
 </context>
 <context>
-    <name>autoNextControl</name>
+    <name>controllerScript</name>
     <message>
-        <location filename="autoNextControl.js" line="+53"/>
+        <location filename="../config/controllerScript.js" line="+54"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -55,21 +55,17 @@
         <source>The installation was done by an admin/root. Please restart %1 with elevated rights.</source>
         <translation>Die Installation wurde von einem Admin/Root ausgeführt. Bitte starten Sie %1 erneut mit erhöhten Rechten.</translation>
     </message>
-    <message>
-        <source>The installation was done by an admin/root. Please restart the maintenancetool with elevated rights.</source>
-        <translation type="vanished">Die Installation wurde von einem Admin/Root ausgeführt. Bitte starten Sie %1 erneut mit erhöhten Rechten</translation>
-    </message>
 </context>
 <context>
     <name>install</name>
     <message>
-        <location filename="install.js" line="+8"/>
+        <location filename="../packages/com.example.advancedSample/meta/install.js" line="+8"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>This Program is an 64bit Program. You can&apos;t install it on a 32bit machine</source>
+        <source>This Program is a 64bit Program. You can&apos;t install it on a 32bit machine</source>
         <translation>Dieses Programm ist ein 64bit Programm. Es kann nicht auf einer 32bit Maschine installiert werden</translation>
     </message>
 </context>

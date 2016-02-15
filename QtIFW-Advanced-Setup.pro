@@ -1,6 +1,7 @@
 DISTFILES += \
 	README.md \
 	LICENSE \
+	translations/de.ts \
 	config/config.xml \
 	config/controllerScript.js \
 	packages/com.example.advancedSample/meta/package.xml \
