@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+	<DisplayName>%{MainComponentName}</DisplayName>
+	<Description>%{MainComponentDescription}</Description>
+	<Description xml:lang="de_de">%{MainComponentDescriptionDe}</Description>
+	<Version>%{MainComponentVersion}</Version>
+	<ReleaseDate>%{MainComponentReleaseDate}</ReleaseDate>
+    <Licenses>
+		<License name="%{MainComponentLicenseName}" file="LICENSE.txt" />
+	</Licenses>
+	<Script>install.js</Script>
+	<UserInterfaces>
+		<UserInterface>ShortcutPage.ui</UserInterface>
+		<UserInterface>UserPage.ui</UserInterface>
+	</UserInterfaces>
+	<Translations>
+		<Translation>de.qm</Translation>
+	</Translations>
+	<ForcedInstallation>true</ForcedInstallation>
+	<Default>true</Default>
+</Package>

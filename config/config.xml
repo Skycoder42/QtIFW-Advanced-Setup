@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+	<Name>%{ProgramName}</Name>
+	<Version>%{ProgramVersion}</Version>
+	<Title>%{SetupDisplayName}</Title>
+	<Publisher>%{Publisher}</Publisher>
+	<ProductUrl>%{ProductUrl}</ProductUrl>
+	<StartMenuDir>%{StartMenuDirName}</StartMenuDir>
+	<TargetDir>%{TargetDirName}</TargetDir>
+	<RunProgram>%{TargetExeName}</RunProgram>
+	<AllowSpaceInPath>true</AllowSpaceInPath>
+	<AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
+	<!--RemoteRepositories>
+		<Repository>
+			<Url>%{RepoUrl}</Url>
+			<Enabled>1</Enabled>
+			<DisplayName>%{ProgramName} Online Repository</DisplayName>
+		</Repository>
+	</RemoteRepositories-->
+	<ControlScript>controllerScript.js</ControlScript>
+</Installer>
