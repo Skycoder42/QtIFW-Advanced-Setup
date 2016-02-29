@@ -47,10 +47,6 @@ Component.prototype.createOperations = function()
             var pageWidget = gui.pageWidgetByObjectName("DynamicShortcutPage");
             if (pageWidget !== null && pageWidget.shortcutCheckBox.checked)
                 component.addOperation("CreateShortcut", "@RunProgram@.exe", "@DesktopDir@/@Name@.lnk");
-
-            //install visual studio redistributables and delete the file right after
-            component.addElevatedOperation("Execute", "@TargetDir@/vcredist_x64.exe", "/quiet", "/norestart");
-            component.addElevatedOperation("Delete", "@TargetDir@/vcredist_x64.exe");
         } else if (installer.value("os") === "x11") {
             //x11 -> create .desktop file
             component.addOperation("CreateDesktopEntry",

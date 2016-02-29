@@ -10,6 +10,7 @@
 		<License name="BSD License" file="LICENSE.txt" />
 	</Licenses>
 	<Script>install.js</Script>
+	<Dependencies>com.microsoft.vcredist.x64</Dependencies><!-- Windows only...-->
 	<UserInterfaces>
 		<UserInterface>ShortcutPage.ui</UserInterface>
 		<UserInterface>UserPage.ui</UserInterface>
