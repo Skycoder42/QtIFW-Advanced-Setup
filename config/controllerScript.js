@@ -50,7 +50,7 @@ Controller.prototype.IntroductionPageCallback = function()
     if(!installer.isInstaller()) {
         //check if admin neccessarity is given
         if(installer.value("AllUsers") === "true" && installer.value("isAdmin") === "false") {
-            QMessageBox.critical("controllerScript.notAdmin",
+            QMessageBox.critical("com.SkyCoder42.AdvancedSetup.notAdmin",
                                  qsTr("Error"),
                                  qsTr("The installation was done by an admin/root. Please restart %1 with elevated rights.")
                                  .arg(installer.value("MaintenanceToolName")));

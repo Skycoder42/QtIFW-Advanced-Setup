@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+	<DisplayName>QtIFW-Advanced attatchments</DisplayName>
+	<Description>A component to provide the advanced installer features</Description>
+	<Version>1.0.0</Version>
+	<ReleaseDate>2016-01-01</ReleaseDate>
+	<Script>install.js</Script>
+	<UserInterfaces>
+		<UserInterface>ShortcutPage.ui</UserInterface>
+		<UserInterface>UserPage.ui</UserInterface>
+	</UserInterfaces>
+	<Translations>
+		<Translation>de.qm</Translation>
+	</Translations>
+	<ForcedInstallation>true</ForcedInstallation>
+	<Virtual>true</Virtual>
+</Package>

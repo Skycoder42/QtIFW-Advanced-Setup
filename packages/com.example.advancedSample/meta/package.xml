@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package>
-	<DisplayName>QtIFW-Advanced root</DisplayName>
-	<DisplayName xml:lang="de_de">QtIFW-Advanced Wurzel</DisplayName>
-	<Description>Example Installer Main component</Description>
-	<Description xml:lang="de_de">Beispiel-Installer Haupt-Komponente</Description>
+	<DisplayName>QtIFW-Advanced Example User Files</DisplayName>
+	<DisplayName xml:lang="de_de">QtIFW-Advanced Beispiel Benutzer-Dateien</DisplayName>
+	<Description>An example for a component you can add.</Description>
+	<Description xml:lang="de_de">Ein Beispiel für eine Komponente, die Sie hinzufügen können.</Description>
 	<Version>1.0.0</Version>
 	<ReleaseDate>2016-01-01</ReleaseDate>
     <Licenses>
 		<License name="BSD License" file="LICENSE.txt" />
 	</Licenses>
-	<Script>install.js</Script>
 	<Dependencies>com.microsoft.vcredist.x64</Dependencies><!-- Windows only...-->
-	<UserInterfaces>
-		<UserInterface>ShortcutPage.ui</UserInterface>
-		<UserInterface>UserPage.ui</UserInterface>
-	</UserInterfaces>
-	<Translations>
-		<Translation>de.qm</Translation>
-	</Translations>
 	<ForcedInstallation>true</ForcedInstallation>
 	<Default>true</Default>
 </Package>

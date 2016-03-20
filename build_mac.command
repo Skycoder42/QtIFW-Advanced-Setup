@@ -5,8 +5,8 @@
 # working directory: %{sourceDir}
 
 #create translations
-"$1/lupdate" -locations relative ./config/controllerScript.js ./packages/com.example.advancedSample/meta/install.js ./packages/com.example.advancedSample/meta/ShortcutPage.ui ./packages/com.example.advancedSample/meta/UserPage.ui -ts ./translations/template.ts ./translations/de.ts
-"$1/lrelease" -compress -nounfinished ./translations/de.ts -qm ./packages/com.example.advancedSample/meta/de.qm
+"$1/lupdate" -locations relative ./config/controllerScript.js ./packages/com.SkyCoder42.AdvancedSetup/meta/install.js ./packages/com.SkyCoder42.AdvancedSetup/meta/ShortcutPage.ui ./packages/com.SkyCoder42.AdvancedSetup/meta/UserPage.ui -ts ./translations/template.ts ./translations/de.ts
+"$1/lrelease" -compress -nounfinished ./translations/de.ts -qm ./packages/com.SkyCoder42.AdvancedSetup/meta/de.qm
 
 #create the installer (and online repo)
 if [ "$3" == "0" ]; then
