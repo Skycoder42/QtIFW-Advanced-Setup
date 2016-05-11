@@ -4,7 +4,7 @@
 <context>
     <name>ShortcutPage</name>
     <message>
-        <location filename="../packages/com.example.advancedSample/meta/ShortcutPage.ui" line="+14"/>
+        <location filename="../packages/com.SkyCoder42.AdvancedSetup/meta/ShortcutPage.ui" line="+14"/>
         <source>Create Desktop Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17,7 +17,7 @@
 <context>
     <name>UserPage</name>
     <message>
-        <location filename="../packages/com.example.advancedSample/meta/UserPage.ui" line="+14"/>
+        <location filename="../packages/com.SkyCoder42.AdvancedSetup/meta/UserPage.ui" line="+14"/>
         <source>Installation Scope</source>
         <translation type="unfinished"></translation>
     </message>
@@ -58,7 +58,7 @@
 <context>
     <name>install</name>
     <message>
-        <location filename="../packages/com.example.advancedSample/meta/install.js" line="+8"/>
+        <location filename="../packages/com.SkyCoder42.AdvancedSetup/meta/install.js" line="+8"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>

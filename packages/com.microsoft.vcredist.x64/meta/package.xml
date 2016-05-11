@@ -2,7 +2,7 @@
 <Package>
 	<DisplayName>Microsoft Visual C++ 2015 Redistributable (x64)</DisplayName>
 	<Description>Installs the Visual C++ redistributables for x64</Description>
-	<Version>14.0.23506</Version>
+	<Version>14.0.23918</Version>
 	<ReleaseDate>2016-03-20</ReleaseDate>
 	<Script>install.js</Script>
 	<Virtual>true</Virtual>
