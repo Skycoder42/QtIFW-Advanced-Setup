@@ -9,7 +9,6 @@
     <Licenses>
 		<License name="BSD License" file="LICENSE.txt" />
 	</Licenses>
-	<Dependencies>com.microsoft.vcredist.x64</Dependencies><!-- Windows only...-->
 	<ForcedInstallation>true</ForcedInstallation>
 	<Default>true</Default>
 </Package>
