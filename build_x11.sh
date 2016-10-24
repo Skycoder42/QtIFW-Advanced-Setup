@@ -11,7 +11,7 @@
 #create the installer (and online repo)
 if [ "$3" == "0" ]; then
 	"$2/bin/repogen" --update-new-components -p ./packages ./online_repos/x11_x64
-	"$2/bin/binarycreator" -n -c ./config/config.xml -p ./packages ./QtIFW-Advanced_Sample_setup_x11_x64_online.run
+	"$2/bin/binarycreator" -n -c ./config/config.xml -p ./packages -e com.microsoft.vcredist.x64 ./QtIFW-Advanced_Sample_setup_x11_x64_online.run
 else
-	"$2/bin/binarycreator" -f -c ./config/config.xml -p ./packages ./QtIFW-Advanced_Sample_setup_x11_x64_offline.run
+	"$2/bin/binarycreator" -f -c ./config/config.xml -p ./packages -e com.microsoft.vcredist.x64 ./QtIFW-Advanced_Sample_setup_x11_x64_offline.run
 fi
