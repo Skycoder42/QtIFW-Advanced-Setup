@@ -11,7 +11,7 @@
 #create the installer (and online repo)
 if [ "$3" == "0" ]; then
 	"$2/bin/repogen" --update-new-components -p ./packages ./online_repos/mac_x64
-	"$2/bin/binarycreator" -n -c ./config/config.xml -p ./packages ./QtIFW-Advanced_Sample_setup_mac_x64_online.app
+	"$2/bin/binarycreator" -n -c ./config/config.xml -p ./packages -e com.microsoft.vcredist.x64 ./QtIFW-Advanced_Sample_setup_mac_x64_online.app
 else
-	"$2/bin/binarycreator" -f -c ./config/config.xml -p ./packages ./QtIFW-Advanced_Sample_setup_mac_x64_offline.app
+	"$2/bin/binarycreator" -f -c ./config/config.xml -p ./packages -e com.microsoft.vcredist.x64 ./QtIFW-Advanced_Sample_setup_mac_x64_offline.app
 fi
