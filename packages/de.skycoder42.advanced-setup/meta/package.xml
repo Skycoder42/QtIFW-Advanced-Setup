@@ -2,8 +2,8 @@
 <Package>
 	<DisplayName>QtIFW-Advanced attatchments</DisplayName>
 	<Description>A component to provide the advanced installer features</Description>
-	<Version>1.0.0</Version>
-	<ReleaseDate>2016-01-01</ReleaseDate>
+	<Version>1.1.0</Version>
+	<ReleaseDate>2017-05-20</ReleaseDate>
 	<Script>install.js</Script>
 	<UserInterfaces>
 		<UserInterface>ShortcutPage.ui</UserInterface>

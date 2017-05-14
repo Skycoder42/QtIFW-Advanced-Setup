@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+	<Name></Name>
+	<Version>1.0.0</Version>
+	<Title></Title>
+	<Publisher></Publisher>
+	<ProductUrl></ProductUrl>
+	<StartMenuDir></StartMenuDir><!-- Enter name only, not a path! -->
+	<TargetDir></TargetDir><!-- Enter name only, not a path! -->
+	<RunProgram></RunProgram><!-- Enter name only, not a path! -->
+	<AllowSpaceInPath>true</AllowSpaceInPath>
+	<AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
+	<!-- Uncomment if using remote repositories -->
+	<!--RemoteRepositories>
+		<Repository>
+			<Url>example.com/download/QtIFW-Advanced Sample</Url>
+			<Enabled>1</Enabled>
+			<DisplayName>QtIFW-Advanced Sample Online Repository</DisplayName>
+		</Repository>
+	</RemoteRepositories-->
+	<ControlScript>controller.js</ControlScript>
+</Installer>

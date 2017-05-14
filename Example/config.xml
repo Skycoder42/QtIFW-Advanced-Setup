@@ -17,5 +17,5 @@
 			<DisplayName>QtIFW-Advanced Sample Online Repository</DisplayName>
 		</Repository>
 	</RemoteRepositories-->
-	<ControlScript>controllerScript.js</ControlScript>
+	<ControlScript>controller.js</ControlScript>
 </Installer>
