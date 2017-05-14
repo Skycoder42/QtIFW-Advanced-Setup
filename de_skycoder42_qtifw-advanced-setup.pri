@@ -9,4 +9,7 @@ DISTFILES += \
 	$$PWD/packages/com.microsoft.vcredist.x64/meta/package.xml \
 	$$PWD/packages/com.microsoft.vcredist.x64/meta/install.js \
 	$$PWD/translations/de.ts \
-	$$PWD/translations/template.ts
+	$$PWD/translations/template.ts \
+    $$PWD/build_mac.command \
+    $$PWD/build_x11.sh \
+    $$PWD/build_win.bat
