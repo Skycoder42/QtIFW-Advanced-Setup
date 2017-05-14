@@ -5,7 +5,7 @@
 	<Version>14.0.24215</Version>
 	<ReleaseDate>2016-10-23</ReleaseDate>
 	<Script>install.js</Script>
-	<!-- Auto-Dependency: This way, the vcredist package can be excluded on non windows platform. Using AutoDependOn, this package will automatically be installed if com.example.advancedSample is installed. It's basically an inverted dependency. See the build_... files -->
-	<!-- AutoDependOn>com.example.app</AutoDependOn -->
+	<!-- Auto-Dependency: This way, the vcredist package can be excluded on non windows platform. Using AutoDependOn, this package will automatically be installed if de.skycoder42.advanced-setup is installed. It's basically an inverted dependency. See the build_... files -->
+	<AutoDependOn>de.skycoder42.advanced-setup</AutoDependOn>
 	<Virtual>true</Virtual>
 </Package>
