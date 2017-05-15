@@ -6,9 +6,7 @@ QTIFW_CONFIG = config.xml
 
 sample.pkg = de.skycoder42.qtifw-sample
 sample.meta = meta
-sample.data = data
-sample.deploys += $$TARGET
-sample.autopath = true
+sample.data = data "$$OUT_PWD/deploy"
 
 QTIFW_PACKAGES += sample
 

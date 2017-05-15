@@ -12,6 +12,9 @@
 	<Translations>
 		<Translation>de.qm</Translation>
 	</Translations>
+	<Licenses>
+		<License name="BSD 3 Clause License" file="LICENSE.txt" />
+	</Licenses>
 	<ForcedInstallation>true</ForcedInstallation>
 	<Virtual>true</Virtual>
 </Package>
