@@ -39,8 +39,9 @@ function Controller()
 			installer.setValue("AdminTargetDir", "@ApplicationsDir@/" + targetBase);
 		}
 
-		//get default all users from admin
-		installer.setValue("AllUsers", isAdmin ? "true" : "false");
+		//store all users and online/offline info
+		installer.setValue("allUsers", isAdmin ? "true" : "false");
+		installer.setValue("isOffline", installer.isOfflineOnly() ? "true" : "false");
 	}
 }
 
@@ -49,7 +50,7 @@ Controller.prototype.IntroductionPageCallback = function()
 	//Maintenance tool
 	if(!installer.isInstaller()) {
 		//check if admin neccessarity is given
-		if(installer.value("AllUsers") === "true" && installer.value("isAdmin") === "false") {
+		if(installer.value("allUsers") === "true" && installer.value("isAdmin") === "false") {
 			QMessageBox.critical("de.skycoder42.advanced-setup.notAdmin",
 								 qsTr("Error"),
 								 qsTr("The installation was done by an admin/root. Please restart %1 with elevated rights.")
@@ -61,7 +62,7 @@ Controller.prototype.IntroductionPageCallback = function()
 
 		var widget = gui.currentPageWidget();
 		if (widget !== null) {
-			if(installer.isOfflineOnly()) {
+			if(installer.value("isOffline") === "true") {
 				//offline only -> only allow uninstall
 				widget.findChild("PackageManagerRadioButton").visible = false;
 				widget.findChild("UpdaterRadioButton").visible = false;
@@ -97,8 +98,8 @@ Controller.prototype.DynamicUserPageCallback = function()
 	if(page !== null) {
 		if (installer.value("isAdmin") === "true") {
 			//admin -> allow both
-			page.allUsersButton.checked = installer.value("AllUsers") === "true";
-			page.meOnlyButton.checked = installer.value("AllUsers") !== "true";
+			page.allUsersButton.checked = installer.value("allUsers") === "true";
+			page.meOnlyButton.checked = installer.value("allUsers") !== "true";
 			page.allUsersButton.enabled = true;
 			page.allUsersLabel.enabled = true;
 		} else {
@@ -116,10 +117,10 @@ Controller.prototype.TargetDirectoryPageCallback = function()
 	var page = gui.pageWidgetByObjectName("DynamicUserPage");
 	// update the target directory based on the installation scope
 	if (page !== null && page.allUsersButton.checked) {
-		installer.setValue("AllUsers", "true");
+		installer.setValue("allUsers", "true");
 		installer.setValue("TargetDir", installer.value("AdminTargetDir"));
 	} else {
-		installer.setValue("AllUsers", "false");
+		installer.setValue("allUsers", "false");
 		installer.setValue("TargetDir", installer.value("UserTargetDir"));
 	}
 
@@ -141,7 +142,7 @@ Controller.prototype.FinishedPageCallback = function()
 {
 	//windows -> update the registry entry for the installer to work properly
 	if (installer.isInstaller() && installer.value("os") === "win") {
-		var isAllUsers = (installer.value("AllUsers") === "true");
+		var isAllUsers = (installer.value("allUsers") === "true");
 		if(!isAllUsers || installer.gainAdminRights()){
 			var args  = [
 							installer.value("ProductUUID"),
