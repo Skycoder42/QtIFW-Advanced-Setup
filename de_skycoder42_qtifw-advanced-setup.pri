@@ -1,15 +1,9 @@
 DISTFILES += \
-	$$PWD/config/config_template.xml \
-	$$PWD/config/controller.js \
-	$$PWD/packages/de.skycoder42.advanced-setup/meta/package.xml \
-	$$PWD/packages/de.skycoder42.advanced-setup/meta/install.js \
-	$$PWD/packages/de.skycoder42.advanced-setup/meta/ShortcutPage.ui \
-	$$PWD/packages/de.skycoder42.advanced-setup/meta/UserPage.ui \
-	$$PWD/packages/de.skycoder42.advanced-setup/data/regSetUninst.bat \
-	$$PWD/packages/com.microsoft.vcredist.x64/meta/package.xml \
-	$$PWD/packages/com.microsoft.vcredist.x64/meta/install.js \
-	$$PWD/translations/de.ts \
-	$$PWD/translations/template.ts \
+	$$PWD/config/*y \
+	$$PWD/packages/de.skycoder42.advanced-setup/meta/* \
+	$$PWD/packages/de.skycoder42.advanced-setup/data/* \
+	$$PWD/packages/com.microsoft.vcredist.x64/meta/* \
+	$$PWD/translations/*.ts \
 	$$PWD/build.py
 
 isEmpty(QTIFW_CMD): QTIFW_CMD = $$PWD/build.py
@@ -43,3 +37,6 @@ qtifw_inst.target = installer
 qtifw_inst.commands = $$shell_quote($$shell_path($$QTIFW_CMD)) $$QTIFW_ARGS
 
 QMAKE_EXTRA_TARGETS += qtifw_inst
+
+#lupdate -locations relative ./config/controller.js ./packages/de.skycoder42.advanced-setup/meta/install.js ./packages/de.skycoder42.advanced-setup/meta/ShortcutPage.ui ./packages/de.skycoder42.advanced-setup/meta/UserPage.ui -ts ./translations/template.ts ./translations/de.ts
+#lrelease -compress -nounfinished ./translations/de.ts -qm ./packages/de.skycoder42.advanced-setup/meta/de.qm

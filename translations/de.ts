@@ -33,7 +33,7 @@
         <translation>Die Anwendung wird für alle Nutzer dieses Computers installiert. Sie benötigen erhöhte Rechte für die Installation. Wenn Sie den Installer nicht mit diesen gesartet haben, so wird diese Option nicht verfügbar sein. Bitte starten sie mit erhöhten Rechten (Admin auf Windows, Root auf Linux/Mac) um für alle Nutzer zu installlieren.</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+19"/>
         <source>Install just for me</source>
         <translation>Nur für Mich Installieren</translation>
     </message>
@@ -44,9 +44,9 @@
     </message>
 </context>
 <context>
-    <name>controllerScript</name>
+    <name>controller</name>
     <message>
-        <location filename="../config/controllerScript.js" line="+54"/>
+        <location filename="../config/controller.js" line="+54"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>

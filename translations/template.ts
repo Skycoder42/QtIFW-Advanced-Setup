@@ -32,7 +32,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+19"/>
         <source>Install just for me</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,9 +43,9 @@
     </message>
 </context>
 <context>
-    <name>controllerScript</name>
+    <name>controller</name>
     <message>
-        <location filename="../config/controllerScript.js" line="+54"/>
+        <location filename="../config/controller.js" line="+54"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
