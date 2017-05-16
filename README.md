@@ -60,7 +60,7 @@ To create the installer, simply run `make installer`.
  #### The `package` type
  All entries of the QTIFW_PACKAGES variable must be such entries. They are defined as "objects" with the following variables:
  
- Variable Name	| Description
+ Member Name	| Description
 ----------------|-------------
  pkg			| The unique name (identifier) of the package
  meta			| A list of directories to be copied into the packages "meta" directory
