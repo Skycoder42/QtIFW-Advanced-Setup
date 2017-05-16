@@ -7,7 +7,7 @@
 	<ProductUrl>https://github.com/Skycoder42/QtIFW-Advanced-Setup</ProductUrl>
 	<StartMenuDir>QtIFW-Advanced Sample</StartMenuDir>
 	<TargetDir>QtIFW-Advanced Sample</TargetDir>
-	<RunProgram>SampleProgram</RunProgram>
+	<RunProgram>example</RunProgram>
 	<AllowSpaceInPath>true</AllowSpaceInPath>
 	<AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
 	<RemoteRepositories>

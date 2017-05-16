@@ -24,7 +24,7 @@ aspkg.meta = $$PWD/packages/de.skycoder42.advancedsetup/meta
 aspkg.data = $$PWD/packages/de.skycoder42.advancedsetup/data
 QTIFW_PACKAGES += aspkg
 
-win32 {
+win32 { #TODO msvc only
 	redistpkg.pkg = com.microsoft.vcredist.x64
 	redistpkg.meta = $$PWD/packages/com.microsoft.vcredist.x64/meta
 	redistpkg.data = $$PWD/packages/com.microsoft.vcredist.x64/data

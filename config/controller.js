@@ -50,7 +50,7 @@ Controller.prototype.IntroductionPageCallback = function()
 	//Maintenance tool
 	if(!installer.isInstaller()) {
 		//check if admin neccessarity is given
-		if(installer.value("allUsers") === "true" && installer.value("isAdmin") === "false") {
+		if(installer.value("allUsers") === "true" && installer.value("isAdmin") === "false") {//TODO check install admin instead
 			QMessageBox.critical("de.skycoder42.advanced-setup.notAdmin",
 								 qsTr("Error"),
 								 qsTr("The installation was done by an admin/root. Please restart %1 with elevated rights.")
