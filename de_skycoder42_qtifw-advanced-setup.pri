@@ -49,5 +49,6 @@ qtifw_inst.commands = $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
 
 QMAKE_EXTRA_TARGETS += qtifw_inst
 
-#lupdate -locations relative ./config/controller.js ./packages/de.skycoder42.advanced-setup/meta/install.js ./packages/de.skycoder42.advanced-setup/meta/ShortcutPage.ui ./packages/de.skycoder42.advanced-setup/meta/UserPage.ui -ts ./translations/template.ts ./translations/de.ts
-#lrelease -compress -nounfinished ./translations/de.ts -qm ./packages/de.skycoder42.advanced-setup/meta/de.qm
+# The following commands allow you to create custom translation files
+#lupdate -locations relative ./config/controller.js ./packages/de.skycoder42.advancedsetup/meta/install.js ./packages/de.skycoder42.advancedsetup/meta/ShortcutPage.ui ./packages/de.skycoder42.advancedsetup/meta/UserPage.ui -ts ./translations/template.ts ./translations/de.ts
+#lrelease -compress -nounfinished ./translations/de.ts -qm ./packages/de.skycoder42.advancedsetup/meta/de.qm
