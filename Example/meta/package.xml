@@ -6,9 +6,6 @@
 	<Description xml:lang="de_de">Ein Beispiel für eine Komponente, die Sie hinzufügen können.</Description>
 	<Version>1.0.0</Version>
 	<ReleaseDate>2016-01-01</ReleaseDate>
-    <Licenses>
-		<License name="BSD License" file="LICENSE.txt" />
-	</Licenses>
 	<ForcedInstallation>true</ForcedInstallation>
 	<Default>true</Default>
 </Package>

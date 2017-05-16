@@ -4,7 +4,7 @@ TARGET = example
 
 QTIFW_TARGET = Example Installer
 QTIFW_CONFIG = config.xml
-#QTIFW_MODE = online_all
+QTIFW_MODE = online_all
 
 sample.pkg = de.skycoder42.qtifwsample
 sample.meta = meta
@@ -23,9 +23,7 @@ DISTFILES += \
 	meta/package.xml \
 	data/main.png \
 	data/Contents/MacOS/SampleProgram \
-	data/SampleProgram \
-	meta/LICENSE.txt \
-	meta/LICENSE_de.txt
+	data/SampleProgram
 
 deploy_target.target = deploy
 deploy_target.commands = mkdir $${OUT_PWD}/deploy && $$QMAKE_COPY_FILE $${OUT_PWD}/$${TARGET}* $${OUT_PWD}/deploy/
