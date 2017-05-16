@@ -8,11 +8,11 @@ from distutils.dir_util import copy_tree
 from enum import Enum
 
 # constants
-qtifwdir = "/home/sky/Qt/Tools/QtInstallerFramework/2.0/bin"
 srcdir = sys.argv[1]
 outdir = sys.argv[2]
-target = sys.argv[3]
-mode = sys.argv[4]
+qtifwdir = sys.argv[3]
+target = sys.argv[4]
+mode = sys.argv[5]
 cfgdir = os.path.join(outdir, "config")
 pkgdir = os.path.join(outdir, "packages")
 
@@ -86,7 +86,7 @@ def create_repo():
 # prepare & copy files
 shutil.rmtree(outdir, ignore_errors=True)
 os.makedirs(cfgdir, exist_ok=True)
-create_install_dir(5)
+create_install_dir(6)
 
 # generate installer
 if mode == "offline":

@@ -6,8 +6,8 @@ DISTFILES += \
 	$$PWD/translations/*.ts \
 	$$PWD/build.py
 
-#TODO QtIFW install dir needed!!!
-isEmpty(QTIFW_CMD): QTIFW_CMD = $$PWD/build.py
+#variable defaults
+isEmpty(QTIFW_BIN): QTIFW_BIN = $$[QT_INSTALL_BINS]/../../../Tools/QtInstallerFramework/2.0/bin/
 isEmpty(QTIFW_DIR): QTIFW_DIR = qtifw-installer
 isEmpty(QTIFW_MODE): QTIFW_MODE = offline #can be: offline, online, repository, online_all
 isEmpty(QTIFW_TARGET): QTIFW_TARGET = "$$TARGET Installer"
@@ -16,6 +16,7 @@ else:mac:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .app
 else:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .run
 isEmpty(QTIFW_CONFIG): warning(QTIFW_CONFIG must not be empty!)
 
+# standard installer values
 QTIFW_CONFIG += $$PWD/config/controller.js
 
 aspkg.pkg = de.skycoder42.advancedsetup
@@ -30,8 +31,10 @@ win32 {
 	QTIFW_PACKAGES += redistpkg
 }
 
+# installer target generation
 QTIFW_ARGS = $$shell_quote($$shell_path($$_PRO_FILE_PWD_))
 QTIFW_ARGS += $$shell_quote($$shell_path($$QTIFW_DIR))
+QTIFW_ARGS += $$shell_quote($$shell_path($$QTIFW_BIN))
 QTIFW_ARGS += $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x})
 QTIFW_ARGS += $$shell_quote($$QTIFW_MODE)
 for(cfg, QTIFW_CONFIG): QTIFW_ARGS += $$shell_quote($$shell_path($$cfg))
@@ -42,7 +45,7 @@ for(pkg, QTIFW_PACKAGES) {
 }
 
 qtifw_inst.target = installer
-qtifw_inst.commands = $$shell_quote($$shell_path($$QTIFW_CMD)) $$QTIFW_ARGS
+qtifw_inst.commands = $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
 
 QMAKE_EXTRA_TARGETS += qtifw_inst
 

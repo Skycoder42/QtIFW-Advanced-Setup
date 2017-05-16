@@ -26,3 +26,8 @@ DISTFILES += \
 	data/SampleProgram \
 	meta/LICENSE.txt \
 	meta/LICENSE_de.txt
+
+deploy_target.target = deploy
+deploy_target.commands = mkdir $${OUT_PWD}/deploy && $$QMAKE_COPY_FILE $${OUT_PWD}/$${TARGET}* $${OUT_PWD}/deploy/
+
+QMAKE_EXTRA_TARGETS += deploy_target
