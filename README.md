@@ -46,13 +46,22 @@ include(vendor/vendor.pri)
 
 To create the installer, simply run `make installer`.
 
-## Variable documentation
+### Variable documentation
  Variable Name	| Default value 														| Description
 ----------------|-----------------------------------------------------------------------|-------------
- QTIFW_BIN		| `$$[QT_INSTALL_BINS]/../../../Tools/QtInstallerFramework/2.0/bin/`	| a
- QTIFW_DIR		| `qtifw-installer`														| b
- QTIFW_MODE		| `offline`																| c
- QTIFW_TARGET	| `$$TARGET Installer`													| d
- QTIFW_TARGET_x	| win:`.exe`, linux:`.run`, mac:`.app`									| e
- QTIFW_CONFIG	| _must not be empty_													| f
- QTIFW_PACKAGES	| _empty_																| g
+ QTIFW_BIN		| `$$[QT_INSTALL_BINS]/../../../Tools/QtInstallerFramework/2.0/bin/`	| The directory containing the QtIFW Tools (repogen, binarycreator, etc.). The default value assumes you installed Qt and QtIFW via the online installer and that QtIFW is of version 2.0. Adjust the path if your tools are located elsewhere
+ QTIFW_DIR		| `qtifw-installer`														| The directory (relative to the build directory) to place the installer files in
+ QTIFW_MODE		| `offline`																| The type of installer to create. Can be: `offline`: Offline installer, `online`: Online installer, `repository`: The remote repository for an online installer, `online_all`: Both, the online installer and remote repository
+ QTIFW_TARGET	| `$$TARGET Installer`													| The base name of the installer binary
+ QTIFW_TARGET_x	| win:`.exe`, linux:`.run`, mac:`.app`									| The extension of the installer binary
+ QTIFW_CONFIG	| _must not be empty_													| Files for the configuration directory. **Must** contain a file named `config.xml` with the installer configuration
+ QTIFW_PACKAGES	| _empty_																| A list of all packages to install. Must be of type `package`
+ 
+ #### The `package` type
+ All entries of the QTIFW_PACKAGES variable must be such entries. They are defined as "objects" with the following variables:
+ 
+ Variable Name	| Description
+----------------|-------------
+ pkg			| The unique name (identifier) of the package
+ meta			| A list of directories to be copied into the packages "meta" directory
+ data			| A list of directories to be copied into the packages "data" directory
