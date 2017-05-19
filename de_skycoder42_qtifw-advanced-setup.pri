@@ -24,10 +24,16 @@ aspkg.meta = $$PWD/packages/de.skycoder42.advancedsetup/meta
 win32: aspkg.data = $$PWD/packages/de.skycoder42.advancedsetup/data
 QTIFW_PACKAGES += aspkg
 
-win32 { #TODO msvc only
+win32:msvc {
+	isEmpty(QTIFW_VCDIR) {
+		VCTMP = $(VCINSTALLDIR)
+		isEmpty(VCTMP): QTIFW_VCDIR = $$[QT_INSTALL_BINS]/../../../vcredist/
+		else: QTIFW_VCDIR = $$VCTMP\redist\1033
+	}
+
 	redistpkg.pkg = com.microsoft.vcredist.x64
 	redistpkg.meta = $$PWD/packages/com.microsoft.vcredist.x64/meta
-	redistpkg.data = $$PWD/packages/com.microsoft.vcredist.x64/data
+	redistpkg.data = $$QTIFW_VCDIR
 	QTIFW_PACKAGES += redistpkg
 }
 
@@ -45,7 +51,8 @@ for(pkg, QTIFW_PACKAGES) {
 }
 
 qtifw_inst.target = installer
-qtifw_inst.commands = $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
+win32: qtifw_inst.commands = python $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
+else: qtifw_inst.commands = $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
 
 QMAKE_EXTRA_TARGETS += qtifw_inst
 

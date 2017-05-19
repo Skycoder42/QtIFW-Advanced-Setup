@@ -26,6 +26,7 @@ DISTFILES += \
 	data/SampleProgram
 
 deploy_target.target = deploy
-deploy_target.commands = mkdir $${OUT_PWD}/deploy && $$QMAKE_COPY_FILE $${OUT_PWD}/$${TARGET}* $${OUT_PWD}/deploy/
+linux: deploy_target.commands = mkdir $${OUT_PWD}/deploy && $$QMAKE_COPY_FILE $${OUT_PWD}/$${TARGET} $${OUT_PWD}/deploy/
+win32: deploy_target.commands = mkdir $$shell_path($${OUT_PWD}/deploy) && $$QMAKE_COPY_FILE $$shell_path($${OUT_PWD}/release/$${TARGET}.exe) $$shell_path($${OUT_PWD}/deploy/)
 
 QMAKE_EXTRA_TARGETS += deploy_target
