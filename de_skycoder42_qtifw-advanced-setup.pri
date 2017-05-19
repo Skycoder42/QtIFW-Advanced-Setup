@@ -21,7 +21,7 @@ QTIFW_CONFIG += $$PWD/config/controller.js
 
 aspkg.pkg = de.skycoder42.advancedsetup
 aspkg.meta = $$PWD/packages/de.skycoder42.advancedsetup/meta
-aspkg.data = $$PWD/packages/de.skycoder42.advancedsetup/data
+win32: aspkg.data = $$PWD/packages/de.skycoder42.advancedsetup/data
 QTIFW_PACKAGES += aspkg
 
 win32 { #TODO msvc only
