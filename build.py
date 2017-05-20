@@ -54,25 +54,25 @@ def create_install_dir(offset):
 				copy_pkg(pkg, state, arg)
 				state = State.Package
 
-def config_install_js():
+def config_arch():
 	install_js = os.path.join(pkgdir, "de.skycoder42.advancedsetup", "meta", "install.js")
-	with open(install_js, "r") as base:
-		data = base.read()
-	with open(install_js, "w") as res:
+	with open(install_js, "r+") as file:
+		data = file.read()
+		file.seek(0);
 		if arch == "x64":
-			res.write("function testArch() {\n");
-			res.write("\tif(systemInfo.currentCpuArchitecture.search(\"64\") < 0) {\n");
-			res.write("\t\tQMessageBox.critical(\"de.skycoder42.advanced-setup.not64\", qsTr(\"Error\"), qsTr(\"This Program is a 64bit Program. You can't install it on a 32bit machine\"));\n");
-			res.write("\t\tgui.rejectWithoutPrompt();\n");
-			res.write("\t\treturn false;\n");
-			res.write("\t} else\n");
-			res.write("\t\treturn true;\n");
-			res.write("}\n\n");
+			file.write("function testArch() {\n");
+			file.write("\tif(systemInfo.currentCpuArchitecture.search(\"64\") < 0) {\n");
+			file.write("\t\tQMessageBox.critical(\"de.skycoder42.advanced-setup.not64\", qsTr(\"Error\"), qsTr(\"This Program is a 64bit Program. You can't install it on a 32bit machine\"));\n");
+			file.write("\t\tgui.rejectWithoutPrompt();\n");
+			file.write("\t\treturn false;\n");
+			file.write("\t} else\n");
+			file.write("\t\treturn true;\n");
+			file.write("}\n\n");
 		else:
-			res.write("function testArch() {\n");
-			res.write("\treturn true;\n");
-			res.write("}\n\n");
-		res.write(data)
+			file.write("function testArch() {\n");
+			file.write("\treturn true;\n");
+			file.write("}\n\n");
+		file.write(data)
 
 def create_offline():
 	subprocess.run([
@@ -108,7 +108,7 @@ def create_repo():
 shutil.rmtree(outdir, ignore_errors=True)
 os.makedirs(cfgdir, exist_ok=True)
 create_install_dir(7)
-config_install_js()
+config_arch()
 
 # generate installer
 if mode == "offline":
