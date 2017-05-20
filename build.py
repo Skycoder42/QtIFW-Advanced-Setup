@@ -35,6 +35,13 @@ def copy_pkg(pkg, state, src):
 	os.makedirs(pkgout, exist_ok=True)
 	copy_tree(pkgsrc, pkgout, preserve_symlinks=True)
 
+def prepend_file_data(filename, data):
+	with open(filename, "r+") as file:
+		orig = file.read()
+		file.seek(0)
+		file.write(data)
+		file.write(orig)
+
 def create_install_dir(offset):
 	state = State.Config
 	pkg = ""
@@ -55,24 +62,40 @@ def create_install_dir(offset):
 				state = State.Package
 
 def config_arch():
-	install_js = os.path.join(pkgdir, "de.skycoder42.advancedsetup", "meta", "install.js")
-	with open(install_js, "r+") as file:
-		data = file.read()
-		file.seek(0);
-		if arch == "x64":
-			file.write("function testArch() {\n");
-			file.write("\tif(systemInfo.currentCpuArchitecture.search(\"64\") < 0) {\n");
-			file.write("\t\tQMessageBox.critical(\"de.skycoder42.advanced-setup.not64\", qsTr(\"Error\"), qsTr(\"This Program is a 64bit Program. You can't install it on a 32bit machine\"));\n");
-			file.write("\t\tgui.rejectWithoutPrompt();\n");
-			file.write("\t\treturn false;\n");
-			file.write("\t} else\n");
-			file.write("\t\treturn true;\n");
-			file.write("}\n\n");
-		else:
-			file.write("function testArch() {\n");
-			file.write("\treturn true;\n");
-			file.write("}\n\n");
-		file.write(data)
+	#adjust install js
+	data = ""
+	if arch == "x64":
+		data = "function testArch() {\n"
+		data += "\tif(systemInfo.currentCpuArchitecture.search(\"64\") < 0) {\n"
+		data += "\t\tQMessageBox.critical(\"de.skycoder42.advanced-setup.not64\", qsTr(\"Error\"), qsTr(\"This Program is a 64bit Program. You can't install it on a 32bit machine\"));\n"
+		data += "\t\tgui.rejectWithoutPrompt();\n"
+		data += "\t\treturn false;\n"
+		data += "\t} else\n"
+		data += "\t\treturn true;\n"
+		data += "}\n\n"
+	else:
+		data = "function testArch() {\n"
+		data += "\treturn true;\n"
+		data += "}\n\n"
+	prepend_file_data(os.path.join(pkgdir, "de.skycoder42.advancedsetup", "meta", "install.js"), data)
+
+	#adjust vcredist (if existing)
+	msvc_dir = os.path.join(pkgdir, "com.microsoft.vcredist.x64")
+	msvc_data_dir = os.path.join(msvc_dir, "data")
+	if os.path.isdir(msvc_data_dir):
+		files = os.listdir(msvc_data_dir)
+		regex = re.compile(r".*vcredist.*x64.*")
+		vcfile = ""
+		for file in files:
+			if regex.match(file):
+				vcfile = file
+			else:
+				os.remove(os.path.join(msvc_data_dir, file))
+		data = "function vcname() {\n"
+		data += "\t return \"" + vcfile + "\";\n"
+		data += "}\n\n"
+		prepend_file_data(os.path.join(msvc_dir, "meta", "install.js"), data)
+
 
 def create_offline():
 	subprocess.run([
