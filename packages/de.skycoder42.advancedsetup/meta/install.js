@@ -4,10 +4,8 @@ function Component()
 	installer.setValue("BinaryName", installer.value("RunProgram"));
 
 	//check if architecture is supported
-	if(systemInfo.currentCpuArchitecture.search("64") < 0) {
-		QMessageBox.critical("de.skycoder42.advanced-setup.not64", qsTr("Error"), qsTr("This Program is a 64bit Program. You can't install it on a 32bit machine"));
-		gui.rejectWithoutPrompt();
-	}
+	if(!testArch())
+		return;
 
 	//add custom pages (installer only)
 	if(installer.isInstaller()) {

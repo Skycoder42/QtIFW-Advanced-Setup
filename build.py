@@ -13,6 +13,7 @@ outdir = sys.argv[2]
 qtifwdir = sys.argv[3]
 target = sys.argv[4]
 mode = sys.argv[5]
+arch = sys.argv[6]
 cfgdir = os.path.join(outdir, "config")
 pkgdir = os.path.join(outdir, "packages")
 
@@ -53,6 +54,26 @@ def create_install_dir(offset):
 				copy_pkg(pkg, state, arg)
 				state = State.Package
 
+def config_install_js():
+	install_js = os.path.join(pkgdir, "de.skycoder42.advancedsetup", "meta", "install.js")
+	with open(install_js, "r") as base:
+		data = base.read()
+	with open(install_js, "w") as res:
+		if arch == "x64":
+			res.write("function testArch() {\n");
+			res.write("\tif(systemInfo.currentCpuArchitecture.search(\"64\") < 0) {\n");
+			res.write("\t\tQMessageBox.critical(\"de.skycoder42.advanced-setup.not64\", qsTr(\"Error\"), qsTr(\"This Program is a 64bit Program. You can't install it on a 32bit machine\"));\n");
+			res.write("\t\tgui.rejectWithoutPrompt();\n");
+			res.write("\t\treturn false;\n");
+			res.write("\t} else\n");
+			res.write("\t\treturn true;\n");
+			res.write("}\n\n");
+		else:
+			res.write("function testArch() {\n");
+			res.write("\treturn true;\n");
+			res.write("}\n\n");
+		res.write(data)
+
 def create_offline():
 	subprocess.run([
 		os.path.join(qtifwdir, "binarycreator"),
@@ -86,7 +107,8 @@ def create_repo():
 # prepare & copy files
 shutil.rmtree(outdir, ignore_errors=True)
 os.makedirs(cfgdir, exist_ok=True)
-create_install_dir(6)
+create_install_dir(7)
+config_install_js()
 
 # generate installer
 if mode == "offline":

@@ -43,6 +43,8 @@ QTIFW_ARGS += $$shell_quote($$shell_path($$QTIFW_DIR))
 QTIFW_ARGS += $$shell_quote($$shell_path($$QTIFW_BIN))
 QTIFW_ARGS += $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x})
 QTIFW_ARGS += $$shell_quote($$QTIFW_MODE)
+contains(QT_ARCH, x86_64): QTIFW_ARGS += x64
+else: QTIFW_ARGS += x86
 for(cfg, QTIFW_CONFIG): QTIFW_ARGS += $$shell_quote($$shell_path($$cfg))
 for(pkg, QTIFW_PACKAGES) {
 	QTIFW_ARGS += p $$shell_quote($$first($${pkg}.pkg))
