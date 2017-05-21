@@ -2,7 +2,7 @@ DISTFILES += \
 	$$PWD/config/* \
 	$$PWD/packages/de.skycoder42.advancedsetup/meta/* \
 	$$PWD/packages/de.skycoder42.advancedsetup/data/* \
-	$$PWD/packages/com.microsoft.vcredist.x64/meta/* \
+	$$PWD/packages/com.microsoft.vcredist/meta/* \
 	$$PWD/translations/*.ts \
 	$$PWD/build.py
 
@@ -31,8 +31,9 @@ win32:msvc {
 		else: QTIFW_VCDIR = $$VCTMP\redist\1033
 	}
 
-	redistpkg.pkg = com.microsoft.vcredist.x64
-	redistpkg.meta = $$PWD/packages/com.microsoft.vcredist.x64/meta
+	contains(QT_ARCH, x86_64): redistpkg.pkg = com.microsoft.vcredist.x64
+	else: redistpkg.pkg = com.microsoft.vcredist.x86
+	redistpkg.meta = $$PWD/packages/com.microsoft.vcredist/meta
 	redistpkg.data = $$QTIFW_VCDIR
 	QTIFW_PACKAGES += redistpkg
 }

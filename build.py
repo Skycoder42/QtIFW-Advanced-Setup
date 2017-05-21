@@ -4,6 +4,7 @@ import sys
 import os
 import shutil
 import subprocess
+import re
 from distutils.dir_util import copy_tree
 from enum import Enum
 
@@ -80,11 +81,11 @@ def config_arch():
 	prepend_file_data(os.path.join(pkgdir, "de.skycoder42.advancedsetup", "meta", "install.js"), data)
 
 	#adjust vcredist (if existing)
-	msvc_dir = os.path.join(pkgdir, "com.microsoft.vcredist.x64")
+	msvc_dir = os.path.join(pkgdir, "com.microsoft.vcredist." + arch)
 	msvc_data_dir = os.path.join(msvc_dir, "data")
 	if os.path.isdir(msvc_data_dir):
 		files = os.listdir(msvc_data_dir)
-		regex = re.compile(r".*vcredist.*x64.*")
+		regex = re.compile(".*vcredist.*" + arch + ".*")
 		vcfile = ""
 		for file in files:
 			if regex.match(file):
