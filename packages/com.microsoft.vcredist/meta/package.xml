@@ -2,23 +2,14 @@
 <Package>
 	<DisplayName>Microsoft Visual C++ Redistributable</DisplayName>
 	<Description>Installs the Visual C++ redistributables</Description>
-	<DisplayName xml:lang="ar">ميكروسوفت فيسوال C ++ القابلة لإعادة التوزيع</DisplayName>
 	<Description xml:lang="ar">تثبيت فيسوال C ++ ريديستريبوتابلز</Description>
-	<DisplayName xml:lang="de">Microsoft Visual C ++ Redistributable</DisplayName>
 	<Description xml:lang="de">Installiert die Visual C ++ - Redistributables</Description>
-	<DisplayName xml:lang="es">Microsoft Visual C ++ redistribuible</DisplayName>
 	<Description xml:lang="es">Instala los redistribuibles de Visual C ++</Description>
-	<DisplayName xml:lang="fr">Microsoft Visual C ++ redistribuable</DisplayName>
 	<Description xml:lang="fr">Installe les redistribuables Visual C ++</Description>
-	<DisplayName xml:lang="it">Microsoft Visual C ++ redistribuibile</DisplayName>
 	<Description xml:lang="it">Installa i redistributabili di Visual C ++</Description>
-	<DisplayName xml:lang="ja">Microsoft Visual C ++再配布可能</DisplayName>
 	<Description xml:lang="ja">Visual C ++再配布可能ファイルをインストールします。</Description>
-	<DisplayName xml:lang="pt">Microsoft Visual C ++ Redistributable</DisplayName>
 	<Description xml:lang="pt">Microsoft Visual C ++ Redistributable</Description>
-	<DisplayName xml:lang="ru">Распространяемый Microsoft Visual C ++</DisplayName>
 	<Description xml:lang="ru">Устанавливает распространяемые компоненты Visual C ++</Description>
-	<DisplayName xml:lang="zh">Microsoft Visual C ++可再分发</DisplayName>
 	<Description xml:lang="zh">安装Visual C ++可重新分发</Description>
 	<Version>14.0.24215</Version>
 	<SortingPriority>-10</SortingPriority>
