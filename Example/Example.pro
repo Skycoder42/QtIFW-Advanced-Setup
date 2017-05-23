@@ -1,8 +1,7 @@
 TEMPLATE = app
 
-TARGET = example
+TARGET = Example
 
-QTIFW_TARGET = Example Installer
 QTIFW_CONFIG = config.xml
 QTIFW_MODE = online_all
 

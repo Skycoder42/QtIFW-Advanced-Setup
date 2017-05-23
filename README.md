@@ -66,6 +66,6 @@ To create the installer, simply run `make installer`.
  Member Name	| Description
 ----------------|-------------
  pkg			| The unique name (identifier) of the package
- meta			| A list of directories to be copied into the packages "meta" directory
- dirs			| A list of directories to be copied into the packages "data" directory
- files			| A list of directories to be copied into the packages "data" directory
+ meta			| A list of directories to copy their contents into the packages "meta" directory
+ dirs			| A list of directories to copy their contents into the packages "data" directory
+ files			| A list of files to be copied into the packages "data" directory

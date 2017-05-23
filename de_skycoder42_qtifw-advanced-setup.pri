@@ -24,7 +24,7 @@ aspkg.meta = $$PWD/packages/de.skycoder42.advancedsetup/meta
 win32: aspkg.dirs = $$PWD/packages/de.skycoder42.advancedsetup/data
 QTIFW_PACKAGES += aspkg
 
-win32:msvc {
+win32:msvc { #TODO use files instead
 	isEmpty(QTIFW_VCDIR) {
 		VCTMP = $(VCINSTALLDIR)
 		isEmpty(VCTMP): QTIFW_VCDIR = $$[QT_INSTALL_BINS]/../../../vcredist/
