@@ -3,42 +3,32 @@
 # $2 Qt lib dir
 # $3 Qt plugin dir
 # $4 Qt translations dir
-# $5 pro-dir
+# $5 deploy file
+# $6 deploy dir
 
 bin=$1
 lib=$2
 plugin=$3
 translation=$4
-pro=$5
+deploy=$5
+outpwd=$6
 
-rm -rf deployment
+binary=$outpwd/$(basename $deploy)
+
+rm -rf $outpwd
 set -e
 
-mkdir deployment
-cd deployment
-cp ../SeasonProxer ./
-cp $pro/Desktop/main.png ./
+mkdir $outpwd
+cd $outpwd
+cp $deploy ./
 
 mkdir lib
 cd lib
-cp -P $lib/libicudata.so* ./
-cp -P $lib/libicui18n.so* ./
-cp -P $lib/libicuuc.so* ./
-cp -P $lib/libQt5Core.so* ./
-cp -P $lib/libQt5DBus.so* ./
-cp -P $lib/libQt5XcbQpa.so* ./
-cp -P $lib/libQt5Gui.so* ./
-cp -P $lib/libQt5Svg.so* ./
-cp -P $lib/libQt5Widgets.so* ./
-cp -P $lib/libQt5Network.so* ./
-cp -P $lib/libQt5WebSockets.so* ./
-cp -P $lib/libQt5Sql.so* ./
-cp -P $lib/libQt5JsonSerializer.so* ./
-cp -P $lib/libQt5RestClient.so* ./
-cp -P $lib/libQt5DataSync.so* ./
-cp -P $lib/libQt5AutoUpdaterCore.so* ./
-cp -P $lib/libQt5AutoUpdaterGui.so* ./
-cd ..
+for l in $(ldd $binary | grep -oh "libQt[^\.]*" | uniq); do
+	cp -P $lib/$l.so* ./
+done
+
+exit 0
 
 mkdir plugins
 cd plugins
