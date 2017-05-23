@@ -15,68 +15,32 @@ outpwd=$6
 
 binary=$outpwd/$(basename $deploy)
 
-function copylib { #(libpath)
-	cp -Pn "$1"* "$outpwd/lib/"
-}
-
 function copyplgdir { #(pluginDirectory)
 	cp -rPn $plugin/$1 plugins/
-	scanallfiles plugins/$1
 }
 
-function copyplugins { #(libname)
-	if [ "$1" == libQt5Gui ] && [ ! -f mrk/libQt5Gui ]; then
-		touch mrk/libQt5Gui
-
-		mkdir -p plugins/platforms
-		cp -Pn "$plugin/platforms/libqxcb.so" plugins/platforms/
-		scanfile "plugins/platforms/libqxcb.so"
-
-		copyplgdir imageformats
-		copyplgdir iconengines
-		copyplgdir platforminputcontexts
-		copyplgdir platformthemes
-		copyplgdir xcbglintegrations
-	fi
-	if [ "$1" == libQt5Sql ] && [ ! -f mrk/libQt5Sql ]; then
-		touch mrk/libQt5Sql
-		copyplgdir sqldrivers
-	fi
-}
-
-function scanfile { #(binary)
-	for l in $(ldd "$1" | grep -oh "libQt[^\.]*" | uniq); do
-		file="$lib/$l.so"
-		copylib $file
-		copyplugins $l
-		scanfile $file
-	done
-	for l in $(ldd "$1" | grep -oh "libicu[^\.]*" | uniq); do
-		file="$lib/$l.so"
-		copylib $file
-	done
-}
-
-function scanallfiles { #(directory to scan)
-	for entry in $1/*; do
-		scanfile $entry
-	done
-}
-
-rm -rf $outpwd
+#rm -rf $outpwd
 set -e
 
-mkdir $outpwd
+mkdir -p $outpwd
 cd $outpwd
 cp $deploy ./
 
-mkdir lib
-mkdir plugins
-mkdir mrk
+LD_LIBRARY_PATH="$lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH
+PATH="$bin:$PATH"
+export PATH
+linuxdeployqt $binary
+rm AppRun
 
-scanfile $binary
+if [ -f plugins/platforms/libqxcb.so ]; then
+	copyplgdir platforminputcontexts
+	copyplgdir platformthemes
+	copyplgdir xcbglintegrations
+fi
 
-rm -rf mrk
+echo "[Paths]" > qt.conf
+echo "Prefix=." >> qt.conf
 
 exit 0
 
@@ -90,10 +54,5 @@ cp $translation/qtwebsockets_*.qm ./
 cp $pro/Core/*.qm ./
 cp $pro/Desktop/*.qm ./
 cd ..
-
-echo "[Paths]" > qt.conf
-echo "Prefix=." >> qt.conf
-
-chrpath -r "\$ORIGIN/lib" SeasonProxer
 
 
