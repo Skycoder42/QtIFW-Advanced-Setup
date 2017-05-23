@@ -1,17 +1,15 @@
 #!/bin/sh
-# $1 Qt bin dir
-# $2 Qt lib dir
-# $3 Qt plugin dir
-# $4 Qt translations dir
-# $5 deploy file
-# $6 deploy dir
+# $1 Qt plugin dir
+# $2 Qt translations dir
+# $3 deploy file
+# $4 deploy dir
+# $5 translation pro files
 
-bin=$1
-lib=$2
-plugin=$3
-translation=$4
-deploy=$5
-outpwd=$6
+plugin=$1
+translation=$2
+deploy=$3
+outpwd=$4
+trfiles=$5
 
 binary=$outpwd/$(basename $deploy)
 
@@ -26,11 +24,7 @@ mkdir -p $outpwd
 cd $outpwd
 cp $deploy ./
 
-LD_LIBRARY_PATH="$lib:$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH
-PATH="$bin:$PATH"
-export PATH
-linuxdeployqt $binary
+linuxdeployqt "$binary"
 rm AppRun
 
 if [ -f plugins/platforms/libqxcb.so ]; then
@@ -41,6 +35,13 @@ fi
 
 echo "[Paths]" > qt.conf
 echo "Prefix=." >> qt.conf
+
+if [ ! -z "$trfiles" ]; then
+	mkdir -p translations
+	cp -Pn $translation/*.qm translations/
+
+	#TODO here
+fi
 
 exit 0
 
