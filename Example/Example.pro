@@ -1,9 +1,10 @@
 TEMPLATE = app
+QT += widgets
 
 TARGET = Example
 
 QTIFW_CONFIG = config.xml
-QTIFW_MODE = online_all
+# QTIFW_MODE = online_all
 
 sample.pkg = de.skycoder42.qtifwsample
 sample.meta = meta
