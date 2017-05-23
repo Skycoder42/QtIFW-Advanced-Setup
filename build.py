@@ -23,18 +23,23 @@ class State(Enum):
 	Config = 0
 	Package = 1,
 	Meta = 2,
-	Data = 3
+	DataDir = 3,
+	DataFile = 4
 
 def copy_cfg(src):
 	cfgsrc = os.path.join(srcdir, src)
 	cfgout = os.path.join(cfgdir, os.path.basename(src))
 	shutil.copy2(cfgsrc, cfgout)
 
-def copy_pkg(pkg, state, src):
+def copy_pkg(pkg, state, src, subdir, isDir):
 	pkgsrc = os.path.join(srcdir, src)
-	pkgout = os.path.join(pkgdir, pkg, state.name.lower())
+	pkgout = os.path.join(pkgdir, pkg, subdir) #TODO
 	os.makedirs(pkgout, exist_ok=True)
-	copy_tree(pkgsrc, pkgout, preserve_symlinks=True)
+	if isDir:
+		copy_tree(pkgsrc, pkgout, preserve_symlinks=True)
+	else:
+		resName = os.path.join(pkgout, os.path.basename(src))
+		shutil.copy2(pkgsrc, resName)
 
 def prepend_file_data(filename, data):
 	with open(filename, "r+") as file:
@@ -52,15 +57,25 @@ def create_install_dir(offset):
 		elif arg == "m":
 			state = State.Meta
 		elif arg == "d":
-			state = State.Data
+			state = State.DataDir
+		elif arg == "f":
+			state = State.DataFile
 		else:
 			if state == State.Config:
 				copy_cfg(arg)
 			elif state == State.Package:
 				pkg = arg
-			else:
-				copy_pkg(pkg, state, arg)
+			elif state == State.Meta:
+				copy_pkg(pkg, state, arg, "meta", True)
 				state = State.Package
+			elif state == State.DataDir:
+				copy_pkg(pkg, state, arg, "data", True)
+				state = State.Package
+			elif state == State.DataFile:
+				copy_pkg(pkg, state, arg, "data", False)
+				state = State.Package
+			else:
+				raise Exception("Invalid input: " + arg)
 
 def config_arch():
 	#adjust install js

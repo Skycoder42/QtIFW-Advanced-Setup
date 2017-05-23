@@ -21,7 +21,7 @@ QTIFW_CONFIG += $$PWD/config/controller.js
 
 aspkg.pkg = de.skycoder42.advancedsetup
 aspkg.meta = $$PWD/packages/de.skycoder42.advancedsetup/meta
-win32: aspkg.data = $$PWD/packages/de.skycoder42.advancedsetup/data
+win32: aspkg.dirs = $$PWD/packages/de.skycoder42.advancedsetup/data
 QTIFW_PACKAGES += aspkg
 
 win32:msvc {
@@ -34,7 +34,7 @@ win32:msvc {
 	contains(QT_ARCH, x86_64): redistpkg.pkg = com.microsoft.vcredist.x64
 	else: redistpkg.pkg = com.microsoft.vcredist.x86
 	redistpkg.meta = $$PWD/packages/com.microsoft.vcredist/meta
-	redistpkg.data = $$QTIFW_VCDIR
+	redistpkg.dirs = $$QTIFW_VCDIR
 	QTIFW_PACKAGES += redistpkg
 }
 
@@ -50,7 +50,8 @@ for(cfg, QTIFW_CONFIG): QTIFW_ARGS += $$shell_quote($$shell_path($$cfg))
 for(pkg, QTIFW_PACKAGES) {
 	QTIFW_ARGS += p $$shell_quote($$first($${pkg}.pkg))
 	for(meta, $${pkg}.meta): QTIFW_ARGS += m $$shell_quote($$shell_path($$meta))
-	for(data, $${pkg}.data): QTIFW_ARGS += d $$shell_quote($$shell_path($$data))
+	for(data, $${pkg}.dirs): QTIFW_ARGS += d $$shell_quote($$shell_path($$data))
+	for(data, $${pkg}.files): QTIFW_ARGS += f $$shell_quote($$shell_path($$data))
 }
 
 qtifw_inst.target = installer

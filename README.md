@@ -25,6 +25,9 @@ The package is providet as qpm package, [`de.skycoder42.qtifw-advanced-setup`](h
 
 Check their [GitHub - Usage for App Developers](https://github.com/Cutehacks/qpm/blob/master/README.md#usage-for-app-developers) to learn more about qpm.
 
+### Requirements
+A pyhton script is used to generate the installer from the input. Thus, you need to have **Python 3** installed!
+
 ## Usage
 Check the example application for a full demonstration. The idea is: You specify files and directories via your pro-file and run `make installer` to create the installer.
 
@@ -56,12 +59,13 @@ To create the installer, simply run `make installer`.
  QTIFW_TARGET_x	| win:`.exe`<br>linux:`.run`<br>mac:`.app`	| The extension of the installer binary
  QTIFW_CONFIG	| _must not be empty_					| Files for the configuration directory. **Must** contain a file named `config.xml` with the installer configuration
  QTIFW_PACKAGES	| _empty_								| A list of all packages to install. Must be of type `package`
- 
+
  #### The `package` type
  All entries of the QTIFW_PACKAGES variable must be such entries. They are defined as "objects" with the following variables:
- 
+
  Member Name	| Description
 ----------------|-------------
  pkg			| The unique name (identifier) of the package
  meta			| A list of directories to be copied into the packages "meta" directory
- data			| A list of directories to be copied into the packages "data" directory
+ dirs			| A list of directories to be copied into the packages "data" directory
+ files			| A list of directories to be copied into the packages "data" directory
