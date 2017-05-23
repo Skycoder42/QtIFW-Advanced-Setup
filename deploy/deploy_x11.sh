@@ -15,6 +15,54 @@ outpwd=$6
 
 binary=$outpwd/$(basename $deploy)
 
+function copylib { #(libpath)
+	cp -Pn "$1"* "$outpwd/lib/"
+}
+
+function copyplgdir { #(pluginDirectory)
+	cp -rPn $plugin/$1 plugins/
+	scanallfiles plugins/$1
+}
+
+function copyplugins { #(libname)
+	if [ "$1" == libQt5Gui ] && [ ! -f mrk/libQt5Gui ]; then
+		touch mrk/libQt5Gui
+
+		mkdir -p plugins/platforms
+		cp -Pn "$plugin/platforms/libqxcb.so" plugins/platforms/
+		scanfile "plugins/platforms/libqxcb.so"
+
+		copyplgdir imageformats
+		copyplgdir iconengines
+		copyplgdir platforminputcontexts
+		copyplgdir platformthemes
+		copyplgdir xcbglintegrations
+	fi
+	if [ "$1" == libQt5Sql ] && [ ! -f mrk/libQt5Sql ]; then
+		touch mrk/libQt5Sql
+		copyplgdir sqldrivers
+	fi
+}
+
+function scanfile { #(binary)
+	for l in $(ldd "$1" | grep -oh "libQt[^\.]*" | uniq); do
+		file="$lib/$l.so"
+		copylib $file
+		copyplugins $l
+		scanfile $file
+	done
+	for l in $(ldd "$1" | grep -oh "libicu[^\.]*" | uniq); do
+		file="$lib/$l.so"
+		copylib $file
+	done
+}
+
+function scanallfiles { #(directory to scan)
+	for entry in $1/*; do
+		scanfile $entry
+	done
+}
+
 rm -rf $outpwd
 set -e
 
@@ -23,30 +71,14 @@ cd $outpwd
 cp $deploy ./
 
 mkdir lib
-cd lib
-for l in $(ldd $binary | grep -oh "libQt[^\.]*" | uniq); do
-	cp -P $lib/$l.so* ./
-done
+mkdir plugins
+mkdir mrk
+
+scanfile $binary
+
+rm -rf mrk
 
 exit 0
-
-mkdir plugins
-cd plugins
-
-mkdir platforms
-cp $plugin/platforms/libqxcb.so ./platforms/
-
-cp -r $plugin/bearer ./
-cp -r $plugin/imageformats ./
-cp -r $plugin/iconengines ./
-cp -r $plugin/platforminputcontexts ./
-cp -r $plugin/platformthemes ./
-cp -r $plugin/xcbglintegrations ./
-
-mkdir sqldrivers
-cp $plugin/sqldrivers/libqsqlite.so ./sqldrivers/
-
-cd ..
 
 $bin/lrelease -compress -nounfinished $pro/Core/Core.pro
 $bin/lrelease -compress -nounfinished $pro/Desktop/Desktop.pro
