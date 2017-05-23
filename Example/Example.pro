@@ -7,8 +7,11 @@ QTIFW_CONFIG = config.xml
 # QTIFW_MODE = online_all
 
 deploy.file = $$shadowed($$TARGET)
-deploy.out = $$OUT_PWD/deployed
-deploy.ts = $$_PRO_FILE_
+deploy.outdir = $$OUT_PWD/deployed
+deploy.tspro = $$_PRO_FILE_
+deploy.extracmd = echo I run last
+
+QTIFW_DEPLOYS += deploy
 
 sample.pkg = de.skycoder42.qtifwsample
 sample.meta = meta
