@@ -7,13 +7,12 @@
 	<ProductUrl>https://github.com/Skycoder42/QtIFW-Advanced-Setup</ProductUrl>
 	<StartMenuDir>QtIFW-Advanced Sample</StartMenuDir>
 	<TargetDir>QtIFW-Advanced Sample</TargetDir>
-	<RunProgram>example</RunProgram>
+	<RunProgram>Example</RunProgram>
 	<AllowSpaceInPath>true</AllowSpaceInPath>
 	<AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
 	<RemoteRepositories>
 		<Repository>
-			<!--Url>example.com/download/QtIFW-Advanced Sample</Url-->
-			<Url>file:///home/sky/Programming/QtLibraries/QtIFW-Advanced-Setup/build-Example-Desktop_Qt_5_8_0_GCC_64bit-Debug/qtifw-installer/repository</Url>
+			<Url>example.com/download/QtIFW-Advanced Sample</Url>
 			<Enabled>1</Enabled>
 			<DisplayName>QtIFW-Advanced Sample Online Repository</DisplayName>
 		</Repository>
