@@ -8,6 +8,7 @@ DISTFILES += \
 
 	#prepare common args
 	linux {
+		QTIFW_DEPLOY_ARGS += $$shell_quote($$[QT_INSTALL_BINS])
 		QTIFW_DEPLOY_ARGS += $$shell_quote($$[QT_INSTALL_PLUGINS])
 		QTIFW_DEPLOY_ARGS += $$shell_quote($$[QT_INSTALL_TRANSLATIONS])
 	}

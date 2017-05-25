@@ -24,4 +24,7 @@ SOURCES += \
 DISTFILES += \
 	config.xml \
 	meta/package.xml \
-	data/main.png
+	data/main.png \
+	example_de.ts
+
+TRANSLATIONS += example_de.ts

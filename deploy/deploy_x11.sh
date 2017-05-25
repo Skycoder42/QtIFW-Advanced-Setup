@@ -1,15 +1,17 @@
 #!/bin/sh
-# $1 Qt plugin dir
-# $2 Qt translations dir
-# $3 deploy file
-# $4 deploy dir
-# $5 translation pro files
+# $1 Qt bin dir
+# $2 Qt plugin dir
+# $3 Qt translations dir
+# $4 deploy file
+# $5 deploy dir
+# $6 translation pro files
 
-plugin=$1
-translation=$2
-deploy=$3
-outpwd=$4
-trfiles=$5
+bin=$1
+plugin=$2
+translation=$3
+deploy=$4
+outpwd=$5
+profiles=$6
 
 binary=$outpwd/$(basename $deploy)
 
@@ -24,7 +26,7 @@ mkdir -p $outpwd
 cd $outpwd
 cp $deploy ./
 
-linuxdeployqt "$binary"
+$bin/linuxdeployqt "$binary"
 rm AppRun
 
 if [ -f plugins/platforms/libqxcb.so ]; then
@@ -33,27 +35,29 @@ if [ -f plugins/platforms/libqxcb.so ]; then
 	copyplgdir xcbglintegrations
 fi
 
-echo "[Paths]" > qt.conf
-echo "Prefix=." >> qt.conf
+#echo "[Paths]" > qt.conf
+#echo "Prefix=." >> qt.conf
 
-if [ ! -z "$trfiles" ]; then
+if [ ! -z "$profiles" ]; then
 	mkdir -p translations
-	cp -Pn $translation/*.qm translations/
-
-	#TODO here
+	cp -Pn "$translation"/qt_??.qm translations/
+	cp -Pn "$translation"/qt_??_??.qm translations/
+	cp -Pn "$translation"/qtbase_*.qm translations/
+	cp -Pn "$translation"/qtconnectivity_*.qm translations/
+	cp -Pn "$translation"/qtdeclarative_*.qm translations/
+	cp -Pn "$translation"/qtlocation_*.qm translations/
+	cp -Pn "$translation"/qtmultimedia_*.qm translations/
+	cp -Pn "$translation"/qtquick1_*.qm translations/
+	cp -Pn "$translation"/qtquickcontrols_*.qm translations/
+	cp -Pn "$translation"/qtscript_*.qm translations/
+	cp -Pn "$translation"/qtserialport_*.qm translations/
+	cp -Pn "$translation"/qtwebengine_*.qm translations/
+	cp -Pn "$translation"/qtwebsockets_*.qm translations/
+	cp -Pn "$translation"/qtxmlpatterns_*.qm translations/
 fi
 
-exit 0
-
-$bin/lrelease -compress -nounfinished $pro/Core/Core.pro
-$bin/lrelease -compress -nounfinished $pro/Desktop/Desktop.pro
-
-mkdir translations
-cd translations
-cp $translation/qtbase_*.qm ./
-cp $translation/qtwebsockets_*.qm ./
-cp $pro/Core/*.qm ./
-cp $pro/Desktop/*.qm ./
-cd ..
-
+for profile in $profiles; do
+	$bin/lrelease -compress -nounfinished $profile
+	find "$(dirname $profile)" -type f -name "*.qm" -exec cp -Pn {} translations \;
+done
 
