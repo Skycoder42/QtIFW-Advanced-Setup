@@ -1,17 +1,15 @@
 #!/bin/sh
-# $1 Qt bin dir
-# $2 Qt plugin dir
-# $3 Qt translations dir
-# $4 deploy file
-# $5 deploy dir
-# $6 translation pro files
+# $1 Qt plugin dir
+# $2 Qt translations dir
+# $3 deploy file
+# $4 deploy dir
+# $5 translation pro files
 
-bin=$1
-plugin=$2
-translation=$3
-deploy=$4
-outpwd=$5
-profiles=$6
+plugin=$1
+translation=$2
+deploy=$3
+outpwd=$4
+profiles=$5
 
 binary=$outpwd/$(basename $deploy)
 
@@ -26,7 +24,7 @@ mkdir -p $outpwd
 cd $outpwd
 cp $deploy ./
 
-$bin/linuxdeployqt "$binary"
+linuxdeployqt "$binary"
 rm AppRun
 
 if [ -f plugins/platforms/libqxcb.so ]; then
@@ -57,7 +55,7 @@ if [ ! -z "$profiles" ]; then
 fi
 
 for profile in $profiles; do
-	$bin/lrelease -compress -nounfinished $profile
+	lrelease -compress -nounfinished $profile
 	find "$(dirname $profile)" -type f -name "*.qm" -exec cp -Pn {} translations \;
 done
 
