@@ -25,16 +25,17 @@ win32: aspkg.dirs = $$PWD/packages/de.skycoder42.advancedsetup/data
 QTIFW_PACKAGES += aspkg
 
 win32:msvc { #TODO use files instead
-	isEmpty(QTIFW_VCDIR) {
+	isEmpty(QTIFW_VCPATH) {
 		VCTMP = $(VCINSTALLDIR)
-		isEmpty(VCTMP): QTIFW_VCDIR = $$[QT_INSTALL_BINS]/../../../vcredist/
-		else: QTIFW_VCDIR = $$VCTMP\redist\1033
+		isEmpty(VCTMP): warning(Please set the VCINSTALLDIR variable to your vistual studio installation to deploy the vc redistributables!)
+		else:contains(QT_ARCH, x86_64): QTIFW_VCPATH = $$VCTMP\redist\1033\vcredist_x64.exe
+		else: QTIFW_VCPATH = $$VCTMP\redist\1033\vcredist_x86.exe
 	}
 
 	contains(QT_ARCH, x86_64): redistpkg.pkg = com.microsoft.vcredist.x64
 	else: redistpkg.pkg = com.microsoft.vcredist.x86
 	redistpkg.meta = $$PWD/packages/com.microsoft.vcredist/meta
-	redistpkg.dirs = $$QTIFW_VCDIR
+	redistpkg.files = $$QTIFW_VCPATH
 	QTIFW_PACKAGES += redistpkg
 }
 
