@@ -32,11 +32,14 @@ win32:msvc { #TODO use files instead
 		else: QTIFW_VCPATH = $$VCTMP\redist\1033\vcredist_x86.exe
 	}
 
-	contains(QT_ARCH, x86_64): redistpkg.pkg = com.microsoft.vcredist.x64
-	else: redistpkg.pkg = com.microsoft.vcredist.x86
-	redistpkg.meta = $$PWD/packages/com.microsoft.vcredist/meta
-	redistpkg.files = $$QTIFW_VCPATH
-	QTIFW_PACKAGES += redistpkg
+	# only add if vcpath was actually found
+	!isEmpty(QTIFW_VCPATH) {
+		contains(QT_ARCH, x86_64): redistpkg.pkg = com.microsoft.vcredist.x64
+		else: redistpkg.pkg = com.microsoft.vcredist.x86
+		redistpkg.meta = $$PWD/packages/com.microsoft.vcredist/meta
+		redistpkg.files = $$QTIFW_VCPATH
+		QTIFW_PACKAGES += redistpkg
+	}
 }
 
 # installer target generation
