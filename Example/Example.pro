@@ -6,7 +6,10 @@ TARGET = Example
 QTIFW_CONFIG = config.xml
 # QTIFW_MODE = online_all
 
-QTIFW_DEPLOY_SRC = $$shadowed($$TARGET)
+win32:CONFIG(debug, debug|release): QTIFW_DEPLOY_SRC = $$shadowed(debug/$${TARGET}.exe)
+else:win32:CONFIG(release, debug|release): QTIFW_DEPLOY_SRC = $$shadowed(release/$${TARGET}.exe)
+else:mac: QTIFW_DEPLOY_SRC = $$shadowed($${TARGET}.app)
+else: QTIFW_DEPLOY_SRC = $$shadowed($$TARGET)
 QTIFW_DEPLOY_TSPRO = $$_PRO_FILE_
 
 sample.pkg = de.skycoder42.qtifwsample

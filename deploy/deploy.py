@@ -37,14 +37,15 @@ def run_deptool():
 	elif platform == "win_debug":
 		preparams = [os.path.join(bindir, "windeployqt.exe"), "-debug", "-no-translations"]
 		postcmds = [
-			["del", os.path.join(outdir, "vcredist_x86.exe")],
-			["del", os.path.join(outdir, "vcredist_x64.exe")]
+			["cmd", "-c", "del", os.path.join(outdir, "vcredist_x86.exe")],
+			["cmd", "-c", "del", os.path.join(outdir, "vcredist_x64.exe")]
 		]
 	elif platform == "win_release":
 		preparams = [os.path.join(bindir, "windeployqt.exe"), "-release", "-no-translations"]
+		pathbase = os.path.sep.join(outdir.split("/"))
 		postcmds = [
-			["del", os.path.join(outdir, "vcredist_x86.exe")],
-			["del", os.path.join(outdir, "vcredist_x64.exe")]
+			["cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x86.exe")],
+			["cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x64.exe")]
 		]
 	elif platform == "mac":
 		preparams = [os.path.join(bindir, "macdeployqt")]
