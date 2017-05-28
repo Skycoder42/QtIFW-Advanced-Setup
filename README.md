@@ -19,6 +19,7 @@ Create "Qt Installer Framework" installers from your project via qmake
 	- uses the qt deployment tools to deploy your application
 	- option to include custom and Qt translations
 	- auto-deploy flag to automate deployment even further
+- automatic install target generation
 
 ## Installation
 The package is providet as qpm package, [`de.skycoder42.qtifw-advanced-setup`](https://www.qpm.io/packages/de.skycoder42.qtifw-advanced-setup/index.html). To install:
@@ -30,10 +31,22 @@ The package is providet as qpm package, [`de.skycoder42.qtifw-advanced-setup`](h
 Check their [GitHub - Usage for App Developers](https://github.com/Cutehacks/qpm/blob/master/README.md#usage-for-app-developers) to learn more about qpm.
 
 ### Requirements
-A pyhton script is used to generate the installer from the input. Thus, you need to have **Python 3** installed! If you want to use the deployment feature on linux, you need to have [linuxdeployqt](https://github.com/probonopd/linuxdeployqt) installed in your Qt installation
+In order to use QtIFW-Advanced-Setup, you need the following installed:
+- QtIFW: ideally as part of your Qt Installation. Use the online installer and find it under `Qt > Tools`
+- Python3: A pyhton script is used to generate the installer from the input. Thus, you need to have **Python 3** installed!
+- If you want to use the deployment feature on linux, you need to have [linuxdeployqt](https://github.com/probonopd/linuxdeployqt) installed in your Qt bin directory
 
 ## Usage
-Check the example application for a full demonstration. The idea is: You specify files and directories via your pro-file and run `make installer` to create the installer.
+The idea is: You specify files and directories via your pro-file and run `make <target>` to deploy, create the installer, or both.
+
+When using all of the qtifw features, the amount of work you need to do shrinks down to the following:
+
+1. Add installation stuff to your `pro` file. check the [Installer](#installer) chapter for details.
+2. Enable automatic deployment the install target by adding `CONFIG += qtifw_auto_deploy qtifw_install_target` to your pro file
+3. run `make install` after the compilation to create the installer and copy the binaries to /
+	- use `make INSTALL_ROOT=<path_to_install_to> install` to specify the directory to copy files to.
+
+The [Example project](Example/Example.pro) shows a full example of how to use QtIFW-Advanced-Setup.
 
 ### Installer
 This example shows the "minimal" input to create an installer:
@@ -116,3 +129,6 @@ else: QTIFW_DEPLOY_SRC = $$shadowed($$TARGET)
 	else: $$first(QTIFW_AUTO_INSTALL_PKG).dirs += $$OUT_PWD/deployed
 }
 ```
+
+### `install` target
+If set (by adding `CONFIG += qtifw_install_target` to your pro file), you can, instead of using `make deploy` and `make installer`, simply use the standard `make install` command to automatically deploy (if deployment is used), create the installer, and copy the relevant binaries and directories to the install directory.
