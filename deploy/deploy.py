@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import errno
 import os
 import shutil
 import glob
