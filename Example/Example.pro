@@ -19,6 +19,9 @@ CONFIG += qtifw_auto_deploy
 QTIFW_DEPLOY_TSPRO = $$_PRO_FILE_
 QTIFW_AUTO_INSTALL_PKG = sample
 
+# enable the "install" make target
+CONFIG += qtifw_install_target
+
 include(../de_skycoder42_qtifw-advanced-setup.pri)
 
 SOURCES += \
