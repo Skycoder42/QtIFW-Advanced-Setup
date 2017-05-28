@@ -3,22 +3,21 @@ QT += widgets
 
 TARGET = Example
 
+# installer
 QTIFW_CONFIG = config.xml
 # QTIFW_MODE = online_all
 
-win32:CONFIG(debug, debug|release): QTIFW_DEPLOY_SRC = $$shadowed(debug/$${TARGET}.exe)
-else:win32:CONFIG(release, debug|release): QTIFW_DEPLOY_SRC = $$shadowed(release/$${TARGET}.exe)
-else:mac: QTIFW_DEPLOY_SRC = $$shadowed($${TARGET}.app)
-else: QTIFW_DEPLOY_SRC = $$shadowed($$TARGET)
-QTIFW_DEPLOY_TSPRO = $$_PRO_FILE_
-
 sample.pkg = de.skycoder42.qtifwsample
 sample.meta = meta
-mac: sample.dirs = data $$OUT_PWD/deployed/$${TARGET}.app
-else: sample.dirs = data $$OUT_PWD/deployed
+sample.dirs = data
 sample.files = ../LICENSE
 
 QTIFW_PACKAGES += sample
+
+# deployment
+CONFIG += qtifw_auto_deploy
+QTIFW_DEPLOY_TSPRO = $$_PRO_FILE_
+QTIFW_AUTO_INSTALL_PKG = sample
 
 include(../de_skycoder42_qtifw-advanced-setup.pri)
 

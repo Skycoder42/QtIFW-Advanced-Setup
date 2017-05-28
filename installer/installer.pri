@@ -7,7 +7,7 @@ DISTFILES += \
 	$$PWD/build.py
 
 #variable defaults
-isEmpty(QTIFW_BIN): QTIFW_BIN = $$[QT_INSTALL_BINS]/../../../Tools/QtInstallerFramework/2.0/bin/
+isEmpty(QTIFW_BIN): QTIFW_BIN = "$$[QT_INSTALL_BINS]/../../../Tools/QtInstallerFramework/2.0/bin/"
 isEmpty(QTIFW_DIR): QTIFW_DIR = qtifw-installer
 isEmpty(QTIFW_MODE): QTIFW_MODE = offline #can be: offline, online, repository, online_all
 isEmpty(QTIFW_TARGET): QTIFW_TARGET = "$$TARGET Installer"
@@ -17,27 +17,27 @@ else:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .run
 isEmpty(QTIFW_CONFIG): warning(QTIFW_CONFIG must not be empty!)
 
 # standard installer values
-QTIFW_CONFIG += $$PWD/config/controller.js
+QTIFW_CONFIG += "$$PWD/config/controller.js"
 
 aspkg.pkg = de.skycoder42.advancedsetup
-aspkg.meta = $$PWD/packages/de.skycoder42.advancedsetup/meta
-win32: aspkg.dirs = $$PWD/packages/de.skycoder42.advancedsetup/data
+aspkg.meta = "$$PWD/packages/de.skycoder42.advancedsetup/meta"
+win32: aspkg.dirs = "$$PWD/packages/de.skycoder42.advancedsetup/data"
 QTIFW_PACKAGES += aspkg
 
 win32:msvc { #TODO use files instead
 	isEmpty(QTIFW_VCPATH) {
 		VCTMP = $(VCINSTALLDIR)
 		isEmpty(VCTMP): warning(Please set the VCINSTALLDIR variable to your vistual studio installation to deploy the vc redistributables!)
-		else:contains(QT_ARCH, x86_64): QTIFW_VCPATH = $$VCTMP\redist\1033\vcredist_x64.exe
-		else: QTIFW_VCPATH = $$VCTMP\redist\1033\vcredist_x86.exe
+		else:contains(QT_ARCH, x86_64): QTIFW_VCPATH = "$$VCTMP\redist\1033\vcredist_x64.exe"
+		else: QTIFW_VCPATH = "$$VCTMP\redist\1033\vcredist_x86.exe"
 	}
 
 	# only add if vcpath was actually found
 	!isEmpty(QTIFW_VCPATH) {
 		contains(QT_ARCH, x86_64): redistpkg.pkg = com.microsoft.vcredist.x64
 		else: redistpkg.pkg = com.microsoft.vcredist.x86
-		redistpkg.meta = $$PWD/packages/com.microsoft.vcredist/meta
-		redistpkg.files = $$QTIFW_VCPATH
+		redistpkg.meta = "$$PWD/packages/com.microsoft.vcredist/meta"
+		redistpkg.files = "$$QTIFW_VCPATH"
 		QTIFW_PACKAGES += redistpkg
 	}
 }

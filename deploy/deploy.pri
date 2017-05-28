@@ -1,8 +1,20 @@
 DISTFILES += \
 	$$PWD/deploy.py
 
+qtifw_auto_deploy {
+	win32:CONFIG(debug, debug|release): QTIFW_DEPLOY_SRC = "$$OUT_PWD/debug/$${TARGET}.exe"
+	else:win32:CONFIG(release, debug|release): QTIFW_DEPLOY_SRC = "$$OUT_PWD/release/$${TARGET}.exe"
+	else:mac: QTIFW_DEPLOY_SRC = "$$OUT_PWD/$${TARGET}.app"
+	else: QTIFW_DEPLOY_SRC = "$$OUT_PWD/$$TARGET"
+
+	!isEmpty(QTIFW_AUTO_INSTALL_PKG) { #NOTE: pseudo code, won't work like that
+		mac: $$first(QTIFW_AUTO_INSTALL_PKG).dirs += "$$OUT_PWD/deployed/$${TARGET}.app"
+		else: $$first(QTIFW_AUTO_INSTALL_PKG).dirs += "$$OUT_PWD/deployed"
+	}
+}
+
 !isEmpty(QTIFW_DEPLOY_SRC) {
-	isEmpty(QTIFW_DEPLOY_OUT): QTIFW_DEPLOY_OUT = $$OUT_PWD/deployed
+	isEmpty(QTIFW_DEPLOY_OUT): QTIFW_DEPLOY_OUT = "$$OUT_PWD/deployed"
 
 	linux: QTIFW_DEPLOY_ARGS = linux
 	else:win32:CONFIG(release, debug|release): QTIFW_DEPLOY_ARGS = win_release
