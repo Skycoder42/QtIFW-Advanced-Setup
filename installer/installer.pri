@@ -61,7 +61,8 @@ for(pkg, QTIFW_PACKAGES) {
 qtifw_inst.target = installer
 linux: qtifw_inst.commands = $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
 else:win32: qtifw_inst.commands = python $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
-else:mac: qtifw_inst.commands = /usr/local/bin/python3 $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
+else:mac: qtifw_inst.commands = /usr/local/bin/python3 $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS $$escape_expand(\\n\\t) \
+	zip -r -9 $$shell_quote($${QTIFW_DIR}/$${QTIFW_TARGET}$${QTIFW_TARGET_x}.zip) $$shell_quote($${QTIFW_DIR}/$${QTIFW_TARGET}$${QTIFW_TARGET_x})
 
 QMAKE_EXTRA_TARGETS += qtifw_inst
 

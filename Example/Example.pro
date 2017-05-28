@@ -14,7 +14,8 @@ QTIFW_DEPLOY_TSPRO = $$_PRO_FILE_
 
 sample.pkg = de.skycoder42.qtifwsample
 sample.meta = meta
-sample.dirs = data $$OUT_PWD/deployed
+mac: sample.dirs = data $$OUT_PWD/deployed/$${TARGET}.app
+else: sample.dirs = data $$OUT_PWD/deployed
 sample.files = ../LICENSE
 
 QTIFW_PACKAGES += sample

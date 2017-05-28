@@ -22,6 +22,15 @@ if len(sys.argv) > 7:
 
 binname = os.path.join(outdir, os.path.basename(depsrc))
 
+def copyany(src, dst):
+	try:
+		shutil.copytree(src, dst)
+	except OSError as e:
+		if e.errno == errno.ENOTDIR:
+			shutil.copy2(src, dst)
+		else:
+			raise
+
 def run_deptool():
 	preparams = []
 	postparams = []
@@ -119,7 +128,7 @@ def patch_qtconf(translationsPresent):
 # prepare & copy files
 shutil.rmtree(outdir, ignore_errors=True)
 os.makedirs(outdir, exist_ok=True)
-shutil.copy2(depsrc, binname)
+copyany(depsrc, binname)
 
 # run the deployment tools
 run_deptool()
