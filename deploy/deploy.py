@@ -24,6 +24,7 @@ if len(sys.argv) > 7:
 binname = os.path.join(outdir, os.path.basename(depsrc))
 
 def copyany(src, dst):
+	print(src, dst)
 	try:
 		shutil.copytree(src, dst)
 	except OSError as e:
