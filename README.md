@@ -30,11 +30,16 @@ The package is providet as qpm package, [`de.skycoder42.qtifw-advanced-setup`](h
 
 Check their [GitHub - Usage for App Developers](https://github.com/Cutehacks/qpm/blob/master/README.md#usage-for-app-developers) to learn more about qpm.
 
-### Requirements
+## Requirements
 In order to use QtIFW-Advanced-Setup, you need the following installed:
 - QtIFW: ideally as part of your Qt Installation. Use the online installer and find it under `Qt > Tools`
 - Python3: A pyhton script is used to generate the installer from the input. Thus, you need to have **Python 3** installed!
-- If you want to use the deployment feature on linux, you need to have [linuxdeployqt](https://github.com/probonopd/linuxdeployqt) installed in your Qt bin directory
+- If you want to use the deployment feature on linux, you need linuxdeployqt (See following chapter
+
+### Linuxdeployqt
+Since Qt does not provide it's own deployment tool for linux, I am using [linuxdeployqt](https://github.com/probonopd/linuxdeployqt) in this package. However, the default binary from the project makes integration problematic. Until the changes to make it possible are done, I created a fork that applies those changes. In order to get linuxdeployqt installed in proper Qt-Tool way, simply run the [get_linuxdeployqt_compat.sh](./get_linuxdeployqt_compat.sh) script. The script builds and installs linuxdeployqt into your Qt installation directory.
+
+This is only a workaround, and while the script will stay, the install method for linuxdeployqt may change over time.
 
 ## Usage
 The idea is: You specify files and directories via your pro-file and run `make <target>` to deploy, create the installer, or both.

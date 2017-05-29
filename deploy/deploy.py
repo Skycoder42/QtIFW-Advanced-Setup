@@ -39,6 +39,7 @@ def run_deptool():
 	postcmds = []
 	if platform == "linux":
 		preparams = [os.path.join(bindir, "linuxdeployqt")]
+		postparams = ["-no-translations"]
 		postcmds = [
 			["rm", os.path.join(outdir, "AppRun")],
 			["cp", "-rPn", os.path.join(plugindir, "platforminputcontexts"), os.path.join(outdir, "plugins/")],
