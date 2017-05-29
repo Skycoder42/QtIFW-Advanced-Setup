@@ -15,7 +15,7 @@ cd $(mktemp -d)
 git clone https://github.com/Skycoder42/linuxdeployqt.git
 cd linuxdeployqt
 
-$rqmake
+"$rqmake"
 make qmake_all
 make
 $1 make install
