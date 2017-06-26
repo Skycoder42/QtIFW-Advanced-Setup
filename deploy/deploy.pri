@@ -29,10 +29,14 @@ qtifw_auto_deploy {
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_OUT)
 	!isEmpty(QTIFW_DEPLOY_TSPRO): QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_TSPRO)
 
+	qtifw_deploy_clean.target = deploy-clean
+	qtifw_deploy_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$QTIFW_DEPLOY_OUT))
+	clean.depends += qtifw_deploy_clean
+
 	qtifw_deploy.target = deploy
 	linux: qtifw_deploy.commands = $$shell_quote($$shell_path($$PWD/deploy.py)) $$QTIFW_DEPLOY_ARGS
 	else:win32: qtifw_deploy.commands = python $$shell_quote($$shell_path($$PWD/deploy.py)) $$QTIFW_DEPLOY_ARGS
 	else:mac: qtifw_deploy.commands = /usr/local/bin/python3 $$shell_quote($$shell_path($$PWD/deploy.py)) $$QTIFW_DEPLOY_ARGS
 
-	QMAKE_EXTRA_TARGETS += qtifw_deploy
+	QMAKE_EXTRA_TARGETS += qtifw_deploy clean qtifw_deploy_clean
 }

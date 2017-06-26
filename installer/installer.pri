@@ -64,7 +64,11 @@ else:win32: qtifw_inst.commands = python $$shell_quote($$shell_path($$PWD/build.
 else:mac: qtifw_inst.commands = /usr/local/bin/python3 $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS $$escape_expand(\\n\\t) \
 	cd $$shell_quote($${QTIFW_DIR}) && zip -r -9 $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x}.zip) $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x})
 
-QMAKE_EXTRA_TARGETS += qtifw_inst
+qtifw_inst_clean.target = installer-clean
+qtifw_inst_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$QTIFW_DIR))
+clean.depends += qtifw_inst_clean
+
+QMAKE_EXTRA_TARGETS += qtifw_inst clean qtifw_inst_clean
 
 # The following commands allow you to create custom translation files
 #lupdate -locations relative ./config/controller.js ./packages/de.skycoder42.advancedsetup/meta/install.js ./packages/de.skycoder42.advancedsetup/meta/ShortcutPage.ui ./packages/de.skycoder42.advancedsetup/meta/UserPage.ui -ts ./translations/template.ts ./translations/de.ts
