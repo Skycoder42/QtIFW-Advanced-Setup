@@ -65,9 +65,9 @@ def run_deptool():
 	else:
 		raise Exception("Unknown platform type: " + platform)
 
-	subprocess.run(preparams + [binname] + postparams)
+	subprocess.run(preparams + [binname] + postparams, check=True)
 	for cmd in postcmds:
-		subprocess.run(cmd)
+		subprocess.run(cmd, check=True)
 
 def cp_translations():
 	transdir = ""
@@ -106,7 +106,7 @@ def cp_translations():
 			"-compress",
 			"-nounfinished",
 			prof
-		])
+		], check=True)
 		for root, dirs, files in os.walk(os.path.dirname(prof)):
 			for f in files:
 				if os.path.splitext(f)[1] == ".qm":

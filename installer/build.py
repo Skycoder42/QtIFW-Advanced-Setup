@@ -122,7 +122,7 @@ def create_offline():
 		"-p",
 		pkgdir,
 		os.path.join(outdir, target)
-	])
+	], check=True)
 
 def create_online():
 	subprocess.run([
@@ -133,7 +133,7 @@ def create_online():
 		"-p",
 		pkgdir,
 		os.path.join(outdir, target)
-	])
+	], check=True)
 
 def create_repo():
 	subprocess.run([
@@ -141,7 +141,7 @@ def create_repo():
 		"-p",
 		pkgdir,
 		os.path.join(outdir, "repository")
-	])
+	], check=True)
 
 # prepare & copy files
 shutil.rmtree(outdir, ignore_errors=True)
