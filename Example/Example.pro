@@ -22,6 +22,10 @@ QTIFW_AUTO_INSTALL_PKG = sample
 # enable the "install" make target
 CONFIG += qtifw_install_target
 
+# workaround for this specific project setup, DO NOT COPY
+QTIFW_DEPLOY_LCOMBINE = $$PWD/../vendor/de/skycoder42/qpm-translate/lcombine.py
+
+include(../vendor/vendor.pri)
 include(../de_skycoder42_qtifw-advanced-setup.pri)
 
 SOURCES += \

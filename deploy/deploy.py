@@ -17,9 +17,12 @@ plugindir = sys.argv[3]
 translationdir = sys.argv[4]
 depsrc = sys.argv[5]
 outdir = sys.argv[6]
+lcombine = sys.argv[7]
 profiles = ""
-if len(sys.argv) > 7:
-	profiles = sys.argv[7]
+if len(sys.argv) > 8:
+	profiles = sys.argv[8]
+
+addts = (profiles != "")
 
 binname = os.path.join(outdir, os.path.basename(depsrc))
 
@@ -39,21 +42,26 @@ def run_deptool():
 	postcmds = []
 	if platform == "linux":
 		preparams = [os.path.join(bindir, "linuxdeployqt")]
-		postparams = ["-no-translations"]
+		postparams = []
+		if not addts:
+			postparams.append("-no-translations")
 		postcmds = [
 			["rm", os.path.join(outdir, "AppRun")],
 			["cp", "-rPn", os.path.join(plugindir, "platforminputcontexts"), os.path.join(outdir, "plugins/")],
 			["cp", "-rPn", os.path.join(plugindir, "platformthemes"), os.path.join(outdir, "plugins/")],
 			["cp", "-rPn", os.path.join(plugindir, "xcbglintegrations"), os.path.join(outdir, "plugins/")]
 		]
-	elif platform == "win_debug":
-		preparams = [os.path.join(bindir, "windeployqt.exe"), "-debug", "-no-translations"]
-		postcmds = [
-			["cmd", "-c", "del", os.path.join(outdir, "vcredist_x86.exe")],
-			["cmd", "-c", "del", os.path.join(outdir, "vcredist_x64.exe")]
-		]
-	elif platform == "win_release":
-		preparams = [os.path.join(bindir, "windeployqt.exe"), "-release", "-no-translations"]
+	elif platform[0:3] == "win":
+		preparams = [os.path.join(bindir, "windeployqt.exe")]
+		if platform == "win_debug":
+			preparams.append("-debug")
+		elif platform == "win_release":
+			preparams.append("-release")
+		else:
+			raise Exception("Unknown platform type: " + platform)
+
+		if not addts:
+			preparams.append("-no-translations")
 		pathbase = os.path.sep.join(outdir.split("/"))
 		postcmds = [
 			["cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x86.exe")],
@@ -69,35 +77,33 @@ def run_deptool():
 	for cmd in postcmds:
 		subprocess.run(cmd, check=True)
 
-def cp_translations():
+def create_mac_ts():
+	transdir = os.path.join(binname , "Contents", "Resources", "translations")
+	os.makedirs(transdir, exist_ok=True)
+
+	trpatterns = [
+		"qt_??.qm",
+		"qt_??_??.qm"
+	]
+
+	combine_args = []
+	for pattern in trpatterns:
+		for file in glob.glob(os.path.join(translationdir, pattern)):
+			allfiles.append(file)
+
+	combine_args = [
+		lcombine,
+		os.path.join(bindir, "lconvert"),
+		translationdir
+	] + combine_args
+	subprocess.run(combine_args, check=True)
+
+def cp_trans():
 	transdir = ""
 	if platform == "mac":
 		transdir = os.path.join(binname , "Contents", "Resources", "translations")
 	else:
 		transdir = os.path.join(outdir, "translations")
-	os.makedirs(transdir, exist_ok=True)
-
-	trpatterns = [ #TODO complete list
-		"qt_??.qm",
-		"qt_??_??.qm",
-		"qtbase_*.qm",
-		"qtconnectivity_*.qm",
-		"qtdeclarative_*.qm",
-		"qtlocation_*.qm",
-		"qtmultimedia_*.qm",
-		"qtquick1_*.qm",
-		"qtquickcontrols_*.qm",
-		"qtscript_*.qm",
-		"qtserialport_*.qm",
-		"qtwebengine_*.qm",
-		"qtwebsockets_*.qm",
-		"qtxmlpatterns_*.qm"
-	]
-
-	for pattern in trpatterns:
-		for file in glob.glob(os.path.join(translationdir, pattern)):
-			dfile = os.path.join(transdir, os.path.basename(file))
-			shutil.copy2(file, dfile)
 
 	data = profiles.split(" ")
 	for prof in data:
@@ -117,9 +123,9 @@ def cp_translations():
 def patch_qtconf(translationsPresent):
 	if platform == "linux":
 		return
-	elif platform == "win_debug" or platform == "win_release":
+	elif platform[0:3] == "win":
 		file = open(os.path.join(outdir, "qt.conf"), "w")
-		file.write("[Paths]\nPrefix=.")
+		file.write("[Paths]\nPrefix=.\n")
 		file.close()
 	elif platform == "mac":
 		file = open(os.path.join(binname , "Contents", "Resources", "qt.conf"), "a")
@@ -135,8 +141,10 @@ copyany(depsrc, binname)
 
 # run the deployment tools
 run_deptool()
-if profiles != "":
-	cp_translations()
+if addts:
+	if platform == "mac":
+		create_mac_ts()
+	cp_trans()
 	patch_qtconf(True)
 else:
 	patch_qtconf(False)
