@@ -3,6 +3,17 @@ QT += widgets
 
 TARGET = Example
 
+SOURCES += \
+	main.cpp
+
+DISTFILES += \
+	config.xml \
+	meta/package.xml \
+	data/main.png \
+	example_de.ts
+
+TRANSLATIONS += example_de.ts
+
 # installer
 QTIFW_CONFIG = config.xml
 # QTIFW_MODE = online_all
@@ -27,14 +38,3 @@ QTIFW_DEPLOY_LCOMBINE = $$PWD/../vendor/de/skycoder42/qpm-translate/lcombine.py
 
 include(../vendor/vendor.pri)
 include(../de_skycoder42_qtifw-advanced-setup.pri)
-
-SOURCES += \
-	main.cpp
-
-DISTFILES += \
-	config.xml \
-	meta/package.xml \
-	data/main.png \
-	example_de.ts
-
-TRANSLATIONS += example_de.ts

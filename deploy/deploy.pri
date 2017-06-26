@@ -29,7 +29,7 @@ qtifw_auto_deploy {
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_SRC)
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_OUT)
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_LCOMBINE)
-	!isEmpty(QTIFW_DEPLOY_TSPRO): QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_TSPRO)
+	!isEmpty(TRANSLATIONS): QTIFW_DEPLOY_ARGS += $$TRANSLATIONS
 
 	qtifw_deploy_clean.target = deploy-clean
 	qtifw_deploy_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$QTIFW_DEPLOY_OUT))

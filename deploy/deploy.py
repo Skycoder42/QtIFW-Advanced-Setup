@@ -18,13 +18,15 @@ translationdir = sys.argv[4]
 depsrc = sys.argv[5]
 outdir = sys.argv[6]
 lcombine = sys.argv[7]
-profiles = ""
-if len(sys.argv) > 8:
-	profiles = sys.argv[8]
+tsfiles = sys.argv[8:]
 
-addts = (profiles != "")
-
+addts = (tsfiles != "")
 binname = os.path.join(outdir, os.path.basename(depsrc))
+transdir = ""
+if platform == "mac":
+	transdir = os.path.join(binname , "Contents", "Resources", "translations")
+else:
+	transdir = os.path.join(outdir, "translations")
 
 def copyany(src, dst):
 	print(src, dst)
@@ -78,9 +80,7 @@ def run_deptool():
 		subprocess.run(cmd, check=True)
 
 def create_mac_ts():
-	transdir = os.path.join(binname , "Contents", "Resources", "translations")
 	os.makedirs(transdir, exist_ok=True)
-
 	trpatterns = [
 		"qt_??.qm",
 		"qt_??_??.qm"
@@ -99,26 +99,11 @@ def create_mac_ts():
 	subprocess.run(combine_args, cwd=transdir, check=True)
 
 def cp_trans():
-	transdir = ""
-	if platform == "mac":
-		transdir = os.path.join(binname , "Contents", "Resources", "translations")
-	else:
-		transdir = os.path.join(outdir, "translations")
-
-	data = profiles.split(" ")
-	for prof in data:
-		subprocess.run([
-			os.path.join(bindir, "lrelease"),
-			"-compress",
-			"-nounfinished",
-			prof
-		], check=True)
-		for root, dirs, files in os.walk(os.path.dirname(prof)):
-			for f in files:
-				if os.path.splitext(f)[1] == ".qm":
-					dfile = os.path.join(transdir, f)
-					ofile = os.path.join(root, f)
-					shutil.copy2(ofile, dfile)
+	for tsfile in tsfiles:
+		fname = os.path.splitext(os.path.split(tsfile)[1])[0] + ".qm"
+		dfile = os.path.join(transdir, fname)
+		ofile = os.path.join(os.path.dirname(depsrc), fname)
+		shutil.copy2(ofile, dfile)
 
 def patch_qtconf(translationsPresent):
 	if platform == "linux":
