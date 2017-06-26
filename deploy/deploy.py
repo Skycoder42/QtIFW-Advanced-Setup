@@ -96,7 +96,7 @@ def create_mac_ts():
 		os.path.join(bindir, "lconvert"),
 		translationdir
 	] + combine_args
-	subprocess.run(combine_args, check=True)
+	subprocess.run(combine_args, cwd=transdir, check=True)
 
 def cp_trans():
 	transdir = ""
