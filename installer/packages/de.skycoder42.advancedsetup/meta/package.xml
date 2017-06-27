@@ -10,15 +10,15 @@
 		<UserInterface>UserPage.ui</UserInterface>
 	</UserInterfaces>
 	<Translations>
-		<Translation>ar.qm</Translation>
-		<Translation>de.qm</Translation>
-		<Translation>es.qm</Translation>
-		<Translation>fr.qm</Translation>
-		<Translation>it.qm</Translation>
-		<Translation>ja.qm</Translation>
-		<Translation>pt.qm</Translation>
-		<Translation>ru.qm</Translation>
-		<Translation>zh.qm</Translation>
+		<Translation>qtifwas_ar.qm</Translation>
+		<Translation>qtifwas_de.qm</Translation>
+		<Translation>qtifwas_es.qm</Translation>
+		<Translation>qtifwas_fr.qm</Translation>
+		<Translation>qtifwas_it.qm</Translation>
+		<Translation>qtifwas_ja.qm</Translation>
+		<Translation>qtifwas_pt.qm</Translation>
+		<Translation>qtifwas_ru.qm</Translation>
+		<Translation>qtifwas_zh.qm</Translation>
 	</Translations>
 	<Licenses>
 		<License name="BSD 3 Clause License" file="LICENSE.txt" />

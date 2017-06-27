@@ -12,7 +12,6 @@
 *.rej
 *.so
 *.so.*
-*.qm
 *_pch.h.cpp
 *_resource.rc
 .#*

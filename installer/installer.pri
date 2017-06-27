@@ -69,6 +69,3 @@ qtifw_inst_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$QTI
 clean.depends += qtifw_inst_clean
 
 QMAKE_EXTRA_TARGETS += qtifw_inst clean qtifw_inst_clean
-
-# The following commands allow you to create custom translation files
-#lupdate -locations relative ./config/controller.js ./packages/de.skycoder42.advancedsetup/meta/install.js ./packages/de.skycoder42.advancedsetup/meta/ShortcutPage.ui ./packages/de.skycoder42.advancedsetup/meta/UserPage.ui -ts ./translations/template.ts ./translations/de.ts
