@@ -112,6 +112,8 @@ def config_arch():
 		data += "}\n\n"
 		prepend_file_data(os.path.join(msvc_dir, "meta", "install.js"), data)
 
+def add_translations():
+	print("yay")
 
 def create_offline():
 	subprocess.run([
@@ -148,6 +150,7 @@ shutil.rmtree(outdir, ignore_errors=True)
 os.makedirs(cfgdir, exist_ok=True)
 create_install_dir(7)
 config_arch()
+add_translations()
 
 # generate installer
 if mode == "offline":
@@ -160,4 +163,4 @@ elif mode == "online_all":
 	create_repo()
 	create_online()
 else:
-	raise "Invalid mode specified: " + mode
+	raise Exception()"Invalid mode specified: " + mode)
