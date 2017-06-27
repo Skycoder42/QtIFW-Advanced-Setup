@@ -29,7 +29,6 @@ else:
 	transdir = os.path.join(outdir, "translations")
 
 def copyany(src, dst):
-	print(src, dst)
 	try:
 		shutil.copytree(src, dst)
 	except OSError as e:
@@ -71,7 +70,7 @@ def run_deptool():
 		]
 	elif platform == "mac":
 		preparams = [os.path.join(bindir, "macdeployqt")]
-		postparams = ["-appstore-compliant"]
+		postparams = []
 	else:
 		raise Exception("Unknown platform type: " + platform)
 
