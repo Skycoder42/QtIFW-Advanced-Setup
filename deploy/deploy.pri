@@ -14,7 +14,7 @@ qtifw_auto_deploy {
 }
 
 !isEmpty(QTIFW_DEPLOY_SRC) {
-	isEmpty(QTIFW_DEPLOY_OUT): QTIFW_DEPLOY_OUT = "$$OUT_PWD/deployed"
+	isEmpty(QTIFW_DEPLOY_OUT): QTIFW_DEPLOY_OUT = deployed
 	isEmpty(QTIFW_DEPLOY_LCOMBINE): QTIFW_DEPLOY_LCOMBINE = $$PWD/../qpm-translate/lcombine.py
 
 	linux: QTIFW_DEPLOY_ARGS = linux

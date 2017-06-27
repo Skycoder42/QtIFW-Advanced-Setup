@@ -45,6 +45,7 @@ win32:msvc { #TODO use files instead
 # installer target generation
 QTIFW_ARGS = $$shell_quote($$shell_path($$_PRO_FILE_PWD_))
 QTIFW_ARGS += $$shell_quote($$shell_path($$QTIFW_DIR))
+QTIFW_ARGS += $$shell_quote($$shell_path($$[QT_INSTALL_BINS]))
 QTIFW_ARGS += $$shell_quote($$shell_path($$QTIFW_BIN))
 QTIFW_ARGS += $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x})
 QTIFW_ARGS += $$shell_quote($$QTIFW_MODE)

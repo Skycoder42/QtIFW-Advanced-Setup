@@ -5,16 +5,18 @@ import os
 import shutil
 import subprocess
 import re
+import glob
 from distutils.dir_util import copy_tree
 from enum import Enum
 
 # constants
 srcdir = sys.argv[1]
 outdir = sys.argv[2]
-qtifwdir = sys.argv[3]
-target = sys.argv[4]
-mode = sys.argv[5]
-arch = sys.argv[6]
+bindir = sys.argv[3]
+qtifwdir = sys.argv[4]
+target = sys.argv[5]
+mode = sys.argv[6]
+arch = sys.argv[7]
 cfgdir = os.path.join(outdir, "config")
 pkgdir = os.path.join(outdir, "packages")
 
@@ -33,7 +35,7 @@ def copy_cfg(src):
 
 def copy_pkg(pkg, state, src, subdir, isDir):
 	pkgsrc = os.path.join(srcdir, src)
-	pkgout = os.path.join(pkgdir, pkg, subdir) #TODO
+	pkgout = os.path.join(pkgdir, pkg, subdir)
 	os.makedirs(pkgout, exist_ok=True)
 	if isDir:
 		copy_tree(pkgsrc, pkgout, preserve_symlinks=True)
@@ -113,7 +115,20 @@ def config_arch():
 		prepend_file_data(os.path.join(msvc_dir, "meta", "install.js"), data)
 
 def add_translations():
-	print("yay")
+	pattern_base = os.path.join(os.path.dirname(__file__), "translations")
+
+	args = glob.glob(os.path.join(pattern_base, "*.ts"))
+	args = [
+		os.path.join(bindir, "lrelease"),
+		"-nounfinished"
+	] + args
+
+	subprocess.run(args, check=True)
+
+	metadir = os.path.join(pkgdir, "de.skycoder42.advancedsetup", "meta")
+	for file in glob.glob(os.path.join(pattern_base, "*.qm")):
+		dfile = os.path.join(metadir, os.path.basename(file))
+		shutil.move(file, dfile)
 
 def create_offline():
 	subprocess.run([
@@ -148,7 +163,7 @@ def create_repo():
 # prepare & copy files
 shutil.rmtree(outdir, ignore_errors=True)
 os.makedirs(cfgdir, exist_ok=True)
-create_install_dir(7)
+create_install_dir(8)
 config_arch()
 add_translations()
 
@@ -163,4 +178,4 @@ elif mode == "online_all":
 	create_repo()
 	create_online()
 else:
-	raise Exception()"Invalid mode specified: " + mode)
+	raise Exception("Invalid mode specified: " + mode)
