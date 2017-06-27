@@ -4,7 +4,7 @@
 <context>
     <name>ShortcutPage</name>
     <message>
-        <location filename="../packages/de.skycoder42.advanced-setup/meta/ShortcutPage.ui" line="+14"/>
+        <location filename="../packages/de.skycoder42.advancedsetup/meta/ShortcutPage.ui" line="+14"/>
         <source>Create Desktop Shortcut</source>
         <translation>Desktop-Verknüpfung erstellen</translation>
     </message>
@@ -17,7 +17,7 @@
 <context>
     <name>UserPage</name>
     <message>
-        <location filename="../packages/de.skycoder42.advanced-setup/meta/UserPage.ui" line="+14"/>
+        <location filename="../packages/de.skycoder42.advancedsetup/meta/UserPage.ui" line="+14"/>
         <source>Installation Scope</source>
         <translation>Installations-Bereich</translation>
     </message>
@@ -46,7 +46,7 @@
 <context>
     <name>controller</name>
     <message>
-        <location filename="../config/controller.js" line="+54"/>
+        <location filename="../config/controller.js" line="+55"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -57,9 +57,9 @@
     </message>
 </context>
 <context>
-    <name>install</name>
+    <name>dummy</name>
     <message>
-        <location filename="../packages/de.skycoder42.advanced-setup/meta/install.js" line="+8"/>
+        <location filename="dummy.js" line="+3"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
