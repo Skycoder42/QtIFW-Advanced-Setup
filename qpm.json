@@ -11,8 +11,8 @@
   },
   "version": {
     "label": "1.0.0",
-    "revision": "", 
-    "fingerprint": "" 
+    "revision": "",
+    "fingerprint": ""
   },
   "dependencies": [
     "de.skycoder42.qpm-translate@1.1.0"

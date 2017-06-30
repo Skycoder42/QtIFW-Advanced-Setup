@@ -89,9 +89,10 @@ def create_mac_ts():
 	combine_args = []
 	for pattern in trpatterns:
 		for file in glob.glob(os.path.join(translationdir, pattern)):
-			allfiles.append(file)
+			combine_args.append(file)
 
 	combine_args = [
+		"/usr/local/bin/python3",
 		lcombine,
 		os.path.join(bindir, "lconvert"),
 		translationdir
