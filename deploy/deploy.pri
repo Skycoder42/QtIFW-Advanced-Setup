@@ -28,6 +28,7 @@ qtifw_auto_deploy {
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$[QT_INSTALL_TRANSLATIONS])
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_SRC)
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_OUT)
+	QTIFW_DEPLOY_ARGS += $$shell_quote($$OUT_PWD)
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_LCOMBINE)
 	!isEmpty(TRANSLATIONS): QTIFW_DEPLOY_ARGS += $$TRANSLATIONS
 

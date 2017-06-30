@@ -17,8 +17,9 @@ plugindir = sys.argv[3]
 translationdir = sys.argv[4]
 depsrc = sys.argv[5]
 outdir = sys.argv[6]
-lcombine = sys.argv[7]
-tsfiles = sys.argv[8:]
+outpwd = sys.argv[7]
+lcombine = sys.argv[8]
+tsfiles = sys.argv[9:]
 
 addts = (tsfiles != "")
 binname = os.path.join(outdir, os.path.basename(depsrc))
@@ -65,8 +66,8 @@ def run_deptool():
 			preparams.append("-no-translations")
 		pathbase = os.path.sep.join(outdir.split("/"))
 		postcmds = [
-			["cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x86.exe")],
-			["cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x64.exe")]
+			["cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x86.exe") + " > nul 2> nul"],
+			["cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x64.exe") + " > nul 2> nul"]
 		]
 	elif platform == "mac":
 		preparams = [os.path.join(bindir, "macdeployqt")]
@@ -101,7 +102,7 @@ def cp_trans():
 	for tsfile in tsfiles:
 		fname = os.path.splitext(os.path.split(tsfile)[1])[0] + ".qm"
 		dfile = os.path.join(transdir, fname)
-		ofile = os.path.join(os.path.dirname(depsrc), fname)
+		ofile = os.path.join(outpwd, fname)
 		shutil.copy2(ofile, dfile)
 
 def patch_qtconf(translationsPresent):
