@@ -10,12 +10,14 @@
     "url": "https://github.com/Skycoder42/QtIFW-Advanced-Setup.git"
   },
   "version": {
-    "label": "1.0.0"
+    "label": "1.0.0",
+    "revision": "", 
+    "fingerprint": "" 
   },
   "dependencies": [
     "de.skycoder42.qpm-translate@1.1.0"
   ],
   "license": "BSD_3_CLAUSE",
-  "priFilename": "de_skycoder42_qtifw-advanced-setup.pri",
+  "pri_filename": "de_skycoder42_qtifw-advanced-setup.pri",
   "webpage": "https://github.com/Skycoder42/QtIFW-Advanced-Setup"
 }
