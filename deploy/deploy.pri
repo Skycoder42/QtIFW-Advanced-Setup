@@ -33,7 +33,8 @@ qtifw_auto_deploy {
 	!isEmpty(TRANSLATIONS): QTIFW_DEPLOY_ARGS += $$TRANSLATIONS
 
 	qtifw_deploy_clean.target = deploy-clean
-	qtifw_deploy_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$QTIFW_DEPLOY_OUT))
+	win32: qtifw_deploy_clean.commands = $$QMAKE_DEL_FILE /S /Q $$shell_quote($$shell_path($$QTIFW_DEPLOY_OUT))
+	else: qtifw_deploy_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$QTIFW_DEPLOY_OUT))
 	clean.depends += qtifw_deploy_clean
 
 	qtifw_deploy.target = deploy

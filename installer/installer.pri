@@ -28,8 +28,13 @@ win32:msvc { #TODO use files instead
 	isEmpty(QTIFW_VCPATH) {
 		VCTMP = $(VCINSTALLDIR)
 		isEmpty(VCTMP): warning(Please set the VCINSTALLDIR variable to your vistual studio installation to deploy the vc redistributables!)
-		else:contains(QT_ARCH, x86_64): QTIFW_VCPATH = "$$VCTMP\redist\1033\vcredist_x64.exe"
-		else: QTIFW_VCPATH = "$$VCTMP\redist\1033\vcredist_x86.exe"
+		else:win32-msvc2017 {
+			contains(QT_ARCH, x86_64): QTIFW_VCPATH = "$$VCTMP\Redist\MSVC\14.10.25008\vcredist_x64.exe"
+			else: QTIFW_VCPATH = "$$VCTMP\Redist\MSVC\14.10.25008\vcredist_x86.exe"
+		} else {
+			contains(QT_ARCH, x86_64): QTIFW_VCPATH = "$$VCTMP\redist\1033\vcredist_x64.exe"
+			else: QTIFW_VCPATH = "$$VCTMP\redist\1033\vcredist_x86.exe"
+		}
 	}
 
 	# only add if vcpath was actually found
@@ -66,7 +71,8 @@ else:mac: qtifw_inst.commands = /usr/local/bin/python3 $$shell_quote($$shell_pat
 	cd $$shell_quote($${QTIFW_DIR}) && zip -r -9 $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x}.zip) $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x})
 
 qtifw_inst_clean.target = installer-clean
-qtifw_inst_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$QTIFW_DIR))
+win32: qtifw_inst_clean.commands = $$QMAKE_DEL_FILE /S /Q $$shell_quote($$shell_path($$QTIFW_DIR))
+else: qtifw_inst_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$QTIFW_DIR))
 clean.depends += qtifw_inst_clean
 
 QMAKE_EXTRA_TARGETS += qtifw_inst clean qtifw_inst_clean
