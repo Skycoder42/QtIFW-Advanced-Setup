@@ -13,12 +13,16 @@ qtifw_install_target {
 	target_r.depends = installer
 
 	equals(QTIFW_MODE, repository)|equals(QTIFW_MODE, online_all) { #deploy repository
+		target_d.target = target_d
+		win32: target_d.commands = $$QMAKE_MKDIR $$shell_path($(INSTALL_ROOT)/repository)
+		else: target_d.commands = $$QMAKE_MKDIR -p $$shell_path($(INSTALL_ROOT)/repository)
+
 		target_p.target = target_p
 		target_p.commands = $$QMAKE_INSTALL_DIR $$shell_quote($$shell_path($$QTIFW_DIR/repository)) $$shell_path($(INSTALL_ROOT)/repository)
-		target_p.depends = installer
+		target_p.depends = installer target_d
 
 		target_r.depends += target_p
-		QMAKE_EXTRA_TARGETS += target_p
+		QMAKE_EXTRA_TARGETS += target_d target_p
 	}
 
 	!equals(QTIFW_MODE, repository) { #deploy installer binary
