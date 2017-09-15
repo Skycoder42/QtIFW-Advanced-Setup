@@ -28,12 +28,15 @@ win32:msvc { #TODO use files instead
 	isEmpty(QTIFW_VCPATH) {
 		VCTMP = $(VCINSTALLDIR)
 		isEmpty(VCTMP): warning(Please set the VCINSTALLDIR variable to your vistual studio installation to deploy the vc redistributables!)
-		else:win32-msvc2017 {
-			contains(QT_ARCH, x86_64): QTIFW_VCPATH = "$$VCTMP\Redist\MSVC\14.10.25008\vcredist_x64.exe"
-			else: QTIFW_VCPATH = "$$VCTMP\Redist\MSVC\14.10.25008\vcredist_x86.exe"
-		} else {
-			contains(QT_ARCH, x86_64): QTIFW_VCPATH = "$$VCTMP\redist\1033\vcredist_x64.exe"
-			else: QTIFW_VCPATH = "$$VCTMP\redist\1033\vcredist_x86.exe"
+		else {
+			VC_KNOWN_PATHS += "redist\1033" "Redist\MSVC\14.10.25008" "Redist\MSVC\14.11.25325" "Redist\MSVC\*"
+			contains(QT_ARCH, x86_64): VC_NAME = vcredist_x64.exe
+			else: VC_NAME = vcredist_x86.exe
+			for(path, VC_KNOWN_PATHS) {
+				X_PATH = $${VCTMP}\$${path}\$${VC_NAME}
+				message(trying VC redist path: $$X_PATH)
+				exists($$X_PATH): QTIFW_VCPATH = $$X_PATH
+			}
 		}
 	}
 
