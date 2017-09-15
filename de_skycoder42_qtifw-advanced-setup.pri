@@ -18,7 +18,7 @@ qtifw_install_target {
 
 		qtifw_no_compress: target_p.commands = $$QMAKE_INSTALL_DIR $$shell_quote($$shell_path($$QTIFW_DIR/repository)) $$shell_path($(INSTALL_ROOT)/)
 		else:win32: target_p.commands = cd $$shell_quote($$shell_path($$QTIFW_DIR/repository)) && \
-			7z a repository.zip .\* && \
+			7z a $$shell_path(../repository.zip) .\* && \
 			$$QMAKE_INSTALL_FILE $$shell_path(../repository.zip) $$shell_path($(INSTALL_ROOT)/)
 		else: target_p.commands = cd $$shell_quote($$QTIFW_DIR/repository) && \
 			tar cJf ../repository.tar.xz ./* && \
