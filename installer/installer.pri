@@ -62,6 +62,11 @@ for(pkg, QTIFW_PACKAGES) {
 	for(meta, $${pkg}.meta): QTIFW_ARGS += m $$shell_quote($$shell_path($$meta))
 	for(data, $${pkg}.dirs): QTIFW_ARGS += d $$shell_quote($$shell_path($$data))
 	for(data, $${pkg}.files): QTIFW_ARGS += f $$shell_quote($$shell_path($$data))
+	for(subdir, $${pkg}.subdirs) {
+		QTIFW_ARGS += t $$shell_quote($$shell_path($$first($${subdir}.name)))
+		for(data, $${subdir}.dirs): QTIFW_ARGS += d $$shell_quote($$shell_path($$data))
+		for(data, $${subdir}.files): QTIFW_ARGS += f $$shell_quote($$shell_path($$data))
+	}
 }
 
 qtifw_inst.target = installer

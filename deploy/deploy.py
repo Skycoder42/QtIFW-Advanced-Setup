@@ -48,10 +48,10 @@ def run_deptool():
 		if not addts:
 			postparams.append("-no-translations")
 		postcmds = [
-			["rm", os.path.join(outdir, "AppRun")],
-			["cp", "-rPn", os.path.join(plugindir, "platforminputcontexts"), os.path.join(outdir, "plugins/")],
-			["cp", "-rPn", os.path.join(plugindir, "platformthemes"), os.path.join(outdir, "plugins/")],
-			["cp", "-rPn", os.path.join(plugindir, "xcbglintegrations"), os.path.join(outdir, "plugins/")]
+			[True, "rm", os.path.join(outdir, "AppRun")],
+			[False, "cp", "-rPnT", os.path.join(plugindir, "platforminputcontexts"), os.path.join(outdir, "plugins", "platforminputcontexts")],
+			[False, "cp", "-rPnT", os.path.join(plugindir, "platformthemes"), os.path.join(outdir, "plugins", "platformthemes")],
+			[False, "cp", "-rPnT", os.path.join(plugindir, "xcbglintegrations"), os.path.join(outdir, "plugins", "xcbglintegrations")]
 		]
 	elif platform[0:3] == "win":
 		preparams = [os.path.join(bindir, "windeployqt.exe")]
@@ -66,8 +66,8 @@ def run_deptool():
 			preparams.append("-no-translations")
 		pathbase = os.path.sep.join(outdir.split("/"))
 		postcmds = [
-			["cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x86.exe") + " > nul 2> nul"],
-			["cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x64.exe") + " > nul 2> nul"]
+			[True, "cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x86.exe") + " > nul 2> nul"],
+			[True, "cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x64.exe") + " > nul 2> nul"]
 		]
 	elif platform == "mac":
 		preparams = [os.path.join(bindir, "macdeployqt")]
@@ -77,7 +77,7 @@ def run_deptool():
 
 	subprocess.run(preparams + [binname] + postparams, check=True)
 	for cmd in postcmds:
-		subprocess.run(cmd, check=True)
+		subprocess.run(cmd[1:], check=cmd[0])
 
 def create_mac_ts():
 	os.makedirs(transdir, exist_ok=True)

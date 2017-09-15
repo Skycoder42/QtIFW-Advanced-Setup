@@ -5,7 +5,7 @@ qtifw_install_target {
 	# update installer target deps
 	contains(QMAKE_EXTRA_TARGETS, qtifw_deploy) {
 		!isEmpty(TRANSLATIONS): qtifw_deploy.depends += lrelease
-		qtifw_inst.depends = deploy
+		qtifw_inst.depends += deploy
 	}
 
 	target_r.target = install
