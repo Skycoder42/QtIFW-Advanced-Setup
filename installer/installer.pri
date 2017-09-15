@@ -75,8 +75,7 @@ for(pkg, QTIFW_PACKAGES) {
 qtifw_inst.target = installer
 linux: qtifw_inst.commands = $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
 else:win32: qtifw_inst.commands = python $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
-else:mac: qtifw_inst.commands = /usr/local/bin/python3 $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS $$escape_expand(\\n\\t) \
-	cd $$shell_quote($${QTIFW_DIR}) && zip -r -9 $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x}.zip) $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x})
+else:mac: qtifw_inst.commands = /usr/local/bin/python3 $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
 
 qtifw_inst_clean.target = installer-clean
 win32: qtifw_inst_clean.commands = $$QMAKE_DEL_FILE /S /Q $$shell_quote($$shell_path($$QTIFW_DIR))
