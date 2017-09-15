@@ -14,7 +14,7 @@ qtifw_install_target {
 
 	equals(QTIFW_MODE, repository)|equals(QTIFW_MODE, online_all) { #deploy repository
 		target_p.target = target_p
-		target_p.commands = $$QMAKE_INSTALL_DIR $$shell_quote($$shell_path($$QTIFW_DIR/repository)) $$shell_path($(INSTALL_ROOT)/repository)
+		target_p.commands = $$QMAKE_INSTALL_DIR $$shell_quote($$shell_path($$QTIFW_DIR/repository)) $$shell_path($(INSTALL_ROOT)/)
 		target_p.depends = installer
 
 		!win32 {

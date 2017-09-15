@@ -16,7 +16,9 @@ bindir = sys.argv[3]
 qtifwdir = sys.argv[4]
 target = sys.argv[5]
 mode = sys.argv[6]
-arch = sys.argv[7]
+platform = sys.argv[7]
+arch = sys.argv[8]
+inputs = sys.argv[9:]
 cfgdir = os.path.join(outdir, "config")
 pkgdir = os.path.join(outdir, "packages")
 
@@ -53,11 +55,11 @@ def prepend_file_data(filename, data):
 		file.write(data)
 		file.write(orig)
 
-def create_install_dir(offset):
+def create_install_dir():
 	global subTDir
 	state = State.Config
 	pkg = ""
-	for arg in sys.argv[offset:]:
+	for arg in inputs:
 		if arg == "p":
 			state = State.Package
 		elif arg == "m":
@@ -167,13 +169,13 @@ def create_repo():
 		os.path.join(qtifwdir, "repogen"),
 		"-p",
 		pkgdir,
-		os.path.join(outdir, "repository")
+		os.path.join(outdir, "repository", platform + "_" + arch)
 	], check=True)
 
 # prepare & copy files
 shutil.rmtree(outdir, ignore_errors=True)
 os.makedirs(cfgdir, exist_ok=True)
-create_install_dir(8)
+create_install_dir()
 config_arch()
 add_translations()
 
