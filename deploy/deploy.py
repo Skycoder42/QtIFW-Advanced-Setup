@@ -24,7 +24,7 @@ tsfiles = sys.argv[9:]
 addts = (tsfiles != "")
 binname = os.path.join(outdir, os.path.basename(depsrc))
 transdir = ""
-if platform == "mac":
+if platform[0:3] == "mac":
 	transdir = os.path.join(binname , "Contents", "Resources", "translations")
 else:
 	transdir = os.path.join(outdir, "translations")
@@ -72,6 +72,21 @@ def run_deptool():
 	elif platform == "mac":
 		preparams = [os.path.join(bindir, "macdeployqt")]
 		postparams = []
+	elif platform == "mac_no_bundle":
+		basename = os.path.splitext(os.path.basename(depsrc))[0]
+		preparams = [os.path.join(bindir, "macdeployqt")]
+		postparams = []
+		postcmds = [
+			[True, "rm", "-rf", os.path.join(binname, "Contents/Frameworks/QtGui.framework")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents/Frameworks/QtWidgets.framework")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents/Frameworks/QtPrintSupport.framework")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents/Frameworks/QtSvg.framework")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents/PlugIns")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents/Resources/empty.lproj")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents/Info.plist")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents/PkgInfo")],
+			[True, "ln", "-s" , os.path.join("MacOS", basename), os.path.join(binname, "Contents", basename)]
+		]
 	else:
 		raise Exception("Unknown platform type: " + platform)
 
@@ -113,7 +128,7 @@ def patch_qtconf(translationsPresent):
 		file = open(os.path.join(outdir, "qt.conf"), "w")
 		file.write("[Paths]\nPrefix=.\n")
 		file.close()
-	elif platform == "mac":
+	elif platform[0:3] == "mac":
 		file = open(os.path.join(binname , "Contents", "Resources", "qt.conf"), "a")
 		file.write("Translations=Resources/translations\n")
 		file.close()
@@ -128,9 +143,17 @@ copyany(depsrc, binname)
 # run the deployment tools
 run_deptool()
 if addts:
-	if platform == "mac":
+	if platform[0:3] == "mac":
 		create_mac_ts()
 	cp_trans()
 	patch_qtconf(True)
 else:
 	patch_qtconf(False)
+
+if platform == "mac_no_bundle":
+	# no bundle -> renamings
+	bkpName = outdir + ".bkp"
+	oldName = os.path.join(bkpName, os.path.basename(depsrc), "Contents")
+	shutil.move(outdir, bkpName)
+	shutil.move(oldName, outdir)
+	shutil.rmtree(bkpName)
