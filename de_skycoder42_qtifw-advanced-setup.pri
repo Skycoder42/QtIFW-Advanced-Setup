@@ -24,11 +24,9 @@ qtifw_install_target {
 			tar cJf ../repository.tar.xz ./* && \
 			$$QMAKE_INSTALL_FILE ../repository.tar.xz $(INSTALL_ROOT)/
 
-		!win32 {
-			target_d.target = target_d
-			target_d.commands = $$QMAKE_MKDIR $$shell_path($(INSTALL_ROOT)/repository)
-			target_p.depends += target_d
-		}
+		target_d.target = target_d
+		target_d.commands = $$QMAKE_MKDIR $$shell_path($(INSTALL_ROOT)/) || true
+		target_p.depends += target_d
 
 		target_r.depends += target_p
 		QMAKE_EXTRA_TARGETS += target_d target_p
