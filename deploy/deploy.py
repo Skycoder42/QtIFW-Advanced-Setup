@@ -73,18 +73,28 @@ def run_deptool():
 		preparams = [os.path.join(bindir, "macdeployqt")]
 		postparams = []
 	elif platform == "mac_no_bundle":
+		global binname
 		basename = os.path.splitext(os.path.basename(depsrc))[0]
+
+		bundledir = os.path.join(outdir, basename + ".app", "Contents", "MacOS")
+		os.makedirs(bundledir)
+		shutil.move(binname, os.path.join(bundledir, basename))
+		binname = binname + ".app"
+
 		preparams = [os.path.join(bindir, "macdeployqt")]
 		postparams = []
 		postcmds = [
-			[True, "rm", "-rf", os.path.join(binname, "Contents/Frameworks/QtGui.framework")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents/Frameworks/QtWidgets.framework")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents/Frameworks/QtPrintSupport.framework")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents/Frameworks/QtSvg.framework")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents/PlugIns")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents/Resources/empty.lproj")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents/Info.plist")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents/PkgInfo")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "Frameworks", "QtGui.framework")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "Frameworks", "QtWidgets.framework")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "Frameworks", "QtPrintSupport.framework")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "Frameworks", "QtSvg.framework")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "PlugIns", "iconengines")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "PlugIns", "imageformats")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "PlugIns", "platforms")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "PlugIns", "printsupport")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "Resources", "empty.lproj")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "Info.plist")],
+			[True, "rm", "-rf", os.path.join(binname, "Contents", "PkgInfo")],
 			[True, "ln", "-s" , os.path.join("MacOS", basename), os.path.join(binname, "Contents", basename)]
 		]
 	else:

@@ -5,12 +5,12 @@ qtifw_auto_deploy {
 	isEmpty(QTIFW_DEPLOY_SRC): {
 		win32:CONFIG(debug, debug|release): QTIFW_DEPLOY_SRC = "$$OUT_PWD/debug/$${TARGET}.exe"
 		else:win32:CONFIG(release, debug|release): QTIFW_DEPLOY_SRC = "$$OUT_PWD/release/$${TARGET}.exe"
-		else:mac: QTIFW_DEPLOY_SRC = "$$OUT_PWD/$${TARGET}.app"
+		else:mac:app_bundle: QTIFW_DEPLOY_SRC = "$$OUT_PWD/$${TARGET}.app"
 		else: QTIFW_DEPLOY_SRC = "$$OUT_PWD/$$TARGET"
 	}
 
 	!isEmpty(QTIFW_AUTO_INSTALL_PKG) {
-		mac:!qtifw_no_bundle: $$first(QTIFW_AUTO_INSTALL_PKG).dirs += "$$OUT_PWD/deployed/$${TARGET}.app"
+		mac:app_bundle: $$first(QTIFW_AUTO_INSTALL_PKG).dirs += "$$OUT_PWD/deployed/$${TARGET}.app"
 		else: $$first(QTIFW_AUTO_INSTALL_PKG).dirs += "$$OUT_PWD/deployed"
 	}
 }
@@ -19,12 +19,10 @@ qtifw_auto_deploy {
 	isEmpty(QTIFW_DEPLOY_OUT): QTIFW_DEPLOY_OUT = deployed
 	isEmpty(QTIFW_DEPLOY_LCOMBINE): QTIFW_DEPLOY_LCOMBINE = $$PWD/../../qpm-translate/lcombine.py
 
-	mac:!app_bundle: error(Deployment for non app bundles is not supported. It will fail. Specify qtifw_no_bundle instead!)
-
 	linux: QTIFW_DEPLOY_ARGS = linux
 	else:win32:CONFIG(release, debug|release): QTIFW_DEPLOY_ARGS = win_release
 	else:win32:CONFIG(debug, debug|release): QTIFW_DEPLOY_ARGS = win_debug
-	else:mac:!qtifw_no_bundle: QTIFW_DEPLOY_ARGS = mac
+	else:mac:app_bundle: QTIFW_DEPLOY_ARGS = mac
 	else:mac: QTIFW_DEPLOY_ARGS = mac_no_bundle
 	else: QTIFW_DEPLOY_ARGS = unknown
 
