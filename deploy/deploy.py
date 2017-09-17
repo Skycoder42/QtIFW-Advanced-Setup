@@ -24,8 +24,10 @@ tsfiles = sys.argv[9:]
 addts = (tsfiles != "")
 binname = os.path.join(outdir, os.path.basename(depsrc))
 transdir = ""
-if platform[0:3] == "mac":
+if platform == "mac":
 	transdir = os.path.join(binname , "Contents", "Resources", "translations")
+elif platform == "mac_no_bundle":
+	transdir = os.path.join(binname + ".app", "Contents", "Resources", "translations")
 else:
 	transdir = os.path.join(outdir, "translations")
 
@@ -163,7 +165,7 @@ else:
 if platform == "mac_no_bundle":
 	# no bundle -> renamings
 	bkpName = outdir + ".bkp"
-	oldName = os.path.join(bkpName, os.path.basename(depsrc), "Contents")
+	oldName = os.path.join(bkpName, os.path.basename(depsrc) + ".app", "Contents")
 	shutil.move(outdir, bkpName)
 	shutil.move(oldName, outdir)
 	shutil.rmtree(bkpName)
