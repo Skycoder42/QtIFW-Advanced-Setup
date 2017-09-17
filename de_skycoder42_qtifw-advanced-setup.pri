@@ -17,7 +17,7 @@ qtifw_install_target {
 		target_p.depends = installer
 
 		win32: QTIFW_REPO_NAME = ../repository_win.zip
-		mac: QTIFW_REPO_NAME = ../repository_mac.tar.xz
+		else:mac: QTIFW_REPO_NAME = ../repository_mac.tar.xz
 		else: QTIFW_REPO_NAME = ../repository_linux.tar.xz
 
 		qtifw_no_compress: target_p.commands = $$QMAKE_INSTALL_DIR $$shell_quote($$shell_path($$QTIFW_DIR/repository)) $$shell_path($(INSTALL_ROOT)/)
