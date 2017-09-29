@@ -7,7 +7,7 @@ DISTFILES += \
 	$$PWD/build.py
 
 #variable defaults
-isEmpty(QTIFW_BIN): QTIFW_BIN = "$$[QT_INSTALL_BINS]/../../../Tools/QtInstallerFramework/2.0/bin/"
+isEmpty(QTIFW_BIN): QTIFW_BIN = "$$[QT_INSTALL_BINS]/../../../Tools/QtInstallerFramework/3.0/bin/"
 isEmpty(QTIFW_DIR): QTIFW_DIR = qtifw-installer
 isEmpty(QTIFW_MODE): QTIFW_MODE = offline #can be: offline, online, repository, online_all
 isEmpty(QTIFW_TARGET): QTIFW_TARGET = "$$TARGET Installer"
@@ -34,9 +34,9 @@ win32:msvc { #TODO use files instead
 			else: VC_NAME = vcredist_x86.exe
 			for(path, VC_KNOWN_PATHS) {
 				X_PATH = $${VCTMP}\$${path}\$${VC_NAME}
-				message(trying VC redist path: $$X_PATH)
 				exists($$X_PATH): QTIFW_VCPATH = $$X_PATH
 			}
+			message(Detected QTIFW_VCPATH as $$QTIFW_VCPATH)
 		}
 	}
 
