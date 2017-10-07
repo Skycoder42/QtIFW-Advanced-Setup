@@ -1,0 +1,28 @@
+{
+    "dependencies": [
+    ],
+    "license": {
+        "file": "LICENSE",
+        "name": "BSD_3_CLAUSE"
+    },
+    "prcFile": "de_skycoder42_qtifw-advanced-setup.pri",
+    "priFile": "de_skycoder42_qtifw-advanced-setup.pri",
+    "priIncludes": [
+    ],
+    "publishers": {
+        "qpm": {
+            "author": {
+                "email": "skycoder42.de@gmx.de",
+                "name": "Skycoder"
+            },
+            "description": "Create \"Qt Installer Framework\" installers from your project via qmake",
+            "name": "de.skycoder42.qtifw-advanced-setup",
+            "repository": {
+                "type": "GITHUB",
+                "url": "https://github.com/Skycoder42/QtIFW-Advanced-Setup.git"
+            },
+            "webpage": "https://github.com/Skycoder42/QtIFW-Advanced-Setup"
+        }
+    },
+    "source": false
+}
