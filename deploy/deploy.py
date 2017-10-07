@@ -18,8 +18,7 @@ translationdir = sys.argv[4]
 depsrc = sys.argv[5]
 outdir = sys.argv[6]
 outpwd = sys.argv[7]
-lcombine = sys.argv[8]
-tsfiles = sys.argv[9:]
+tsfiles = sys.argv[8:]
 
 addts = (tsfiles != "")
 binname = os.path.join(outdir, os.path.basename(depsrc))
@@ -106,25 +105,75 @@ def run_deptool():
 	for cmd in postcmds:
 		subprocess.run(cmd[1:], check=cmd[0])
 
+def lcombine(translations):
+	tool = os.path.join(bindir, "lconvert")
+
+	filesmap = {}
+	namemap = {}
+
+	for ts in translations:
+		name = os.path.splitext(ts)[0]
+		index = name.rindex("_")
+		lang = name[index+1:]
+		filesmap[lang] = []
+		namemap[lang] = os.path.split(name)[1]
+
+	for root, subdirs, files in os.walk(translationdir, followlinks=True):
+		for file in files:
+			if file[-3:] == ".qm":
+				name = os.path.splitext(file)[0]
+				index = name.rindex("_")
+				lang = name[index+1:]
+				if lang in filesmap:
+					filesmap[lang].append(os.path.join(root, file))
+
+	for lang in filesmap:
+		command = [
+			tool,
+			"-i"
+		]
+		command += filesmap[lang]
+		command.append("-o")
+		command.append(namemap[lang] + ".qm")
+
+		subprocess.run(command)
+
 def create_mac_ts():
+	tool = os.path.join(bindir, "lconvert")
+	filesmap = {}
+	namemap = {}
+
+	for pattern in ["qt_??.qm",	"qt_??_??.qm"]:
+		for ts in glob.glob(os.path.join(translationdir, pattern)):
+			name = os.path.splitext(ts)[0]
+			index = name.rindex("_")
+			lang = name[index+1:]
+			filesmap[lang] = []
+			namemap[lang] = os.path.split(name)[1]
+
+	for root, subdirs, files in os.walk(translationdir, followlinks=True):
+		for file in files:
+			if file[-3:] == ".qm":
+				name = os.path.splitext(file)[0]
+				index = name.rindex("_")
+				lang = name[index+1:]
+				if lang in filesmap:
+					filesmap[lang].append(os.path.join(root, file))
+
 	os.makedirs(transdir, exist_ok=True)
-	trpatterns = [
-		"qt_??.qm",
-		"qt_??_??.qm"
-	]
+	for lang in filesmap:
+		command = [
+			tool,
+			"-if", "qm",
+			"-i"
+		]
+		command += filesmap[lang]
+		command.append("-of")
+		command.append("qm")
+		command.append("-o")
+		command.append(namemap[lang] + ".qm")
 
-	combine_args = []
-	for pattern in trpatterns:
-		for file in glob.glob(os.path.join(translationdir, pattern)):
-			combine_args.append(file)
-
-	combine_args = [
-		"/usr/local/bin/python3",
-		lcombine,
-		os.path.join(bindir, "lconvert"),
-		translationdir
-	] + combine_args
-	subprocess.run(combine_args, cwd=transdir, check=True)
+		subprocess.run(command)
 
 def cp_trans():
 	for tsfile in tsfiles:

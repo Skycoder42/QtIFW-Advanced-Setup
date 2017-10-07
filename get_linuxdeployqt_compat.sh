@@ -12,7 +12,7 @@ fi
 qt_bins=$("$rqmake" -query QT_INSTALL_BINS)
 
 cd $(mktemp -d)
-git clone https://github.com/probonopd/linuxdeployqt.git
+git clone https://github.com/probonopd/linuxdeployqt.git -b continuous
 cd linuxdeployqt
 
 "$rqmake"

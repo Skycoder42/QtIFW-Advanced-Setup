@@ -17,7 +17,6 @@ qtifw_auto_deploy {
 
 !isEmpty(QTIFW_DEPLOY_SRC) {
 	isEmpty(QTIFW_DEPLOY_OUT): QTIFW_DEPLOY_OUT = deployed
-	isEmpty(QTIFW_DEPLOY_LCOMBINE): QTIFW_DEPLOY_LCOMBINE = $$PWD/../../qpm-translate/lcombine.py
 
 	linux: QTIFW_DEPLOY_ARGS = linux
 	else:win32:CONFIG(release, debug|release): QTIFW_DEPLOY_ARGS = win_release
@@ -32,7 +31,6 @@ qtifw_auto_deploy {
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_SRC)
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_OUT)
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$OUT_PWD)
-	QTIFW_DEPLOY_ARGS += $$shell_quote($$QTIFW_DEPLOY_LCOMBINE)
 	!isEmpty(TRANSLATIONS): QTIFW_DEPLOY_ARGS += $$TRANSLATIONS
 
 	qtifw_deploy_clean.target = deploy-clean
