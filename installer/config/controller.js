@@ -43,6 +43,17 @@ function Controller()
 		installer.setValue("allUsers", isAdmin ? "true" : "false");
 		installer.setValue("isOffline", installer.isOfflineOnly() ? "true" : "false");
 	}
+
+	//skip prompt prepare
+	if(installer.value("skipPrompt") === "1") {
+		installer.statusChanged.connect(function(status) {
+			if(status == QInstaller.Success)
+				gui.clickButton(buttons.CancelButton);
+		});
+		installer.updateFinished.connect(function() {
+			gui.clickButton(buttons.NextButton);
+		});
+	}
 }
 
 Controller.prototype.IntroductionPageCallback = function()
@@ -136,6 +147,19 @@ Controller.prototype.TargetDirectoryPageCallback = function()
 	var widget = gui.currentPageWidget();
 	if (widget !== null)// set path with non-native modifiers
 		widget.TargetDirectoryLineEdit.text = installer.value("TargetDir").replace("\\", "/");
+}
+
+Controller.prototype.ComponentSelectionPageCallback = function() {
+	if(installer.value("skipPrompt") === "1") {
+		var widget = gui.currentPageWidget();
+		widget.selectAll();
+		gui.clickButton(buttons.NextButton);
+	}
+}
+
+Controller.prototype.ReadyForInstallationPageCallback = function() {
+	if(installer.value("skipPrompt") === "1")
+		gui.clickButton(buttons.NextButton);
 }
 
 Controller.prototype.FinishedPageCallback = function()
