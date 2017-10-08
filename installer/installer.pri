@@ -14,7 +14,7 @@ isEmpty(QTIFW_TARGET): QTIFW_TARGET = "$$TARGET Installer"
 win32:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .exe
 else:mac:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .app
 else:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .run
-isEmpty(QTIFW_CONFIG): warning(QTIFW_CONFIG must not be empty!)
+isEmpty(QTIFW_CONFIG): error(QTIFW_CONFIG must not be empty!)
 
 # standard installer values
 QTIFW_CONFIG += "$$PWD/config/controller.js"

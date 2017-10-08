@@ -13,6 +13,7 @@ DISTFILES += \
 	example_de.ts
 
 TRANSLATIONS += example_de.ts
+QTIFW_TS_TARGET = lrelease
 
 # installer
 QTIFW_CONFIG = config.xml
