@@ -39,6 +39,12 @@ def copyany(src, dst):
 		else:
 			raise
 
+def rmsilent(path):
+	try:
+		os.remove(path)
+	except OSError:
+		pass
+
 def run_deptool():
 	preparams = []
 	postparams = []
@@ -49,10 +55,10 @@ def run_deptool():
 		if not addts:
 			postparams.append("-no-translations")
 		postcmds = [
-			[True, "rm", os.path.join(outdir, "AppRun")],
-			[False, "cp", "-rPnT", os.path.join(plugindir, "platforminputcontexts"), os.path.join(outdir, "plugins", "platforminputcontexts")],
-			[False, "cp", "-rPnT", os.path.join(plugindir, "platformthemes"), os.path.join(outdir, "plugins", "platformthemes")],
-			[False, "cp", "-rPnT", os.path.join(plugindir, "xcbglintegrations"), os.path.join(outdir, "plugins", "xcbglintegrations")]
+			lambda: rmsilent(os.path.join(outdir, "AppRun")),
+			lambda: copyany(os.path.join(plugindir, "platforminputcontexts"), os.path.join(outdir, "plugins", "platforminputcontexts")),
+			lambda: copyany(os.path.join(plugindir, "platformthemes"), os.path.join(outdir, "plugins", "platformthemes")),
+			lambda: copyany(os.path.join(plugindir, "xcbglintegrations"), os.path.join(outdir, "plugins", "xcbglintegrations"))
 		]
 	elif platform[0:3] == "win":
 		preparams = [os.path.join(bindir, "windeployqt.exe")]
@@ -67,8 +73,8 @@ def run_deptool():
 			preparams.append("-no-translations")
 		pathbase = os.path.sep.join(outdir.split("/"))
 		postcmds = [
-			[True, "cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x86.exe") + " > nul 2> nul"],
-			[True, "cmd", "/c", "del " + os.path.join(pathbase, "vcredist_x64.exe") + " > nul 2> nul"]
+			lambda: rmsilent(os.path.join(pathbase, "vcredist_x86.exe")),
+			lambda: rmsilent(os.path.join(pathbase, "vcredist_x64.exe")),
 		]
 	elif platform == "mac":
 		preparams = [os.path.join(bindir, "macdeployqt")]
@@ -85,25 +91,26 @@ def run_deptool():
 		preparams = [os.path.join(bindir, "macdeployqt")]
 		postparams = []
 		postcmds = [
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "Frameworks", "QtGui.framework")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "Frameworks", "QtWidgets.framework")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "Frameworks", "QtPrintSupport.framework")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "Frameworks", "QtSvg.framework")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "PlugIns", "iconengines")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "PlugIns", "imageformats")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "PlugIns", "platforms")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "PlugIns", "printsupport")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "Resources", "empty.lproj")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "Info.plist")],
-			[True, "rm", "-rf", os.path.join(binname, "Contents", "PkgInfo")],
-			[True, "ln", "-s" , os.path.join("MacOS", basename), os.path.join(binname, "Contents", basename)]
+			lambda: shutil.rmtree(os.path.join(binname, "Contents", "Frameworks", "QtGui.framework")),
+			lambda: shutil.rmtree(os.path.join(binname, "Contents", "Frameworks", "QtWidgets.framework")),
+			lambda: shutil.rmtree(os.path.join(binname, "Contents", "Frameworks", "QtPrintSupport.framework")),
+			lambda: shutil.rmtree(os.path.join(binname, "Contents", "Frameworks", "QtSvg.framework")),
+			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
+			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "imageformats")),
+			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "platforms")),
+			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "printsupport")),
+			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
+			lambda: os.remove(os.path.join(binname, "Contents", "Resources", "empty.lproj")),
+			lambda: os.remove(os.path.join(binname, "Contents", "Info.plist")),
+			lambda: os.remove(os.path.join(binname, "Contents", "PkgInfo")),
+			lambda: os.symlink(os.path.join("MacOS", basename), os.path.join(binname, "Contents", basename))
 		]
 	else:
 		raise Exception("Unknown platform type: " + platform)
 
 	subprocess.run(preparams + [binname] + postparams, check=True)
 	for cmd in postcmds:
-		subprocess.run(cmd[1:], check=cmd[0])
+		cmd()
 
 def lcombine(translations):
 	tool = os.path.join(bindir, "lconvert")
