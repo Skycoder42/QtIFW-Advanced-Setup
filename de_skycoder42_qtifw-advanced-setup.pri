@@ -30,7 +30,8 @@
 				$$QMAKE_INSTALL_FILE $$QTIFW_REPO_NAME $(INSTALL_ROOT)/
 
 			target_d.target = target_d
-			target_d.commands = $$QMAKE_MKDIR $$shell_path($(INSTALL_ROOT)/) || true
+			win32: target_d.commands = $$QMAKE_MKDIR $$shell_path($(INSTALL_ROOT)/) || (exit 0)
+			else: target_d.commands = $$QMAKE_MKDIR $$shell_path($(INSTALL_ROOT)/) || true
 			target_p.depends += target_d
 
 			target_r.depends += target_p
