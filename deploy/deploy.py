@@ -45,6 +45,10 @@ def rmsilent(path):
 	except OSError:
 		pass
 
+def rmtree(path):
+	if os.path.exists(path):
+		shutil.rmtree(path)
+
 def run_deptool():
 	preparams = []
 	postparams = []
@@ -91,15 +95,15 @@ def run_deptool():
 		preparams = [os.path.join(bindir, "macdeployqt")]
 		postparams = []
 		postcmds = [
-			lambda: shutil.rmtree(os.path.join(binname, "Contents", "Frameworks", "QtGui.framework")),
-			lambda: shutil.rmtree(os.path.join(binname, "Contents", "Frameworks", "QtWidgets.framework")),
-			lambda: shutil.rmtree(os.path.join(binname, "Contents", "Frameworks", "QtPrintSupport.framework")),
-			lambda: shutil.rmtree(os.path.join(binname, "Contents", "Frameworks", "QtSvg.framework")),
-			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
-			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "imageformats")),
-			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "platforms")),
-			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "printsupport")),
-			lambda: shutil.rmtree(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
+			lambda: rmtree(os.path.join(binname, "Contents", "Frameworks", "QtGui.framework")),
+			lambda: rmtree(os.path.join(binname, "Contents", "Frameworks", "QtWidgets.framework")),
+			lambda: rmtree(os.path.join(binname, "Contents", "Frameworks", "QtPrintSupport.framework")),
+			lambda: rmtree(os.path.join(binname, "Contents", "Frameworks", "QtSvg.framework")),
+			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
+			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "imageformats")),
+			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "platforms")),
+			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "printsupport")),
+			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
 			lambda: os.remove(os.path.join(binname, "Contents", "Resources", "empty.lproj")),
 			lambda: os.remove(os.path.join(binname, "Contents", "Info.plist")),
 			lambda: os.remove(os.path.join(binname, "Contents", "PkgInfo")),
@@ -204,7 +208,7 @@ def patch_qtconf(translationsPresent):
 		raise Exception("Unknown platform type: " + platform)
 
 # prepare & copy files
-shutil.rmtree(outdir, ignore_errors=True)
+rmtree(outdir)
 os.makedirs(outdir, exist_ok=True)
 copyany(depsrc, binname)
 
