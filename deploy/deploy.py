@@ -45,7 +45,7 @@ def rmsilent(path):
 
 def rmtsilent(path):
 	if os.path.exists(path):
-		shutil.rmtsilent(path)
+		shutil.rmtree(path)
 
 def run_deptool():
 	preparams = []
@@ -226,4 +226,4 @@ if platform == "mac_no_bundle":
 	oldName = os.path.join(bkpName, os.path.basename(depsrc) + ".app", "Contents")
 	shutil.move(outdir, bkpName)
 	shutil.move(oldName, outdir)
-	shutil.rmtsilent(bkpName)
+	shutil.rmtree(bkpName)
