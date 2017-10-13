@@ -40,14 +40,12 @@ def copyany(src, dst):
 			raise
 
 def rmsilent(path):
-	try:
-		os.remove(path)
-	except OSError:
-		pass
-
-def rmtree(path):
 	if os.path.exists(path):
-		shutil.rmtree(path)
+		os.remove(path)
+
+def rmtsilent(path):
+	if os.path.exists(path):
+		shutil.rmtsilent(path)
 
 def run_deptool():
 	preparams = []
@@ -95,18 +93,18 @@ def run_deptool():
 		preparams = [os.path.join(bindir, "macdeployqt")]
 		postparams = []
 		postcmds = [
-			lambda: rmtree(os.path.join(binname, "Contents", "Frameworks", "QtGui.framework")),
-			lambda: rmtree(os.path.join(binname, "Contents", "Frameworks", "QtWidgets.framework")),
-			lambda: rmtree(os.path.join(binname, "Contents", "Frameworks", "QtPrintSupport.framework")),
-			lambda: rmtree(os.path.join(binname, "Contents", "Frameworks", "QtSvg.framework")),
-			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
-			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "imageformats")),
-			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "platforms")),
-			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "printsupport")),
-			lambda: rmtree(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
-			lambda: os.remove(os.path.join(binname, "Contents", "Resources", "empty.lproj")),
-			lambda: os.remove(os.path.join(binname, "Contents", "Info.plist")),
-			lambda: os.remove(os.path.join(binname, "Contents", "PkgInfo")),
+			lambda: rmtsilent(os.path.join(binname, "Contents", "Frameworks", "QtGui.framework")),
+			lambda: rmtsilent(os.path.join(binname, "Contents", "Frameworks", "QtWidgets.framework")),
+			lambda: rmtsilent(os.path.join(binname, "Contents", "Frameworks", "QtPrintSupport.framework")),
+			lambda: rmtsilent(os.path.join(binname, "Contents", "Frameworks", "QtSvg.framework")),
+			lambda: rmtsilent(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
+			lambda: rmtsilent(os.path.join(binname, "Contents", "PlugIns", "imageformats")),
+			lambda: rmtsilent(os.path.join(binname, "Contents", "PlugIns", "platforms")),
+			lambda: rmtsilent(os.path.join(binname, "Contents", "PlugIns", "printsupport")),
+			lambda: rmtsilent(os.path.join(binname, "Contents", "PlugIns", "iconengines")),
+			lambda: rmsilent(os.path.join(binname, "Contents", "Resources", "empty.lproj")),
+			lambda: rmsilent(os.path.join(binname, "Contents", "Info.plist")),
+			lambda: rmsilent(os.path.join(binname, "Contents", "PkgInfo")),
 			lambda: os.symlink(os.path.join("MacOS", basename), os.path.join(binname, "Contents", basename))
 		]
 	else:
@@ -208,7 +206,7 @@ def patch_qtconf(translationsPresent):
 		raise Exception("Unknown platform type: " + platform)
 
 # prepare & copy files
-rmtree(outdir)
+rmtsilent(outdir)
 os.makedirs(outdir, exist_ok=True)
 copyany(depsrc, binname)
 
@@ -228,4 +226,4 @@ if platform == "mac_no_bundle":
 	oldName = os.path.join(bkpName, os.path.basename(depsrc) + ".app", "Contents")
 	shutil.move(outdir, bkpName)
 	shutil.move(oldName, outdir)
-	shutil.rmtree(bkpName)
+	shutil.rmtsilent(bkpName)
