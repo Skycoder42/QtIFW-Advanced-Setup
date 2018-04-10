@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+	<DisplayName>QtIFW-Advanced Example User Files</DisplayName>
+	<Description>An example for a component you can add.</Description>
+	<DisplayName xml:lang="de">QtIFW-Advanced Beispiel Benutzer-Dateien</DisplayName>
+	<Description xml:lang="de">Ein Beispiel für eine Komponente, die Sie hinzufügen können.</Description>
+	<Version>1.0.0</Version>
+	<ReleaseDate>2016-01-01</ReleaseDate>
+	<ForcedInstallation>true</ForcedInstallation>
+	<Default>true</Default>
+</Package>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+	<Name>QtIFW-Advanced Sample</Name>
+	<Version>1.0.0</Version>
+	<Title>QtIFW-Advanced Sample Installer</Title>
+	<Publisher>Sykcoder42</Publisher>
+	<ProductUrl>https://github.com/Skycoder42/QtIFW-Advanced-Setup</ProductUrl>
+	<StartMenuDir>QtIFW-Advanced Sample</StartMenuDir>
+	<TargetDir>QtIFW-Advanced Sample</TargetDir>
+	<RunProgram>Example</RunProgram>
+	<AllowSpaceInPath>true</AllowSpaceInPath>
+	<AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
+	<RemoteRepositories>
+		<Repository>
+			<Url>example.com/download/QtIFW-Advanced Sample</Url>
+			<Enabled>1</Enabled>
+			<DisplayName>QtIFW-Advanced Sample Online Repository</DisplayName>
+		</Repository>
+	</RemoteRepositories>
+	<ControlScript>controller.js</ControlScript>
+</Installer>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+	<DisplayName>Microsoft Visual C++ Redistributable</DisplayName>
+	<Description>Installs the Visual C++ redistributables</Description>
+	<Description xml:lang="ar">تثبيت فيسوال C ++ ريديستريبوتابلز</Description>
+	<Description xml:lang="de">Installiert die Visual C ++ - Redistributables</Description>
+	<Description xml:lang="es">Instala los redistribuibles de Visual C ++</Description>
+	<Description xml:lang="fr">Installe les redistribuables Visual C ++</Description>
+	<Description xml:lang="it">Installa i redistributabili di Visual C ++</Description>
+	<Description xml:lang="ja">Visual C ++再配布可能ファイルをインストールします。</Description>
+	<Description xml:lang="pt">Microsoft Visual C ++ Redistributable</Description>
+	<Description xml:lang="ru">Устанавливает распространяемые компоненты Visual C ++</Description>
+	<Description xml:lang="zh">安装Visual C ++可重新分发</Description>
+	<Version>14.0.24215</Version>
+	<SortingPriority>-10</SortingPriority>
+	<ReleaseDate>2016-10-23</ReleaseDate>
+	<Script>install.js</Script>
+	<Default>true</Default>
+</Package>

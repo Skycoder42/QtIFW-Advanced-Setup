@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+	<DisplayName>QtIFW-Advanced attatchments</DisplayName>
+	<Description>A component to provide the advanced installer features</Description>
+	<Version>1.1.0</Version>
+	<ReleaseDate>2017-05-20</ReleaseDate>
+	<Script>install.js</Script>
+	<UserInterfaces>
+		<UserInterface>ShortcutPage.ui</UserInterface>
+		<UserInterface>UserPage.ui</UserInterface>
+	</UserInterfaces>
+	<Translations>
+		<Translation>ar.qm</Translation>
+		<Translation>de.qm</Translation>
+		<Translation>es.qm</Translation>
+		<Translation>fr.qm</Translation>
+		<Translation>it.qm</Translation>
+		<Translation>ja.qm</Translation>
+		<Translation>pt.qm</Translation>
+		<Translation>ru.qm</Translation>
+		<Translation>zh.qm</Translation>
+	</Translations>
+	<Licenses>
+		<License name="BSD 3 Clause License" file="LICENSE.txt" />
+	</Licenses>
+	<ForcedInstallation>true</ForcedInstallation>
+	<Virtual>true</Virtual>
+</Package>
