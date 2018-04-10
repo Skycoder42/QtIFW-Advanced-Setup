@@ -5,8 +5,8 @@
         "file": "LICENSE",
         "name": "BSD_3_CLAUSE"
     },
-    "prcFile": "de_skycoder42_qtifw-advanced-setup.pri",
-    "priFile": "de_skycoder42_qtifw-advanced-setup.pri",
+    "prcFile": "qtifw-advanced-setup.pri",
+    "priFile": "qtifw-advanced-setup.pri",
     "priIncludes": [
     ],
     "publishers": {
