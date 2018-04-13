@@ -8,23 +8,44 @@ DISTFILES += \
 
 #variable defaults
 isEmpty(QTIFW_BIN): QTIFW_BIN = "$$[QT_INSTALL_BINS]/../../../Tools/QtInstallerFramework/3.0/bin/"
-isEmpty(QTIFW_DIR): QTIFW_DIR = qtifw-installer
 isEmpty(QTIFW_MODE): QTIFW_MODE = offline #can be: offline, online, repository, online_all
 isEmpty(QTIFW_TARGET): QTIFW_TARGET = "$$TARGET Installer"
 win32:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .exe
 else:mac:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .app
 else:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .run
-isEmpty(QTIFW_CONFIG): error(QTIFW_CONFIG must not be empty!)
 
-# standard installer values
-QTIFW_CONFIG += "$$PWD/config/controller.js"
+# standard installer script
+qtifw_advanced_config.path = /config
+qtifw_advanced_config.files += "$$PWD/config/controller.js"
+qtifw_install_targets: INSTALLS += qtifw_advanced_config
 
-aspkg.pkg = de.skycoder42.advancedsetup
-aspkg.meta = "$$PWD/packages/de.skycoder42.advancedsetup/meta"
-win32: aspkg.dirs = "$$PWD/packages/de.skycoder42.advancedsetup/data"
-QTIFW_PACKAGES += aspkg
+# copy setup stuff
+qtifw_advanced_pkg.path = /packages
+qtifw_advanced_pkg.files += "$$PWD/packages/de.skycoder42.advancedsetup"
+qtifw_install_targets: INSTALLS += qtifw_advanced_pkg
 
-win32:msvc { #TODO use files instead
+# translations
+isEmpty(LRELEASE): qtPrepareTool(LRELEASE, lrelease)
+QTIFW_TRANSLATIONS = $$files($$PWD/translations/*.ts)
+qtifw_translate.name = $$LRELEASE translate ${QMAKE_FILE_IN}
+qtifw_translate.input = QTIFW_TRANSLATIONS
+qtifw_translate.variable_out = QTIFW_TRANSLATIONS_QM
+qtifw_translate.commands = $$LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_OUT}
+qtifw_translate.output = $$OUT_PWD/qtifw-ts/${QMAKE_FILE_BASE}.qm
+qtifw_translate.CONFIG += no_link
+QMAKE_EXTRA_COMPILERS += qtifw_translate
+# and install them
+qtifw_advanced_ts_pkg.path = /packages/de.skycoder42.advancedsetup/meta
+qtifw_advanced_ts_pkg.depends += compiler_qtifw_translate_make_all
+qtifw_advanced_ts_pkg.CONFIG += no_check_exist
+for(tsfile, QTIFW_TRANSLATIONS) {
+	tsBase = $$basename(tsfile)
+	qtifw_advanced_ts_pkg.files += "$$OUT_PWD/qtifw-ts/$$replace(tsBase, \.ts, .qm)"
+}
+qtifw_install_targets: INSTALLS += qtifw_advanced_ts_pkg
+
+# copy windows vcredist
+win32:msvc {
 	isEmpty(QTIFW_VCPATH) {
 		VCTMP = $$getenv(VCINSTALLDIR)
 		VCTMP = $$split(VCTMP, ;)
@@ -47,18 +68,19 @@ win32:msvc { #TODO use files instead
 
 	# only add if vcpath was actually found
 	!isEmpty(QTIFW_VCPATH) {
-		contains(QT_ARCH, x86_64): redistpkg.pkg = com.microsoft.vcredist.x64
-		else: redistpkg.pkg = com.microsoft.vcredist.x86
-		redistpkg.meta = "$$PWD/packages/com.microsoft.vcredist/meta"
-		redistpkg.files = "$$QTIFW_VCPATH"
-		QTIFW_PACKAGES += redistpkg
+		contains(QT_ARCH, x86_64): qtifw_redist_pkg_meta.path = /packages/com.microsoft.vcredist.x64
+		else: qtifw_redist_pkg_meta.path = /packages/com.microsoft.vcredist.x86
+		qtifw_redist_pkg_meta.files += $$PWD/packages/com.microsoft.vcredist/meta
+
+		qtifw_redist_pkg_data.path = $${qtifw_redist_pkg_meta.path}/data
+		qtifw_redist_pkg_data.files += $$QTIFW_VCPATH
+
+		qtifw_install_targets: INSTALLS += qtifw_redist_pkg_meta qtifw_redist_pkg_data
 	}
 }
 
-# installer target generation
-QTIFW_ARGS = $$shell_quote($$shell_path($$_PRO_FILE_PWD_))
-QTIFW_ARGS += $$shell_quote($$shell_path($$QTIFW_DIR))
-QTIFW_ARGS += $$shell_quote($$shell_path($$[QT_INSTALL_BINS]))
+## installer target generation
+QTIFW_ARGS += $(INSTALL_ROOT)
 QTIFW_ARGS += $$shell_quote($$shell_path($$QTIFW_BIN))
 QTIFW_ARGS += $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x})
 QTIFW_ARGS += $$shell_quote($$QTIFW_MODE)
@@ -67,27 +89,9 @@ else:mac: QTIFW_ARGS += mac
 else: QTIFW_ARGS += linux
 contains(QT_ARCH, x86_64): QTIFW_ARGS += x64
 else: QTIFW_ARGS += x86
-for(cfg, QTIFW_CONFIG): QTIFW_ARGS += $$shell_quote($$shell_path($$cfg))
-for(pkg, QTIFW_PACKAGES) {
-	QTIFW_ARGS += p $$shell_quote($$first($${pkg}.pkg))
-	for(meta, $${pkg}.meta): QTIFW_ARGS += m $$shell_quote($$shell_path($$meta))
-	for(data, $${pkg}.dirs): QTIFW_ARGS += d $$shell_quote($$shell_path($$data))
-	for(data, $${pkg}.files): QTIFW_ARGS += f $$shell_quote($$shell_path($$data))
-	for(subdir, $${pkg}.subdirs) {
-		QTIFW_ARGS += t $$shell_quote($$shell_path($$first($${subdir}.name)))
-		for(data, $${subdir}.dirs): QTIFW_ARGS += d $$shell_quote($$shell_path($$data))
-		for(data, $${subdir}.files): QTIFW_ARGS += f $$shell_quote($$shell_path($$data))
-	}
-}
 
 qtifw_inst.target = installer
-linux: qtifw_inst.commands = $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
-else:win32: qtifw_inst.commands = python $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
-else:mac: qtifw_inst.commands = /usr/local/bin/python3 $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
+win32: qtifw_inst.commands = python
+qtifw_inst.commands += $$shell_quote($$shell_path($$PWD/build.py)) $$QTIFW_ARGS
 
-qtifw_inst_clean.target = installer-clean
-win32: qtifw_inst_clean.commands = $$QMAKE_DEL_FILE /S /Q $$shell_quote($$shell_path($$QTIFW_DIR))
-else: qtifw_inst_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$QTIFW_DIR))
-clean.depends += qtifw_inst_clean
-
-QMAKE_EXTRA_TARGETS += qtifw_inst clean qtifw_inst_clean
+QMAKE_EXTRA_TARGETS += qtifw_inst

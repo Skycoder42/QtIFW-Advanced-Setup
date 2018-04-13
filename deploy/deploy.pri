@@ -24,9 +24,8 @@ isEmpty(qtifw_deploy_target.path): qtifw_deploy_target.path = $${target.path}
 	for(file, qtifw_deploy_target.files): QTIFW_DEPLOY_ARGS += $$shell_quote($$file)
 
 	qtifw_deploy.target = deploy
-	qtifw_deploy.depends += install
-	win32: qtifw_deploy.commands = python $$shell_quote($$shell_path($$PWD/deploy.py)) $$QTIFW_DEPLOY_ARGS
-	else: qtifw_deploy.commands = $$shell_quote($$shell_path($$PWD/deploy.py)) $$QTIFW_DEPLOY_ARGS
+	win32: qtifw_deploy.commands = python
+	qtifw_deploy.commands += $$shell_quote($$shell_path($$PWD/deploy.py)) $$QTIFW_DEPLOY_ARGS
 
 	QMAKE_EXTRA_TARGETS += qtifw_deploy
 }

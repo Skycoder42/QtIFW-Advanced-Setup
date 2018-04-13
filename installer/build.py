@@ -10,43 +10,18 @@ from distutils.dir_util import copy_tree
 from enum import Enum
 
 # constants
-srcdir = sys.argv[1]
-outdir = sys.argv[2]
-bindir = sys.argv[3]
-qtifwdir = sys.argv[4]
-target = sys.argv[5]
-mode = sys.argv[6]
-platform = sys.argv[7]
-arch = sys.argv[8]
-inputs = sys.argv[9:]
+outdir = sys.argv[1]
+qtifwdir = sys.argv[2]
+target = sys.argv[3]
+
+mode = sys.argv[4]
+platform = sys.argv[5]
+arch = sys.argv[6]
+
 cfgdir = os.path.join(outdir, "config")
 pkgdir = os.path.join(outdir, "packages")
 
 subTDir = ""
-
-# definitions
-class State(Enum):
-	Config = 0
-	Package = 1,
-	Meta = 2,
-	DataDir = 3,
-	DataFile = 4,
-	SubDir = 5
-
-def copy_cfg(src):
-	cfgsrc = os.path.join(srcdir, src)
-	cfgout = os.path.join(cfgdir, os.path.basename(src))
-	shutil.copy2(cfgsrc, cfgout)
-
-def copy_pkg(pkg, state, src, subdir, isDir):
-	pkgsrc = os.path.join(srcdir, src)
-	pkgout = os.path.join(pkgdir, pkg, subdir, subTDir)
-	os.makedirs(pkgout, exist_ok=True)
-	if isDir:
-		copy_tree(pkgsrc, pkgout, preserve_symlinks=True)
-	else:
-		resName = os.path.join(pkgout, os.path.basename(src))
-		shutil.copy2(pkgsrc, resName)
 
 def prepend_file_data(filename, data):
 	with open(filename, "r+") as file:
@@ -54,42 +29,6 @@ def prepend_file_data(filename, data):
 		file.seek(0)
 		file.write(data)
 		file.write(orig)
-
-def create_install_dir():
-	global subTDir
-	state = State.Config
-	pkg = ""
-	for arg in inputs:
-		if arg == "p":
-			state = State.Package
-		elif arg == "m":
-			state = State.Meta
-		elif arg == "d":
-			state = State.DataDir
-		elif arg == "f":
-			state = State.DataFile
-		elif arg == "t":
-			state = State.SubDir
-		else:
-			if state == State.Config:
-				copy_cfg(arg)
-			elif state == State.Package:
-				subTDir = ""
-				pkg = arg
-			elif state == State.Meta:
-				copy_pkg(pkg, state, arg, "meta", True)
-				state = State.Package
-			elif state == State.DataDir:
-				copy_pkg(pkg, state, arg, "data", True)
-				state = State.Package
-			elif state == State.DataFile:
-				copy_pkg(pkg, state, arg, "data", False)
-				state = State.Package
-			elif state == State.SubDir:
-				subTDir = arg
-				state = State.Package
-			else:
-				raise Exception("Invalid state: " + state.name)
 
 def config_arch():
 	#adjust install js
@@ -126,22 +65,6 @@ def config_arch():
 		data += "}\n\n"
 		prepend_file_data(os.path.join(msvc_dir, "meta", "install.js"), data)
 
-def add_translations():
-	pattern_base = os.path.join(os.path.dirname(__file__), "translations")
-
-	args = glob.glob(os.path.join(pattern_base, "*.ts"))
-	args = [
-		os.path.join(bindir, "lrelease"),
-		"-nounfinished"
-	] + args
-
-	subprocess.run(args, check=True)
-
-	metadir = os.path.join(pkgdir, "de.skycoder42.advancedsetup", "meta")
-	for file in glob.glob(os.path.join(pattern_base, "*.qm")):
-		dfile = os.path.join(metadir, os.path.basename(file))
-		shutil.move(file, dfile)
-
 def create_offline():
 	subprocess.run([
 		os.path.join(qtifwdir, "binarycreator"),
@@ -173,12 +96,7 @@ def create_repo():
 	], check=True)
 
 # prepare & copy files
-shutil.rmtree(outdir, ignore_errors=True)
-os.makedirs(cfgdir, exist_ok=True)
-create_install_dir()
 config_arch()
-add_translations()
-
 # generate installer
 if mode == "offline":
 	create_offline()
