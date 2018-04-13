@@ -8,14 +8,14 @@
     "description": "Create \"Qt Installer Framework\" installers from your project via qmake",
     "license": "BSD_3_CLAUSE",
     "name": "de.skycoder42.qtifw-advanced-setup",
-    "pri_filename": "de_skycoder42_qtifw-advanced-setup.pri",
+    "pri_filename": "qtifw-advanced-setup.pri",
     "repository": {
         "type": "GITHUB",
         "url": "https://github.com/Skycoder42/QtIFW-Advanced-Setup.git"
     },
     "version": {
         "fingerprint": "",
-        "label": "1.2.1",
+        "label": "2.0.0",
         "revision": ""
     },
     "webpage": "https://github.com/Skycoder42/QtIFW-Advanced-Setup"
