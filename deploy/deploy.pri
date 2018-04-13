@@ -28,10 +28,5 @@ isEmpty(qtifw_deploy_target.path): qtifw_deploy_target.path = $${target.path}
 	win32: qtifw_deploy.commands = python $$shell_quote($$shell_path($$PWD/deploy.py)) $$QTIFW_DEPLOY_ARGS
 	else: qtifw_deploy.commands = $$shell_quote($$shell_path($$PWD/deploy.py)) $$QTIFW_DEPLOY_ARGS
 
-	qtifw_deploy_clean.target = deploy-clean
-	win32: qtifw_deploy_clean.commands = $$QMAKE_DEL_FILE /S /Q $$shell_quote($$shell_path($$DEPLOY_PATH))
-	else: qtifw_deploy_clean.commands = $$QMAKE_DEL_FILE -r $$shell_quote($$shell_path($$DEPLOY_PATH))
-	clean.depends += qtifw_deploy_clean
-
-	QMAKE_EXTRA_TARGETS += qtifw_deploy clean qtifw_deploy_clean
+	QMAKE_EXTRA_TARGETS += qtifw_deploy
 }
