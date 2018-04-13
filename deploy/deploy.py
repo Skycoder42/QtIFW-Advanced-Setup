@@ -67,10 +67,9 @@ def run_deptool(dependency):
 
 		if not addts:
 			preparams.append("-no-translations")
-		pathbase = os.path.sep.join(outdir.split("/"))
 		postcmds = [
-			lambda: rmsilent(os.path.join(pathbase, "vcredist_x86.exe")),
-			lambda: rmsilent(os.path.join(pathbase, "vcredist_x64.exe")),
+			lambda: rmsilent(os.path.join(deppath, "vcredist_x86.exe")),
+			lambda: rmsilent(os.path.join(deppath, "vcredist_x64.exe")),
 		]
 	elif platform == "mac":
 		preparams = [os.path.join(bindir, "macdeployqt")]
