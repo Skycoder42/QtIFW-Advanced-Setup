@@ -32,7 +32,7 @@
 	}
 
 	qtifw_target {
-		qtifw_deploy.depends += install
+		!qtifw_deploy_no_install: qtifw_deploy.depends += install
 		qtifw_inst.depends += deploy
 		qtifw_install_compress.depends += installer
 
