@@ -72,6 +72,8 @@ def run_deptool(dependency):
 		postcmds = [
 			lambda: rmsilent(os.path.join(deppath, "vcredist_x86.exe")),
 			lambda: rmsilent(os.path.join(deppath, "vcredist_x64.exe")),
+			lambda: rmsilent(os.path.join(deppath, "vc_redist.x86.exe")),
+			lambda: rmsilent(os.path.join(deppath, "vc_redist.x64.exe"))
 		]
 	elif platform == "mac":
 		preparams = [os.path.join(bindir, "macdeployqt")]

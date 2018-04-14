@@ -49,7 +49,7 @@ Component.prototype.createOperations = function()
 			//x11 -> create .desktop file
 			component.addOperation("CreateDesktopEntry",
 								   "@BinaryName@.desktop",
-								   "Version=1.0\nType=Application\nTerminal=false\nExec=\"@RunProgram@\"\nName=@Name@\nIcon=@TargetDir@/main.png");
+								   "Version=1.1\nType=Application\nTerminal=false\nExec=@RunProgram@\nName=@Name@\nIcon=@TargetDir@/main.png");
 		}
 	} catch (e) {
 		print(e);
