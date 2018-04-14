@@ -37,6 +37,11 @@ def rmtsilent(path):
 		shutil.rmtree(path)
 
 
+def cpplugins(plg_type):
+	if not os.path.isdir(os.path.join(deppath, "plugins", plg_type)):
+		shutil.copytree(os.path.join(plugindir, plg_type), os.path.join(deppath, "plugins", plg_type))
+
+
 def run_deptool(dependency):
 	preparams = []
 	postparams = []
@@ -46,15 +51,12 @@ def run_deptool(dependency):
 		postparams = []
 		if not addts:
 			postparams.append("-no-translations")
-		nop = lambda *a, **k: None
+			
 		postcmds = [
 			lambda: rmsilent(os.path.join(deppath, "AppRun")),
-			lambda: shutil.copytree(os.path.join(plugindir, "platformthemes"), os.path.join(deppath, "plugins", "platformthemes"))
-				if not os.path.isdir(os.path.join(deppath, "plugins", "platformthemes"))
-				else nop(),
-			lambda: shutil.copytree(os.path.join(plugindir, "xcbglintegrations"), os.path.join(deppath, "plugins", "xcbglintegrations"))
-				if not os.path.isdir(os.path.join(deppath, "plugins", "xcbglintegrations"))
-				else nop()
+			lambda: cpplugins("platformthemes"),
+			lambda: cpplugins("xcbglintegrations")
+			#,lambda: cpplugins("iconengines")
 		]
 	elif platform[0:3] == "win":
 		preparams = [os.path.join(bindir, "windeployqt.exe")]
@@ -116,7 +118,7 @@ def create_mac_ts():
 		command.append("-of")
 		command.append("qm")
 		command.append("-o")
-		command.append(namemap[lang] + ".qm")
+		command.append(os.path.join(transdir, namemap[lang] + ".qm"))
 
 		subprocess.run(command)
 
@@ -126,7 +128,10 @@ def patch_qtconf():
 		return
 	elif platform[0:3] == "win":
 		file = open(os.path.join(deppath, "qt.conf"), "w")
-		file.write("[Paths]\nPrefix=.\n")
+		file.write("[Paths]\n")
+		file.write("Prefix=.\n")
+		file.write("Plugins=.\n")
+		file.write("Libraries=.\n")
 		file.close()
 	elif platform == "mac":
 		file = open(os.path.join(deppath, depfiles[0], "Contents", "Resources", "qt.conf"), "a")

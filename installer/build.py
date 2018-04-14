@@ -30,6 +30,15 @@ def prepend_file_data(filename, data):
 		file.write(data)
 		file.write(orig)
 
+def mac_move_data():
+	for app_root in glob.glob(os.path.join(pkgdir, "*", "data", "*.app")):
+		print("Correcting installation of app", app_root)
+		cont_dir = os.path.join(os.path.dirname(app_root), "Contents")
+		if os.path.isdir(cont_dir):
+			shutil.rmtree(cont_dir)
+		os.rename(os.path.join(app_root, "Contents"), cont_dir)
+		os.rmdir(app_root)
+
 def config_arch():
 	#adjust install js
 	data = ""
@@ -95,6 +104,9 @@ def create_repo():
 		os.path.join(outdir, "repository", platform + "_" + arch)
 	], check=True)
 
+# mac: rename root app
+if platform == "mac":
+	mac_move_data()
 # prepare & copy files
 config_arch()
 # generate installer
