@@ -18,7 +18,7 @@ translationdir = sys.argv[4]
 deppath = sys.argv[5]
 try:
 	tsindex = sys.argv.index("==")
-	depfiles = sys.argv[6:tsindex-6]
+	depfiles = sys.argv[6:tsindex]
 	qmfiles = sys.argv[tsindex+1:]
 	addts = False
 except ValueError:
