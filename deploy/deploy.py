@@ -16,9 +16,16 @@ bindir = sys.argv[2]
 plugindir = sys.argv[3]
 translationdir = sys.argv[4]
 deppath = sys.argv[5]
-depfiles = sys.argv[6:]
-
-addts = True
+try:
+	tsindex = sys.argv.index("==")
+	depfiles = sys.argv[6:tsindex-6]
+	qmfiles = sys.argv[tsindex+1:]
+	addts = False
+except ValueError:
+	depfiles = sys.argv[6:]
+	qmfiles = []
+	addts = True
+print(depfiles, qmfiles)
 
 transdir = ""
 if platform == "mac":
@@ -56,7 +63,6 @@ def run_deptool(dependency):
 			lambda: rmsilent(os.path.join(deppath, "AppRun")),
 			lambda: cpplugins("platformthemes"),
 			lambda: cpplugins("xcbglintegrations")
-			#,lambda: cpplugins("iconengines")
 		]
 	elif platform[0:3] == "win":
 		preparams = [os.path.join(bindir, "windeployqt.exe")]
@@ -86,43 +92,11 @@ def run_deptool(dependency):
 		cmd()
 
 
-# creates joined qm files by combining them
-def create_mac_ts():
-	tool = os.path.join(bindir, "lconvert")
-	filesmap = {}
-	namemap = {}
-
-	for pattern in ["qt_??.qm",	"qt_??_??.qm"]:
-		for ts in glob.glob(os.path.join(translationdir, pattern)):
-			name = os.path.splitext(ts)[0]
-			index = name.rindex("_")
-			lang = name[index+1:]
-			filesmap[lang] = []
-			namemap[lang] = os.path.split(name)[1]
-
-	for root, subdirs, files in os.walk(translationdir, followlinks=True):
-		for file in files:
-			if file[-3:] == ".qm":
-				name = os.path.splitext(file)[0]
-				index = name.rindex("_")
-				lang = name[index+1:]
-				if lang in filesmap:
-					filesmap[lang].append(os.path.join(root, file))
-
+def create_qm(qmbase):
 	os.makedirs(transdir, exist_ok=True)
-	for lang in filesmap:
-		command = [
-			tool,
-			"-if", "qm",
-			"-i"
-		]
-		command += filesmap[lang]
-		command.append("-of")
-		command.append("qm")
-		command.append("-o")
-		command.append(os.path.join(transdir, namemap[lang] + ".qm"))
-
-		subprocess.run(command)
+	for pattern in ["_??.qm",	"_??_??.qm"]:
+		for qmfile in glob.glob(os.path.join(translationdir, qmbase + pattern)):
+			shutil.copy2(qmfile, transdir)
 
 
 def patch_qtconf():
@@ -146,7 +120,7 @@ def patch_qtconf():
 # run the deployment tools
 for dep in depfiles:
 	run_deptool(dep)
+for qmbase in qmfiles:
+	create_qm(qmbase)
 patch_qtconf()
 
-if addts and platform == "mac":
-	create_mac_ts()

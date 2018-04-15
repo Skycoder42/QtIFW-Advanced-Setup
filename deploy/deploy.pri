@@ -22,6 +22,7 @@ isEmpty(qtifw_deploy_target.path): qtifw_deploy_target.path = $${target.path}
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$[QT_INSTALL_TRANSLATIONS])
 	QTIFW_DEPLOY_ARGS += $$shell_quote($$DEPLOY_PATH)
 	for(file, qtifw_deploy_target.files): QTIFW_DEPLOY_ARGS += $$shell_quote($$file)
+	!isEmpty(QTIFW_QM_DEPS): QTIFW_DEPLOY_ARGS += "==" $$QTIFW_QM_DEPS
 
 	qtifw_deploy.target = deploy
 	win32: qtifw_deploy.commands = python
