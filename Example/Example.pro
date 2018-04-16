@@ -14,8 +14,8 @@ DISTFILES += \
 
 TRANSLATIONS += example_de.ts
 
-# enable the "qtifw" target to automatically make install, deploy and installer
-CONFIG += qtifw_target
+# enable the "qtifw" target to automatically make lrelease, install, deploy, installer and qtifw-compress
+CONFIG += qtifw_target qtifw_auto_ts
 
 # make install build products
 target.path = /packages/de.skycoder42.qtifw-sample/data

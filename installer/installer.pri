@@ -10,9 +10,11 @@ DISTFILES += \
 isEmpty(QTIFW_BIN): QTIFW_BIN = "$$[QT_INSTALL_BINS]/../../../Tools/QtInstallerFramework/3.0/bin/"
 isEmpty(QTIFW_MODE): QTIFW_MODE = offline #can be: offline, online, repository, online_all
 isEmpty(QTIFW_TARGET): QTIFW_TARGET = "$$TARGET Installer"
-win32:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .exe
-else:mac:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .app
-else:isEmpty(QTIFW_TARGET_x): QTIFW_TARGET_x = .run
+isEmpty(QTIFW_TARGET_EXT) {
+	win32: QTIFW_TARGET_EXT = .exe
+	else:mac: QTIFW_TARGET_EXT = .app
+	else: QTIFW_TARGET_EXT = .run
+}
 
 # standard installer script
 qtifw_advanced_config.path = /config
@@ -82,7 +84,7 @@ win32:msvc {
 ## installer target generation
 QTIFW_ARGS += $(INSTALL_ROOT)
 QTIFW_ARGS += $$shell_quote($$shell_path($$QTIFW_BIN))
-QTIFW_ARGS += $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x})
+QTIFW_ARGS += $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_EXT})
 QTIFW_ARGS += $$shell_quote($$QTIFW_MODE)
 win32: QTIFW_ARGS += win
 else:mac: QTIFW_ARGS += mac

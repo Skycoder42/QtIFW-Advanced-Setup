@@ -2,7 +2,8 @@ DISTFILES += \
 	$$PWD/deploy.py
 
 isEmpty(qtifw_deploy_target.files) {
-	win32: qtifw_deploy_target.files = "$${TARGET}.exe"
+	!isEmpty(TARGET_EXT): qtifw_deploy_target.files = "$${TARGET}$${TARGET_EXT}"
+	else:win32: qtifw_deploy_target.files = "$${TARGET}.exe"
 	else:mac:app_bundle: qtifw_deploy_target.files = "$${TARGET}.app"
 	else: qtifw_deploy_target.files = "$$TARGET"
 }

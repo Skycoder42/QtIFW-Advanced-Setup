@@ -8,7 +8,6 @@
 	QMAKE_EXTRA_TARGETS += qtifw_install_compress
 	equals(QTIFW_MODE, repository)|equals(QTIFW_MODE, online_all) { #deploy repository
 		target_c_rep.target = target_c_rep
-		target_c_rep.depends = installer
 		QMAKE_EXTRA_TARGETS += target_c_rep
 		qtifw_install_compress.depends += target_c_rep
 
@@ -23,22 +22,34 @@
 
 	!equals(QTIFW_MODE, repository):mac { #deploy installer binary
 		target_c_mac.target = target_c_mac
-		target_c_mac.depends = installer
 		QMAKE_EXTRA_TARGETS += target_c_mac
 		qtifw_install_compress.depends += target_c_mac
 
 		target_c_mac.commands = cd $(INSTALL_ROOT) && \
-			zip -r -9 $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x}.zip) $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_x})
+			zip -r -9 $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_EXT}.zip) $$shell_quote($${QTIFW_TARGET}$${QTIFW_TARGET_EXT})
 	}
 
 	qtifw_target {
+		qtifw_auto_ts {
+			install.depends += lrelease
+			QMAKE_EXTRA_TARGETS += install
+		}
 		!qtifw_deploy_no_install: qtifw_deploy.depends += install
 		qtifw_inst.depends += deploy
 		qtifw_install_compress.depends += installer
+		target_c_rep.depends = installer
+		target_c_mac.depends = installer
 
 		qtifwtarget.target = qtifw
-		qtifwtarget.depends += qtifw-compress
+		qtifwtarget.depends += installer
+		!qtifw_no_compress: qtifwtarget.depends += qtifw-compress
 
 		QMAKE_EXTRA_TARGETS += qtifwtarget
+
+		qtifw_build_target.target = qtifw-build
+		qtifw_build_target.depends += FORCE
+		qtifw_build_target.commands += $$QMAKE_MKDIR $$shell_quote($$shell_path($$OUT_PWD\qtifw-build)) \
+			$$escape_expand(\n\t)@$(MAKE) $$shell_quote(INSTALL_ROOT=$$shell_path($$OUT_PWD/qtifw-build)) qtifw
+		QMAKE_EXTRA_TARGETS += qtifw_build_target
 	}
 }

@@ -1,6 +1,8 @@
 # QtIFW-Advanced-Setup
 Create "Qt Installer Framework" installers from your project via qmake
 
+**Important:** With Version 2.0.0 the api has completly changed. Now the `make install` step is used to prepare all files, so that deployment/installer generation operate on the installed files. Read the documentation carefully to pick up how to change your pro files! (The old code is still existant as the `old` branch or as qpm packages before version 2.0.0)
+
 ## Features
 - Easily creation of installers via qmake
 - Windows: Automatic inclusion of msvc libs as installation (if required)
@@ -19,10 +21,20 @@ Create "Qt Installer Framework" installers from your project via qmake
 	- uses the qt deployment tools to deploy your application
 	- option to include custom and Qt translations
 	- auto-deploy flag to automate deployment even further
-- automatic install target generation
+- uses make install for simple file preperations
+- Provides the `qtifw` and `qtifw-build` targets to automatically (translate, install, ) deploy, create the installer and compress it
 
 ## Installation
-The package is providet as qpm package, [`de.skycoder42.qtifw-advanced-setup`](https://www.qpm.io/packages/de.skycoder42.qtifw-advanced-setup/index.html). To install:
+The package is providet as qpm  package, [`de.skycoder42.qtifw-advanced-setup`](https://www.qpm.io/packages/de.skycoder42.qtifw-advanced-setup/index.html). You can install it either via qpmx (preferred) or directly via qpm.
+
+### Via qpmx
+[qpmx](https://github.com/Skycoder42/qpmx) is a frontend for qpm (and other tools) with additional features, and is the preferred way to install packages. To use it:
+
+1. Install qpmx (See [GitHub - Installation](https://github.com/Skycoder42/qpmx#installation))
+2. Install qpm (See [GitHub - Installing](https://github.com/Cutehacks/qpm/blob/master/README.md#installing), for **windows** see below)
+3. In your projects root directory, run `qpmx install de.skycoder42.qtifw-advanced-setup`
+
+### Via qpm
 
 1. Install qpm (See [GitHub - Installing](https://github.com/Cutehacks/qpm/blob/master/README.md#installing), for **windows** see below)
 2. In your projects root directory, run `qpm install de.skycoder42.qtifw-advanced-setup`
@@ -36,12 +48,13 @@ Check their [GitHub - Usage for App Developers](https://github.com/Cutehacks/qpm
 
 ## Requirements
 In order to use QtIFW-Advanced-Setup, you need the following installed:
-- QtIFW: ideally as part of your Qt Installation. Use the online installer and find it under `Qt > Tools`
-- Python3: A pyhton script is used to generate the installer from the input. Thus, you need to have **Python 3** installed!
-- If you want to use the deployment feature on linux, you need linuxdeployqt (See following chapter)
+
+- **QtIFW:** ideally as part of your Qt Installation. Use the online installer and find it under `Qt > Tools`
+- **Python 3:** A pyhton script is used to generate the installer from the input. Thus, you need to have *Python 3* installed!
+- **linuxdeployqt:** If you want to use the deployment feature on linux, you need linuxdeployqt (See following chapter)
 
 ### Linuxdeployqt
-Since Qt does not provide it's own deployment tool for linux, I am using [linuxdeployqt](https://github.com/probonopd/linuxdeployqt) in this package. However, the default binary from the project makes integration problematic. Until the changes to make it possible are done, I created a fork that applies those changes. In order to get linuxdeployqt installed in proper Qt-Tool way, simply run the [get_linuxdeployqt_compat.sh](./get_linuxdeployqt_compat.sh) script. The script builds and installs linuxdeployqt into your Qt installation directory.
+Since Qt does not provide it's own deployment tool for linux, I am using [linuxdeployqt](https://github.com/probonopd/linuxdeployqt) in this package. This tool needs to be placed in the Qt install directory. To simplify this step, you can run the [get_linuxdeployqt_compat.sh](./get_linuxdeployqt_compat.sh) script. The script builds and installs linuxdeployqt into your Qt installation directory.
 
 This is only a workaround, and while the script will stay, the install method for linuxdeployqt may change over time.
 
@@ -50,112 +63,131 @@ The idea is: You specify files and directories via your pro-file and run `make <
 
 When using all of the qtifw features, the amount of work you need to do shrinks down to the following:
 
-1. Add installation stuff to your `pro` file. Check the [Installer](#installer) chapter for details.
-2. Enable automatic deployment and the install target by adding `CONFIG += qtifw_auto_deploy qtifw_install_target` to your pro file
-	- If you have translations, add `QTIFW_TS_TARGET = <my-translate-target>` as well. For qpmx, that would be: `QTIFW_TS_TARGET = lrelease`
-3. Run `make install` after the compilation to create the installer and copy the binaries to `/`
-	- use `make INSTALL_ROOT=<path_to_install_to> install` to specify the directory to copy files to.
+1. Use make install targets to copy all the files you need for your installer to installer build directory
+2. configure the installer generation via qmake variables and configurations
+3. Run the make targets you want to generate the installer and use `INSTALL_ROOT` to specify where to do so
 
-The [Example project](Example/Example.pro) shows a full example of how to use QtIFW-Advanced-Setup.
+Generating an installer consists 5 targets that depend on each other. This means you have to run those 5 make targets in order to generate an installer. However, for simplicity, you can enable a single "master target" called
+`qtifw` to do all 5 steps via one command. In addition, there is the `qtifw-build` target that automatically sets a subfolder in your build directory as the `INSTALL_ROOT`. The steps as follwos, and are explained in more detail below:
 
-### Installer
-This example shows the "minimal" input to create an installer:
-```.pro
-QTIFW_CONFIG = config.xml	#Configuration file, and other files for the config dir
-QTIFW_MODE = online_all		#select the kind of installer to create
+1. `lrelease` (optional, disabled by default)
+2. `install`
+3. `deploy`
+4. `installer`
+5. `qtifw-compress` (optional, enabled by default)
 
-#define one package of your installer
-sample.pkg = de.skycoder42.qtifwsample            #the package name
-sample.meta = meta                                #directories with metadata (i.e. the "meta" directory of the package)
-sample.dirs = data                                #directories with installation data (i.e. the "data" directory of the package)
-win32: sample.files = "$$OUT_PWD/$${TARGET}.exe"  #files to be copied to the data directory
-else: ...
+In short: Simply set up your pro file correctly and then run `make qtifw-build` to do all those steps as needed. The [Example project](Example/Example.pro) shows a full example of how to use QtIFW-Advanced-Setup.
 
-QTIFW_PACKAGES += sample #add all packages
+### Translations (`make lrelease`)
+The `lrelease` step is an optional step provided by qpmx that will generate qm files for all the translations specified via the `TRANSLATIONS` qmake variable. See [qpmx - Translations](https://github.com/Skycoder42/qpmx#translations) for more details.
 
-# IMPORTANT! Setup the variables BEFORE running qpmx or including the pri file
-!ReleaseBuild:!DebugBuild:!system(qpmx -d $$shell_quote($$_PRO_FILE_PWD_) --qmake-run init ...
-# or
-include(vendor/vendor.pri)
-```
+When using the `qtifw` target, translations are not generated by default. You can enable them by adding `CONFIG += qtifw_auto_ts` to your pro file.
 
-To create the installer, simply run `make installer`.
-
-#### Variable documentation
- Variable Name	| Default value								| Description
-----------------|-------------------------------------------|-------------
- QTIFW_BIN		| `...`										| The directory containing the QtIFW Tools (repogen, binarycreator, etc.). The default value assumes you installed Qt and QtIFW via the online installer and that QtIFW is of version 3.0. Adjust the path if your tools are located elsewhere
- QTIFW_DIR		| `qtifw-installer`							| The directory (relative to the build directory) to place the installer files in
- QTIFW_MODE		| `offline`									| The type of installer to create. Can be:<br>`offline`: Offline installer<br>`online`: Online installer<br>`repository`: The remote repository for an online installer<br>`online_all`: Both, the online installer and remote repository
- QTIFW_TARGET	| `$$TARGET Installer`						| The base name of the installer binary
- QTIFW_TARGET_x	| win:`.exe`<br>linux:`.run`<br>mac:`.app`	| The extension of the installer binary
- QTIFW_CONFIG	| _must not be empty_						| Files for the configuration directory. **Must** contain a file named `config.xml` with the installer configuration
- QTIFW_PACKAGES	| _empty_									| A list of all packages to install. Must be of type `package`
- QTIFW_VCPATH	| _default path to vcredist*.exe_			| Windows only: The path to the vcredist installer to added to the installer. The vcredists are needed if you build with the msvc-compiler
-
-**Note for Windows Users:** With msvc2015 or older, the vcredist files are somewhat strange and prevent you from delete their copies via anything by the explorer. This means only the first time you create the installer it works fine. After that, you have to delete the build folder yourself via the explorer before you can build the installer again. This issue seems to have disappeared with msvc2017.
-
-##### The `package` type
- All entries of the QTIFW_PACKAGES variable must be such entries. They are defined as "objects" with the following variables:
-
- Member Name	| Description
-----------------|-------------
- pkg			| The unique name (identifier) of the package
- meta			| A list of directories to copy their contents into the packages "meta" directory
- dirs			| A list of directories to copy their contents into the packages "data" directory
- subdirs			| A list of subdirs to install. The subdirs type is defined below
- files			| A list of files to be copied into the packages "data" directory
-
-For the subdirs variable, you can define stuff to install into a sub-directory instead of the install root dir. A subdir is defined as:
-
- Member Name	| Description
-----------------|-------------
- name			| The name of the directory, i.e. the subdir-path. Is relative to the install root directory (the "data" directory)
- dirs			| A list of directories to copy their contents into the subdirectory
- files			| A list of files to be copied into the packages subdirectory
-
-### Deployment
-As additional feature, you can generate a deployment target as well. This can be used by running `make deploy`. To use the feature, add the following to your pro file:
+The example code for the pro file would look like this: 
 ```pro
-# automatically creates a default deployment target
-CONFIG += qtifw_auto_deploy
-
-# if you have translations, specify the pro-file to be scanned for them
-QTIFW_DEPLOY_TSPRO = $$_PRO_FILE_
-
-# to include the deployed files into your installer either add the folder to <package>.dirs or do it automatically
-sample.pkg = de.skycoder42.qtifwsample
-sample.meta = meta
-QTIFW_AUTO_INSTALL_PKG = sample
-
-QTIFW_PACKAGES += sample
+TRANSLATIONS += myapp.ts
 ```
 
-#### Variable documentation
- Variable Name			| Default value	| Description
-------------------------|---------------|-------------
- QTIFW_DEPLOY_SRC		| _empty_		| The source file/directory to be deployed. Only one element, type defined by platform
- QTIFW_DEPLOY_OUT		| `deployed`	| The directory (relative to the build directory) to place the deployed files in
- QTIFW_AUTO_INSTALL_PKG	| _empty_		| The name of a package to add the files generated by `qtifw_auto_deploy` to Needed for MacOs translation generation only.
+#### Variables
+ Variable Name		| Default value	| Description
+--------------------|----------------|-------------
+ TRANSLATIONS		| *empty*		| The translations to be generated
+ EXTRA_TRANSLATIONS	| *empty*		| Additional translations to be generated
 
-#### The `qtifw_auto_deploy` configuration flag
-If set (by adding `CONFIG += qtifw_auto_deploy` to your pro file), the deployment files are detected automatically. It's basically a shortcut for the code below:
+#### Install targets (with target.files automatically filled)
+- `qpmx_ts_target`: Install target for `TRANSLATIONS`
+- `extra_ts_target`: Install target for `EXTRA_TRANSLATIONS`
 
+### Installation (`make install`)
+The install targets should be used to prepare the application for deployment/installer creation by placing all
+files where they need to be for the installer. The install should look like this:
+```
+/config
+	/config.xml
+	/...
+/packages
+	/com.example.my-package
+		/meta
+			/package.xml
+			/install.js
+			/...
+		/data
+			/example.exe
+			/...
+	/com.example.another-package
+		/...
+```
+
+The config directory should contain all installer configuration files. The package directory should consist of multiple subdirectories named after the installer package the contain. The internal structure of those package directories is the one QtIFW needs.
+
+To stay with this example, the following qmake code could be used to create such a setup:
 ```pro
-win32:CONFIG(debug, debug|release): QTIFW_DEPLOY_SRC = $$shadowed(debug/$${TARGET}.exe)
-else:win32:CONFIG(release, debug|release): QTIFW_DEPLOY_SRC = $$shadowed(release/$${TARGET}.exe)
-else:mac: QTIFW_DEPLOY_SRC = $$shadowed($${TARGET}.app)
-else: QTIFW_DEPLOY_SRC = $$shadowed($$TARGET)
+# install the config.xml
+install_cfg.files = config.xml
+install_cfg.path = /config
+INSTALLS += install_cfg
 
-!isEmpty(QTIFW_AUTO_INSTALL_PKG) { #NOTE: pseudo code, won't work like that
-	mac: $$first(QTIFW_AUTO_INSTALL_PKG).dirs += $$OUT_PWD/deployed/$${TARGET}.app
-	else: $$first(QTIFW_AUTO_INSTALL_PKG).dirs += $$OUT_PWD/deployed
-}
+# install the package meta folder
+install_pkg.files += meta
+install_pkg.path = /packages/com.example.my-package
+INSTALLS += install_pkg
+
+# install the executable
+target.path = /packages/com.example.my-package/data
+INSTALLS += target
+
+# optional: install the generated translations
+qpmx_ts_target.path = /packages/com.example.my-package/data/translations
+INSTALLS += qpmx_ts_target
 ```
 
-### `install` target
-If set (by adding `CONFIG += qtifw_install_target` to your pro file), you can, instead of using `make deploy` and `make installer`, simply use the standard `make install` command to automatically deploy (if deployment is used), create the installer, and copy the relevant binaries and directories to the install directory.
+Simply running `make INSTALL_ROOT=... install` will copy all the specified files, plus all the additional stuff that is needed to create an installer.
 
-**Important:** If you want to automatically generate translations, you must provide a translation make target and make it available to the package by adding `QTIFW_TS_TARGET = my-translate-target` to your pro-file. For **qpmx**, you can simply add the following line: `QTIFW_TS_TARGET = lrelease`
+**Important:** For this to work you *always* have to specify an install root as parameter to make. All installations as stated above will be put into that directory - meaning forgetting it would install that stuff into your root filesystem! When using the `qtifw-build` target however, you don't have to care about this.
 
-By default, repositories as well as the mac installer app bundle are compressed by the install target before installing them. The linux and mac repository get `.tar.xz` compressed, the windows repository and the app bundle get compressed as `.zip`. To disable the compression and simply copy the directories as install step, add `CONFIG += qtifw_no_compress` to your pro file.
+### Deployment (`make deploy`)
+Deployment is performed on the already install binary, so that all the deployed files are automatcially placed in the installer directories. The deployment target is automatically determined by using the `target.path` to find out where to find the project binary. However, you can also specify the deployment target yourself by setting the `qtifw_deploy_target`. So unless you need to specify additional deploy targets, you typically don't have to setup
+anything at all in your pro file for this step!
+
+#### The `qtifw_deploy_target` target
+ Target Property	| Default value				| Description
+----------------|----------------------------|-------------
+ path			| `$${target.path}`			| The path to find the binaries to be deployed at
+ files			| `$${TARGET}$${TARGET_EXT}`	| The binaries to be deployed. By default this is the main target of your project that you are building.
+
+### Installer generation (`make installer`)
+This step create the actual QtIFW-Installer and/or repositories out of youre previously installed and deployed files. Just like the previous steps, it uses the `INSTALL_ROOT` to find the `config` and `packages` directories and uses their contents to create the installer. They are created in the very same directory. You can configure how the generation is performed by using the following qmake variables.
+
+**Important:** When *not* using the `qtifw` or `qtifw-build` mode, you have to explicitly enable the installtion of the additional installer files that are required to create the installer. This is done by adding `CONFIG += qtifw_install_targets` to your pro file. This is not needed if you already have the `CONFIG += qtifw_target` line in your pro file.
+
+#### Variables
+ Variable Name		| Default value								| Description
+---------------------|--------------------------------------------|-------------
+ QTIFW_BIN			| `...`										| The directory containing the QtIFW Tools (repogen, binarycreator, etc.). The default value assumes you installed Qt and QtIFW via the online installer and that QtIFW is of version 3.0. Adjust the path if your tools are located elsewhere
+ QTIFW_MODE			| `offline`									| The type of installer to create. Can be:<br>`offline`: Offline installer<br>`online`: Online installer<br>`repository`: The remote repository for an online installer<br>`online_all`: Both, the online installer and remote repository
+ QTIFW_TARGET		| `$$TARGET Installer`						| The base name of the installer binary
+ QTIFW_TARGET_EXT	| win:`.exe`<br>linux:`.run`<br>mac:`.app`	| The extension of the installer binary
+ QTIFW_VCPATH		| _default path to vcredist*.exe_			| Windows only: The path to the vcredist installer to added to the installer. The vcredists are needed if you build with the msvc-compiler
+
+**Note for Windows Users:** With msvc2015 or older, the vcredist files are somewhat strange and prevent you from delete their copies via anything but the explorer. This means only the first time you create the installer it works fine. After that, you have to delete the build folder yourself via the explorer before you can build the installer again. This issue seems to have disappeared with msvc2017.
+
+### Repository compression (`make qtifw-compress`)
+The final optional step is to compress the repositories and the installer app bundle for mac. This target does not need any configuration. It will simply create a compressed archive of the repositories and the app bundle on mac for easier deployment. You will need the `tar` and `xz` tools on linux and mac, the `zip` tool on mac and the `7z` tool on windows.
+
+You can disable this step for the `qtifw` target by adding `CONFIG += qtifw_no_compress` to your pro file.
+
+### The high level qtifw targets (`make qtifw` and `make qtifw-build`)
+As stated at the beginning of this document, the `qtifw` target is basically a shortcut to run all the above steps via one command. In order to enable this target, you must add `CONFIG += qtifw_target` to your pro file. You can configure how this target behaves via the following configurations.
+
+The `qtifw-build` is an additional helper that will cann `qtifw` with an automatically determined install root. So instead of running `make INSTALL_ROOT=/path/to/build/qtifw-build qtifw` you can simply use `make qtifw-build`. The path `/path/to/build` is replaced by `$$OUT_PWD` from qmake.
+
+**Important:** For the classic `qtifw` to work you *always* have to specify an install root as parameter to make. All operations as stated above will be run inside that directory - meaning forgetting it would install that stuff into your root filesystem! When using the `qtifw-build` target however, you don't have to care about this.
+
+#### CONFIG options
+ Option						| Description
+-----------------------------|-------------
+ `qtifw_target`				| Enables the `qtifw` and `qtifw-build` targets and creates the automatic dependencies between the lrelease, install, deploy, installer and qtifw-compress targets. Also, it automatically adds `qtifw_install_targets` to the `CONFIG` as well.
+ `qtifw_install_targets`		| Enables the automatic installation of all internal installer related extra files. This must be defined to create an installer.
+ `qtifw_auto_ts`				| Enables an automatic dependency between `lrelease` and `install`, i.e. `make install` will now automatically call `make lrelease` first
+ `qtifw_deploy_no_install`	| Disables the dependency between `install` and `deploy`. I.e. now the `qtifw` target will *not* automatically run `make install` anymore. This can be useful when integrating with build systems to seperate the install and installer generation steps.
+ `qtifw_no_compress`			| Disables the automatic `qtifw-compress` step, i.e. prevents the compressed archives from beeing generated.
